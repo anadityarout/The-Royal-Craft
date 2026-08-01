@@ -1,0 +1,325 @@
+/* ===========================================================
+   Project Admin
+=========================================================== */
+/* ===========================================================
+   Saved Projects Table
+=========================================================== */
+
+.table-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.project-table{
+    width:100%;
+    border-collapse:collapse;
+    overflow:hidden;
+    border-radius:12px;
+    background:#fff;
+}
+
+.project-table thead{
+    background:#0d6efd;
+}
+
+.project-table th{
+    color:#fff;
+    padding:18px;
+    text-align:center;
+    font-size:15px;
+    font-weight:600;
+}
+
+.project-table td{
+    padding:18px;
+    text-align:center;
+    border-bottom:1px solid #ececec;
+    vertical-align:middle;
+}
+
+.project-table tbody tr:hover{
+    background:#f8f9ff;
+}
+
+.table-image{
+    width:90px;
+    height:70px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.desc-cell{
+    max-width:320px;
+    text-align:left;
+    line-height:1.6;
+    color:#555;
+}
+
+.gallery-count{
+    background:#0d6efd;
+    color:#fff;
+    padding:8px 15px;
+    border-radius:20px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.delete-btn{
+    padding:10px 18px;
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    transition:.3s;
+}
+
+.delete-btn:hover{
+    background:#bb2d3b;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+.project-admin{
+    width:100%;
+    min-height:100vh;
+    padding:40px;
+    background:#f5f7fa;
+    font-family:"Inter",sans-serif;
+}
+
+.project-admin h2{
+    font-size:34px;
+    font-weight:700;
+    color:#222;
+    margin-bottom:35px;
+}
+
+.section{
+    background:#fff;
+    border-radius:16px;
+    padding:30px;
+    margin-bottom:30px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+}
+
+.section h3{
+    font-size:22px;
+    color:#222;
+    margin-bottom:20px;
+}
+
+/* ===========================================================
+   Gallery Header
+=========================================================== */
+
+.gallery-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.add-btn{
+    padding:12px 24px;
+    background:#0d6efd;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.add-btn:hover{
+    background:#0b5ed7;
+}
+
+/* ===========================================================
+   Gallery Card
+=========================================================== */
+
+.gallery-card{
+    border:2px dashed #d9d9d9;
+    border-radius:15px;
+    padding:20px;
+    margin-bottom:25px;
+    background:#fafafa;
+}
+
+.gallery-card h4{
+    margin-bottom:15px;
+    color:#333;
+}
+
+.gallery-card input[type=file]{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    background:#fff;
+    border:1px solid #ddd;
+}
+
+/* ===========================================================
+   Preview Image
+=========================================================== */
+
+.preview-image{
+    width:220px;
+    height:160px;
+    margin-top:18px;
+    object-fit:cover;
+    border-radius:12px;
+    border:1px solid #ddd;
+    display:block;
+}
+
+/* ===========================================================
+   Remove Button
+=========================================================== */
+
+.remove-btn{
+    margin-top:18px;
+    padding:10px 18px;
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    transition:.3s;
+    font-weight:600;
+}
+
+.remove-btn:hover{
+    background:#bb2d3b;
+}
+
+/* ===========================================================
+   Form
+=========================================================== */
+
+.form-group{
+    display:flex;
+    flex-direction:column;
+    margin-bottom:22px;
+}
+
+.form-group label{
+    font-weight:600;
+    margin-bottom:10px;
+    color:#444;
+}
+
+.form-group input,
+.form-group textarea{
+    width:100%;
+    padding:15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    font-size:15px;
+    outline:none;
+    transition:.3s;
+    background:#fff;
+}
+
+.form-group textarea{
+    resize:vertical;
+    min-height:140px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus{
+    border-color:#0d6efd;
+    box-shadow:0 0 0 3px rgba(13,110,253,.15);
+}
+
+.form-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+/* ===========================================================
+   Save Button
+=========================================================== */
+
+.save-section{
+    display:flex;
+    justify-content:flex-end;
+}
+
+.save-btn{
+    padding:15px 40px;
+    border:none;
+    border-radius:12px;
+    background:#198754;
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.save-btn:hover{
+    background:#157347;
+    transform:translateY(-2px);
+}
+
+/* ===========================================================
+   Responsive
+=========================================================== */
+
+@media(max-width:768px){
+
+    .project-admin{
+        padding:20px;
+    }
+
+    .project-admin h2{
+        font-size:28px;
+    }
+
+    .gallery-header{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .form-row{
+        grid-template-columns:1fr;
+    }
+
+    .preview-image{
+        width:100%;
+        height:220px;
+    }
+
+    .save-section{
+        justify-content:center;
+    }
+
+    .save-btn{
+        width:100%;
+    }
+}
+/* ===========================================================
+   Mobile Table
+=========================================================== */
+
+@media(max-width:992px){
+
+    .project-table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+}

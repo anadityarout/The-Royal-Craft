@@ -1,0 +1,281 @@
+/* ==========================================
+SERVICE PAGE
+========================================== */
+
+.service-page{
+    width:100%;
+    min-height:100vh;
+    background:#fff;
+}
+
+/* ==========================================
+BANNER
+========================================== */
+
+.service-page-banner{
+    width:100%;
+    overflow:hidden;
+    background:#000;
+}
+
+.service-page-banner-image{
+    width:100%;
+    height:auto;
+    display:block;
+    object-fit:cover;
+}
+
+/* ==========================================
+CATEGORY FILTER
+========================================== */
+
+.service-page-filter{
+    width:100%;
+    background:#fff;
+    padding:45px 20px;
+
+    display:flex;
+    justify-content:center;
+}
+
+.service-page-filter-wrapper{
+    width:100%;
+    max-width:1500px;
+    margin:0 auto;
+
+    display:flex;
+    flex-wrap:wrap;
+
+    justify-content:center;
+    align-items:center;
+
+    gap:15px;
+}
+
+.service-page-filter-btn{
+    border:none;
+    outline:none;
+
+    padding:12px 24px;
+
+    border-radius:40px;
+
+    background:#f5f5f5;
+    color:#222;
+
+    font-size:15px;
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s ease;
+
+    white-space:nowrap;
+}
+
+.service-page-filter-btn:hover{
+    background:#ff2ea6;
+    color:#fff;
+}
+
+.service-page-filter-btn.active{
+    background:#1d4ed8;
+    color:#fff;
+}
+
+/* ==========================================
+SERVICE LIST
+========================================== */
+
+.service-page-list{
+    width:100%;
+    padding:40px 4% 80px;
+}
+
+/* ==========================================
+SERVICE GRID
+========================================== */
+
+.service-page-grid{
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:25px;
+}
+
+/* ==========================================
+SERVICE CARD
+========================================== */
+
+.service-page-card{
+    width:100%;
+
+    background:#fff;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+    transition:.35s ease;
+}
+
+.service-page-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 15px 40px rgba(0,0,0,.12);
+}
+
+/* ==========================================
+SERVICE IMAGE
+========================================== */
+
+.service-page-image{
+    width:100%;
+    height:260px;
+    object-fit:cover;
+    display:block;
+}
+
+/* ==========================================
+SERVICE CONTENT
+========================================== */
+
+.service-page-content{
+    padding:22px;
+}
+
+.service-page-content h3{
+    margin:0 0 12px;
+
+    font-size:22px;
+
+    font-weight:600;
+
+    color:#111;
+}
+
+.service-page-content p{
+    margin:0;
+
+    color:#666;
+
+    line-height:1.7;
+
+    font-size:15px;
+}
+
+/* ==========================================
+EMPTY
+========================================== */
+
+.service-page-empty{
+    width:100%;
+    grid-column:1/-1;
+
+    text-align:center;
+
+    font-size:22px;
+
+    color:#888;
+
+    padding:100px 0;
+}
+
+/* ==========================================
+1200px
+========================================== */
+
+@media (max-width:1200px){
+
+    .service-page-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+
+}
+
+/* ==========================================
+992px
+========================================== */
+
+@media (max-width:992px){
+
+    .service-page-grid{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+/* ==========================================
+768px
+========================================== */
+
+@media (max-width:768px){
+
+    .service-page-filter{
+        padding:25px 15px;
+    }
+
+    .service-page-filter-wrapper{
+        gap:12px;
+    }
+
+    .service-page-filter-btn{
+        padding:10px 18px;
+        font-size:14px;
+    }
+
+    .service-page-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .service-page-image{
+        height:230px;
+    }
+
+    .service-page-content{
+        padding:18px;
+    }
+
+    .service-page-content h3{
+        font-size:20px;
+    }
+
+}
+
+/* ==========================================
+480px
+========================================== */
+
+@media (max-width:480px){
+
+    .service-page-filter{
+        padding:20px 12px;
+    }
+
+    .service-page-filter-wrapper{
+        gap:10px;
+    }
+
+    .service-page-filter-btn{
+        padding:9px 16px;
+        font-size:13px;
+    }
+
+    .service-page-image{
+        height:220px;
+    }
+
+    .service-page-content h3{
+        font-size:18px;
+    }
+
+    .service-page-content p{
+        font-size:14px;
+    }
+
+}

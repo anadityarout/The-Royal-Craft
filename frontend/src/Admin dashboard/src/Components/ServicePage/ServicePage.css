@@ -1,0 +1,266 @@
+/* ==========================================
+   SERVICE PAGE
+========================================== */
+
+.servicepage {
+    flex: 1;
+    padding: 30px;
+    background: #f5f7fb;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 28px;
+    color: #1f2937;
+    font-weight: 700;
+}
+
+.header button {
+    padding: 12px 24px;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.header button:hover {
+    background: #0b5ed7;
+}
+
+/* ==========================================
+   UPLOAD BOX
+========================================== */
+
+.upload-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    margin-bottom: 30px;
+}
+
+.upload-box select,
+.upload-box input[type="text"],
+.upload-box input[type="date"],
+.upload-box textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: .3s;
+}
+
+.upload-box textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.upload-box select:focus,
+.upload-box input:focus,
+.upload-box textarea:focus {
+    border-color: #0d6efd;
+}
+
+.upload-box input[type="file"] {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 18px;
+    border: 2px dashed #d9d9d9;
+    border-radius: 8px;
+    background: #fafafa;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.btns {
+    display: flex;
+    gap: 15px;
+}
+
+.btns button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.btns button:first-child {
+    background: #198754;
+}
+
+.btns button:first-child:hover {
+    background: #157347;
+}
+
+.btns button:last-child {
+    background: #dc3545;
+}
+
+.btns button:last-child:hover {
+    background: #bb2d3b;
+}
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-container {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #0d6efd;
+}
+
+thead th {
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    font-size: 15px;
+}
+
+tbody td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
+    color: #444;
+}
+
+tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* ==========================================
+   IMAGE
+========================================== */
+
+.preview-image {
+    width: 90px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+/* ==========================================
+   CATEGORY
+========================================== */
+
+.category-badge {
+    background: #0d6efd;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   DELETE BUTTON
+========================================== */
+
+.delete-btn {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.delete-btn:hover {
+    background: #bb2d3b;
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c8c8c8;
+    border-radius: 20px;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .servicepage {
+        padding: 20px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header button {
+        width: 100%;
+    }
+
+    .upload-box {
+        padding: 20px;
+    }
+
+    .btns {
+        flex-direction: column;
+    }
+
+    .btns button {
+        width: 100%;
+    }
+
+    table {
+        min-width: 900px;
+    }
+
+    .preview-image {
+        width: 70px;
+        height: 60px;
+    }
+}

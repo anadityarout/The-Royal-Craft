@@ -1,0 +1,230 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.rk-process-section {
+  width: 100%;
+  padding: 70px 5%;
+  background: #fdfaf5;
+  box-sizing: border-box;
+}
+
+/* ==========================
+   CONTAINER (2-column layout)
+========================== */
+
+.rk-process-container {
+  max-width: 1700px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.62fr 2.3fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* ==========================
+   LEFT: TEXT CONTENT
+========================== */
+
+.rk-process-content {
+  text-align: left;
+}
+
+.rk-process-tag {
+  display: inline-block;
+  color: #c9a15d;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.rk-process-title {
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.3;
+  margin: 0 0 18px;
+}
+
+.rk-process-desc {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.85;
+  max-width: 280px;
+  margin-bottom: 28px;
+}
+
+.rk-process-btn {
+  padding: 15px 30px;
+  border: none;
+  background: #c9a15d;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.rk-process-btn:hover {
+  background: #b6852e;
+}
+
+/* ==========================
+   RIGHT: PROCESS GRID
+========================== */
+
+.rk-process-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.rk-process-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.rk-process-image {
+  width: 100%;
+  height: 170px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.rk-process-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: 0.4s;
+}
+
+.rk-process-card:hover .rk-process-image img {
+  transform: scale(1.06);
+}
+
+/* ==========================
+   CAPTION
+========================== */
+
+.rk-process-caption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.rk-process-no {
+  font-family: "Playfair Display", serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: #c9a15d;
+  flex-shrink: 0;
+}
+
+.rk-process-step-title {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+.rk-process-arrow {
+  margin-left: auto;
+  color: #c9a15d;
+  font-size: 25px;
+  flex-shrink: 0;
+}
+/* ==========================
+   DYNAMIC PROCESS
+========================== */
+
+.rk-loading {
+  width: 100%;
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #666;
+}
+
+.rk-process-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.rk-process-category {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.rk-process-name {
+  margin-top: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+}
+
+.rk-process-description {
+  margin-top: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: #888;
+  line-height: 1.5;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 1100px) {
+  .rk-process-container {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+}
+
+@media (max-width: 768px) {
+  .rk-process-section {
+    padding: 50px 5%;
+  }
+
+  .rk-process-title {
+    font-size: 24px;
+  }
+
+  .rk-process-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .rk-process-image {
+    height: 140px;
+  }
+
+  .rk-process-caption {
+    flex-wrap: wrap;
+  }
+
+  .rk-process-step-title {
+    white-space: normal;
+  }
+}

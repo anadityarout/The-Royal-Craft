@@ -1,0 +1,194 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap");
+
+/* ======================================
+   COUNTER SECTION
+====================================== */
+
+.counter-section{
+    width:100%;
+    padding:45px 0;
+    background:#fbf8f2;
+    position:relative;
+    overflow:hidden;
+}
+
+/* Subtle background pattern */
+
+.counter-section::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+        radial-gradient(rgba(201,161,91,.18) 1px, transparent 1px);
+    background-size:28px 28px;
+    pointer-events:none;
+}
+
+/* ======================================
+   CONTAINER
+====================================== */
+
+.counter-container{
+    width:92%;
+    max-width:1400px;
+    margin:auto;
+
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+
+    position:relative;
+    z-index:2;
+}
+
+/* ======================================
+   CARD
+====================================== */
+
+.counter-card{
+    position:relative;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    padding:22px 15px;
+}
+
+.counter-card::after{
+    content:"";
+    position:absolute;
+    top:20%;
+    right:0;
+
+    width:1px;
+    height:60%;
+
+    background:#e4ddd0;
+}
+
+.counter-card:last-child::after{
+    display:none;
+}
+
+/* ======================================
+   ICON
+====================================== */
+
+.counter-icon{
+    color:#c89d55;
+    margin-bottom:16px;
+}
+
+.counter-icon svg{
+    width:48px;
+    height:48px;
+    stroke-width:1.6;
+}
+
+/* ======================================
+   NUMBER / TEXT
+====================================== */
+
+.counter-card h2{
+    margin:0;
+
+    font-family:"Playfair Display",serif;
+    font-size:48px;
+    font-weight:700;
+    line-height:1.1;
+
+    color:#111;
+}
+
+/* PAN INDIA */
+
+.counter-card:nth-child(4) h2{
+    font-size:40px;
+}
+
+/* ======================================
+   DESCRIPTION
+====================================== */
+
+.counter-card p{
+    margin-top:8px;
+
+    font-family:"Inter",sans-serif;
+    font-size:14px;
+    font-weight:600;
+
+    letter-spacing:1px;
+    text-transform:uppercase;
+
+    color:#333;
+}
+
+/* ======================================
+   TABLET
+====================================== */
+
+@media (max-width:992px){
+
+.counter-container{
+    grid-template-columns:repeat(2,1fr);
+}
+
+.counter-card{
+    border-bottom:1px solid #e8e2d7;
+}
+
+.counter-card::after{
+    display:none;
+}
+
+.counter-card:last-child{
+    grid-column:1/-1;
+    border-bottom:none;
+}
+
+}
+
+/* ======================================
+   MOBILE
+====================================== */
+
+@media (max-width:576px){
+
+.counter-section{
+    padding:40px 0;
+}
+
+.counter-container{
+    grid-template-columns:1fr;
+}
+
+.counter-card{
+    border-bottom:1px solid #e8e2d7;
+    padding:28px 10px;
+}
+
+.counter-card:last-child{
+    border-bottom:none;
+}
+
+.counter-card h2{
+    font-size:36px;
+}
+
+.counter-card:nth-child(4) h2{
+    font-size:30px;
+}
+
+.counter-card p{
+    font-size:13px;
+}
+
+.counter-icon svg{
+    width:42px;
+    height:42px;
+}
+
+}

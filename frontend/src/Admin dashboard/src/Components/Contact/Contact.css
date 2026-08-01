@@ -1,0 +1,282 @@
+/* ==========================================
+   CONTACT PAGE
+========================================== */
+
+.contact-page {
+    flex: 1;
+    padding: 30px;
+    background: #f5f7fb;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.header button {
+    padding: 12px 22px;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: .3s;
+}
+
+.header button:hover {
+    background: #0b5ed7;
+}
+
+/* ==========================================
+   FORM
+========================================== */
+
+.upload-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    margin-bottom: 30px;
+}
+
+.upload-title {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.upload-box input[type="text"],
+.upload-box textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    box-sizing: border-box;
+    transition: .3s;
+}
+
+.upload-box input[type="text"]:focus,
+.upload-box textarea:focus {
+    border-color: #0d6efd;
+}
+
+.upload-box textarea {
+    resize: vertical;
+    min-height: 150px;
+}
+
+.upload-box input[type="file"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.upload-box input[type="file"]:hover {
+    border-color: #0d6efd;
+}
+
+/* ==========================================
+   IMAGE PREVIEW
+========================================== */
+
+.preview-image {
+    width: 180px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    display: block;
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.btns {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btns button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.btns button:first-child {
+    background: #198754;
+}
+
+.btns button:first-child:hover {
+    background: #157347;
+}
+
+.btns button:last-child {
+    background: #dc3545;
+}
+
+.btns button:last-child:hover {
+    background: #bb2d3b;
+}
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.table-container {
+    background: #fff;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #0d6efd;
+}
+
+thead th {
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    font-size: 15px;
+}
+
+tbody td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
+    color: #444;
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* ==========================================
+   TABLE IMAGE
+========================================== */
+
+.table-container .preview-image {
+    width: 90px;
+    height: 70px;
+    margin: auto;
+}
+
+/* ==========================================
+   DELETE BUTTON
+========================================== */
+
+.delete-btn {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.delete-btn:hover {
+    background: #bb2d3b;
+}
+
+/* ==========================================
+   SCROLLBAR
+========================================== */
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c8c8c8;
+    border-radius: 20px;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width:768px) {
+
+    .contact-page {
+        padding: 20px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .header button {
+        width: 100%;
+    }
+
+    .upload-box {
+        padding: 20px;
+    }
+
+    .btns {
+        flex-direction: column;
+    }
+
+    .btns button {
+        width: 100%;
+    }
+
+    table {
+        min-width: 800px;
+    }
+
+    .preview-image {
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+    }
+
+    .table-container .preview-image {
+        width: 70px;
+        height: 60px;
+    }
+}

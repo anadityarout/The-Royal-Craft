@@ -1,0 +1,181 @@
+.blog-page {
+  width: 100%;
+  background: #fff;
+}
+
+/* Banner */
+
+.blog-banner {
+  width: 100%;
+  height: 500px; /* Change manually */
+  background: #000;
+  overflow: hidden;
+}
+
+.blog-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Blog List */
+
+.blog-grid {
+  width: 90%;
+  max-width: 1400px;
+  margin: 70px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+}
+
+/* Blog Item */
+
+.blog-item {
+  display: flex;
+  gap: 45px;
+  align-items: center;
+  border-bottom: 1px solid #e6e6e6;
+  padding-bottom: 60px;
+}
+
+/* Image */
+
+.blog-image {
+  flex: 0 0 42%;
+  overflow: hidden;
+  background: #000;
+}
+
+.blog-image img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+  transition: 0.5s;
+}
+
+.blog-item:hover .blog-image img {
+  transform: scale(1.05);
+}
+
+/* Content */
+
+.blog-content {
+  flex: 1;
+}
+
+/* Category & Date */
+
+.blog-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.blog-header span:first-child {
+  color: #b68d40;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.blog-header span:last-child {
+  color: #777;
+  font-size: 14px;
+}
+
+/* Title */
+
+.blog-content h2 {
+  font-size: 38px;
+  line-height: 1.3;
+  color: #111;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+/* Description */
+
+.blog-content p {
+  font-size: 17px;
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 30px;
+}
+
+/* Read More */
+
+.read-more {
+  background: transparent;
+  border: none;
+  color: #000;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  transition: .3s;
+}
+
+.read-more::after {
+  content: "";
+  width: 0;
+  height: 2px;
+  background: #000;
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  transition: .3s;
+}
+
+.read-more:hover::after {
+  width: 100%;
+}
+
+/* Responsive */
+
+@media (max-width: 992px) {
+
+  .blog-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .blog-image {
+    width: 100%;
+  }
+
+  .blog-image img {
+    height: 320px;
+  }
+
+  .blog-content h2 {
+    font-size: 30px;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .blog-grid {
+    width: 94%;
+    margin: 50px auto;
+  }
+
+  .blog-banner {
+    height: 300px;
+  }
+
+  .blog-content h2 {
+    font-size: 24px;
+  }
+
+  .blog-content p {
+    font-size: 15px;
+  }
+
+}

@@ -1,0 +1,228 @@
+
+/* =====================================================
+   THE ROYAL CRAFT - Premium Footer
+   Compact Corporate Version
+===================================================== */
+
+.footer{
+  width:100%;
+  color:#fff;
+  background:
+    linear-gradient(rgba(14,18,24,.92),rgba(14,18,24,.92)),
+    url("../../assets/footer-bg.jpg");
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
+.footer-overlay{
+  width:100%;
+}
+
+.footer-container{
+  width:92%;
+  max-width:1700px;
+  margin:0 auto;
+  padding:50px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:55px;
+}
+
+.footer-about{
+  width:360px;
+  flex-shrink:0;
+}
+
+.footer-logo{
+  width:270px;
+  display:block;
+  margin-bottom:20px;
+}
+
+.footer-about p{
+  color:rgba(255,255,255,.82);
+  font-size:16px;
+  line-height:1.9;
+  margin-bottom:24px;
+}
+
+.footer-social{
+  display:flex;
+  gap:14px;
+}
+
+.footer-social a{
+  width:46px;
+  height:46px;
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:50%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+  text-decoration:none;
+  transition:.3s;
+}
+
+.footer-social a:hover{
+  background:#C89B55;
+  border-color:#C89B55;
+  transform:translateY(-4px);
+}
+
+ .footer-right{
+  flex:1;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:35px;
+
+  margin-top:58px;   /* Move all right columns down */
+}
+
+.footer-column h3{
+  color:#fff;
+  font-size:17px;
+  font-weight:700;
+  text-transform:uppercase;
+  margin:0 0 24px;
+  position:relative;
+}
+
+.footer-column h3::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-10px;
+  width:40px;
+  height:2px;
+  background:#C89B55;
+}
+
+.footer-column ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+
+.footer-column li{
+  margin-bottom:12px;
+  color:rgba(255,255,255,.82);
+  font-size:16px;
+  line-height:1.7;
+}
+
+.footer-column a{
+  color:rgba(255,255,255,.82);
+  text-decoration:none;
+  transition:.3s;
+}
+
+.footer-column a:hover{
+  color:#C89B55;
+  padding-left:6px;
+}
+
+.contact-item{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  margin-bottom:16px;
+}
+
+.contact-item svg{
+  color:#C89B55;
+  margin-top:4px;
+}
+
+.contact-item span{
+  font-size:16px;
+  line-height:1.7;
+  color:rgba(255,255,255,.82);
+}
+
+.footer-bottom{
+  width:92%;
+  max-width:1700px;
+  margin:0 auto;
+  border-top:1px solid rgba(200,155,85,.3);
+  padding:16px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:20px;
+}
+
+.footer-copy{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.shield-icon{
+  color:#C89B55;
+}
+
+.footer-policy{
+  display:flex;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.footer-policy a{
+  color:rgba(255,255,255,.8);
+  text-decoration:none;
+}
+
+.footer-policy a:hover{
+  color:#C89B55;
+}
+
+@media (max-width:1200px){
+  .footer-container{
+    flex-direction:column;
+    gap:40px;
+    padding:40px 0;
+  }
+  .footer-about{
+    width:100%;
+    max-width:600px;
+  }
+  .footer-right{
+    grid-template-columns:repeat(2,1fr);
+  }
+  .footer-bottom{
+    flex-direction:column;
+    text-align:center;
+  }
+}
+
+@media (max-width:768px){
+  .footer-container{
+    width:90%;
+    padding:35px 0;
+  }
+  .footer-about{
+    width:100%;
+  }
+  .footer-logo{
+    width:220px;
+  }
+  .footer-right{
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+  .footer-column h3{
+    font-size:18px;
+  }
+  .footer-about p,
+  .footer-column li,
+  .contact-item span{
+    font-size:15px;
+  }
+  .footer-bottom{
+    width:90%;
+    padding:14px 0;
+  }
+}

@@ -1,0 +1,252 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap");
+
+/* ===================================
+   HOME SLIDER
+=================================== */
+
+.home-slider{
+    width:100%;
+    position:relative;
+    overflow:hidden;
+    background:#000;
+}
+
+/* Change the height here */
+.slide{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:auto;   /* <-- Change this */
+    opacity:0;
+    transition:opacity .8s ease;
+}
+
+.slide.active{
+    position:relative;
+    opacity:1;
+}
+
+/* ===================================
+   IMAGE / VIDEO
+=================================== */
+
+.slider-media{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+/* ===================================
+   OVERLAY
+=================================== */
+
+.slider-overlay{
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(
+        90deg,
+        rgba(0,0,0,.78) 0%,
+        rgba(0,0,0,.45) 45%,
+        rgba(0,0,0,.2) 100%
+    );
+}
+
+/* ===================================
+   CONTENT
+=================================== */
+
+.slider-content{
+    position:absolute;
+    top:50%;
+    left:8%;
+    transform:translateY(-50%);
+    z-index:10;
+    max-width:650px;
+    color:#fff;
+    font-family:"Inter",sans-serif;
+}
+
+.slider-tag{
+    display:block;
+    color:#D6A54A;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:2px;
+    margin-bottom:18px;
+    text-transform:uppercase;
+}
+
+.slider-content h1{
+    font-family:"Playfair Display",serif;
+    font-size:72px;
+    line-height:1.1;
+    margin-bottom:22px;
+}
+
+.slider-content p{
+    font-size:18px;
+    line-height:1.8;
+    color:#e8e8e8;
+    margin-bottom:35px;
+}
+
+/* ===================================
+   BUTTONS
+=================================== */
+
+.slider-buttons{
+    display:flex;
+    gap:20px;
+}
+
+.explore-btn{
+    padding:16px 34px;
+    border:none;
+    background:#D6A54A;
+    color:#fff;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.explore-btn:hover{
+    background:#bf8d34;
+}
+
+.contact-btn{
+    padding:16px 34px;
+    background:transparent;
+    border:1px solid rgba(255,255,255,.8);
+    color:#fff;
+    cursor:pointer;
+    font-size:15px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.contact-btn:hover{
+    background:#fff;
+    color:#111;
+}
+
+/* ===================================
+   DOTS
+=================================== */
+
+.slider-dots{
+    position:absolute;
+    left:50%;
+    bottom:30px;
+    transform:translateX(-50%);
+    display:flex;
+    gap:12px;
+    z-index:20;
+}
+
+.dot{
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:rgba(255,255,255,.5);
+    cursor:pointer;
+    transition:.3s;
+}
+
+.dot.active{
+    background:#D6A54A;
+}
+
+/* ===================================
+   EMPTY
+=================================== */
+
+.slider-empty{
+    width:100%;
+    height:700px; /* Change this too if needed */
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#fff;
+    font-size:30px;
+    background:#071321;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media(max-width:992px){
+
+.slider-content{
+    left:6%;
+    max-width:500px;
+}
+
+.slider-content h1{
+    font-size:55px;
+}
+
+}
+
+@media(max-width:768px){
+
+.slide{
+    height:550px;
+}
+
+.slider-empty{
+    height:550px;
+}
+
+.slider-content{
+    left:25px;
+    right:25px;
+    max-width:100%;
+}
+
+.slider-content h1{
+    font-size:40px;
+}
+
+.slider-content p{
+    font-size:15px;
+}
+
+.slider-buttons{
+    flex-direction:column;
+    width:220px;
+}
+
+.explore-btn,
+.contact-btn{
+    width:100%;
+}
+
+}
+
+@media(max-width:480px){
+
+.slide{
+    height:450px;
+}
+
+.slider-empty{
+    height:450px;
+}
+
+.slider-content h1{
+    font-size:32px;
+}
+
+.slider-tag{
+    font-size:12px;
+}
+
+.slider-content p{
+    font-size:14px;
+}
+
+}

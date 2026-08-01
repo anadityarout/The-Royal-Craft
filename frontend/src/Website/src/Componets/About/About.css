@@ -1,0 +1,276 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* ==========================================
+   ABOUT SECTION
+========================================== */
+
+.about-section{
+    width:100%;
+    padding:80px 20px;
+    background:#fff;
+    box-sizing:border-box;
+}
+
+/* ==========================================
+   CONTAINER (2-column layout)
+========================================== */
+
+.about-container{
+    max-width:1300px;
+    margin:0 auto 70px;
+    display:grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap:70px;
+    align-items:center;
+}
+
+/* ==========================================
+   LEFT: TEXT CONTENT
+========================================== */
+
+.about-content{
+    text-align:left;
+}
+
+.about-content .about-tag{
+    display:inline-block;
+    color:#C89A3D;
+    font-family:"Inter",sans-serif;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:14px;
+}
+
+.about-content .about-title{
+    font-family:"Playfair Display",serif;
+    font-size:42px;
+    font-weight:700;
+    color:#1a1a1a;
+    line-height:1.25;
+    text-transform:uppercase;
+    margin:0;
+}
+
+.about-content .about-line{
+    width:50px;
+    height:2px;
+    background:#C89A3D;
+    margin:22px 0 28px;
+}
+
+.about-content .about-description{
+    font-family:"Inter",sans-serif;
+    font-size:15px;
+    color:#555;
+    line-height:1.9;
+    margin-bottom:32px;
+    max-width:480px;
+}
+
+.about-btn{
+    padding:15px 36px;
+    border:none;
+    background:#C89A3D;
+    color:#fff;
+    font-family:"Inter",sans-serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    border-radius:4px;
+    cursor:pointer;
+    transition:.3s;
+    display:inline-flex;
+    align-items:center;
+}
+
+.about-btn:hover{
+    background:#b6852e;
+    transform:translateY(-3px);
+}
+
+.about-btn span{
+    margin-left:10px;
+}
+
+/* ==========================================
+   RIGHT: IMAGE GALLERY GRID
+========================================== */
+
+.about-gallery{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 200px);
+    gap:16px;
+}
+
+.gallery-item{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    border-radius:12px;
+}
+
+.gallery-item img{
+    width:100%;
+    height:100%;
+    display:block;
+    object-fit:cover;
+    transition:.4s;
+}
+
+.gallery-item:hover img{
+    transform:scale(1.05);
+}
+
+.about-loading{
+    grid-column: 1 / -1;
+    height:280px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    color:#666;
+    border-radius:12px;
+    background:#f6f6f6;
+}
+
+/* ==========================================
+   FEATURES
+========================================== */
+
+.about-features{
+    max-width:900px;
+    margin:0 auto;
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:15px;
+    flex-wrap:nowrap;
+}
+
+.feature-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    flex:1;
+    min-width:0;
+}
+
+.feature-icon{
+    font-size:34px;
+    margin-bottom:12px;
+}
+
+.feature-item h4{
+    font-family:"Inter",sans-serif;
+    font-size:16px;
+    font-weight:600;
+    color:#222;
+    margin:0 0 4px;
+    white-space:nowrap;
+}
+
+.feature-item p{
+    font-size:14px;
+    color:#666;
+    line-height:1.3;
+    margin:0;
+    white-space:nowrap;
+}
+
+.feature-divider{
+    width:1px;
+    height:60px;
+    background:#ddd;
+    flex-shrink:0;
+    align-self:center;
+}
+
+/* ==========================================
+   TABLET
+========================================== */
+
+@media(max-width:992px){
+
+.about-container{
+    grid-template-columns: 1fr;
+    gap:40px;
+}
+
+.about-content .about-title{
+    font-size:34px;
+}
+
+.about-gallery{
+    grid-template-rows: repeat(2, 160px);
+}
+
+.about-features{
+    gap:12px;
+}
+
+.feature-item h4{
+    font-size:15px;
+}
+
+.feature-item p{
+    font-size:13px;
+}
+
+}
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:768px){
+
+.about-section{
+    padding:60px 20px;
+}
+
+.about-content .about-title{
+    font-size:28px;
+}
+
+.about-content .about-description{
+    font-size:13px;
+    line-height:1.8;
+    max-width:100%;
+}
+
+.about-gallery{
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 140px);
+    gap:12px;
+}
+
+.about-features{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:24px;
+}
+
+.feature-divider{
+    display:none;
+}
+
+.feature-item{
+    flex:0 0 40%;
+}
+
+.feature-item h4,
+.feature-item p{
+    white-space:normal;
+}
+
+.about-btn{
+    width:100%;
+    justify-content:center;
+}
+
+}

@@ -1,0 +1,281 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* ===================================
+   SECTION
+=================================== */
+
+.rk-why-section {
+  width: 100%;
+  padding: 70px 5%;
+  background: #fdfaf5;
+  box-sizing: border-box;
+}
+
+.rk-why-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.62fr 2.3fr;
+  gap: 40px;
+  align-items: center;
+}
+
+/* ===================================
+   LEFT
+=================================== */
+
+.rk-why-left {
+  text-align: left;
+}
+
+.rk-why-tag {
+  display: inline-block;
+  color: #c9a15d;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.rk-why-title {
+  font-family: "Playfair Display", serif;
+  font-size: 30px;
+  color: #1a1a1a;
+  margin-bottom: 28px;
+}
+
+.rk-why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.rk-why-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #333;
+  line-height: 1.6;
+}
+
+.rk-why-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #c9a15d;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ===================================
+   RIGHT
+=================================== */
+
+.rk-why-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.rk-why-images {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.rk-why-image {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: #eee;
+}
+
+/* Images */
+
+.rk-why-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Video Wrapper */
+
+.rk-why-video-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Video */
+
+.rk-why-video-player {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  background: #000;
+}
+
+/* Play Button */
+
+.rk-why-play-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.95);
+  color: #c9a15d;
+  font-size: 28px;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.rk-why-play-btn:hover {
+  background: #c9a15d;
+  color: white;
+  transform: translate(-50%, -50%) scale(1.08);
+}
+
+/* Loading */
+
+.rk-why-loading {
+  width: 100%;
+  min-height: 240px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Inter", sans-serif;
+  font-size: 18px;
+  color: #666;
+}
+
+/* ===================================
+   STATS
+=================================== */
+
+.rk-why-stats {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  padding: 24px 30px;
+  gap: 12px;
+}
+
+.rk-why-stat {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.rk-why-stat-icon {
+  color: #c9a15d;
+  flex-shrink: 0;
+}
+
+.rk-why-stat div {
+  display: flex;
+  flex-direction: column;
+}
+
+.rk-why-stat strong {
+  font-family: "Playfair Display", serif;
+  font-size: 17px;
+  color: #1a1a1a;
+}
+
+.rk-why-stat span {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  color: #777;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+
+.rk-why-stat-divider {
+  width: 1px;
+  height: 42px;
+  background: #ececec;
+}
+
+/* ===================================
+   RESPONSIVE
+=================================== */
+
+@media (max-width:1100px){
+
+.rk-why-container{
+grid-template-columns:1fr;
+}
+
+}
+
+@media (max-width:768px){
+
+.rk-why-section{
+padding:60px 5%;
+}
+
+.rk-why-images{
+grid-template-columns:1fr;
+}
+
+.rk-why-image{
+height:220px;
+}
+
+.rk-why-title{
+font-size:28px;
+}
+
+.rk-why-stats{
+flex-wrap:wrap;
+padding:20px;
+}
+
+.rk-why-stat{
+flex:1 1 45%;
+}
+
+.rk-why-stat-divider{
+display:none;
+}
+
+}
+
+@media (max-width:500px){
+
+.rk-why-title{
+font-size:24px;
+}
+
+.rk-why-play-btn{
+width:56px;
+height:56px;
+font-size:22px;
+}
+
+.rk-why-stat{
+flex:1 1 100%;
+}
+
+}

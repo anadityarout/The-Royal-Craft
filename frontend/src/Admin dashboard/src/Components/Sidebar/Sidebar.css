@@ -1,0 +1,184 @@
+/* ==========================================
+   SIDEBAR
+========================================== */
+
+.sidebar {
+    width: 270px;
+    height: 100vh;
+    background: #071321;
+    color: #fff;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: 3px 0 15px rgba(0,0,0,.2);
+}
+
+/* Scrollbar */
+
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #1d4ed8;
+    border-radius: 10px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* ==========================================
+   LOGO
+========================================== */
+
+.sidebar-logo {
+    padding: 25px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    text-align: center;
+}
+
+.sidebar-logo h2 {
+    margin: 0;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+/* ==========================================
+   MENU
+========================================== */
+
+.menu-section {
+    width: 100%;
+}
+
+.menu-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 20px;
+
+    cursor: pointer;
+    user-select: none;
+
+    color: #d7dde7;
+    font-size: 15px;
+    font-weight: 600;
+
+    transition: .3s;
+}
+
+.menu-title:hover {
+    background: #0d2342;
+    color: #fff;
+}
+
+/* Left side */
+
+.menu-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* ==========================================
+   SUBMENU
+========================================== */
+
+.submenu {
+    display: flex;
+    flex-direction: column;
+    background: #081a31;
+}
+
+.submenu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    padding: 13px 48px;
+
+    color: #b8c5d6;
+    text-decoration: none;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    transition: .3s;
+}
+
+/* Hover */
+
+.submenu-item:hover {
+    background: #14355e;
+    color: #fff;
+}
+
+/* Active Page */
+
+.submenu-item.active {
+    background: #2563eb;
+    color: #fff;
+    border-left: 4px solid #fff;
+    padding-left: 44px;
+}
+
+/* Icons */
+
+.submenu-item svg {
+    flex-shrink: 0;
+}
+
+.menu-title svg {
+    flex-shrink: 0;
+}
+
+/* ==========================================
+   ANIMATION
+========================================== */
+
+.submenu {
+    animation: dropdown .25s ease;
+}
+
+@keyframes dropdown {
+
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
+
+@media (max-width:768px){
+
+.sidebar{
+    width:240px;
+}
+
+.sidebar-logo h2{
+    font-size:22px;
+}
+
+.menu-title{
+    padding:15px 18px;
+    font-size:14px;
+}
+
+.submenu-item{
+    padding:12px 40px;
+    font-size:13px;
+}
+
+}

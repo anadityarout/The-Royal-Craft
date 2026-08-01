@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap");
+
+/* ==========================
+   WORK SECTION
+========================== */
+
+.work-content .work-tag {
+  display: inline-block;
+  color: #c9a15d;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.work {
+  width: 100%;
+  padding: 80px 8%;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+/* ==========================
+   CONTAINER (2-column layout)
+========================== */
+
+.work-container {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 70px;
+  align-items: center;
+}
+
+/* ==========================
+   LEFT: TEXT CONTENT
+========================== */
+
+.work-content {
+  text-align: left;
+}
+
+.work-content .work-title {
+  font-family: "Playfair Display", serif;
+  font-size: 42px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.25;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.work-content .work-line {
+  width: 50px;
+  height: 2px;
+  background: #c9a15d;
+  margin: 22px 0 28px;
+}
+
+.work-content .work-description {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.9;
+  margin-bottom: 32px;
+  max-width: 480px;
+}
+
+.view-projects {
+  padding: 15px 36px;
+  border: none;
+  background: #c9a15d;
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+}
+
+.view-projects:hover {
+  background: #b6852e;
+  transform: translateY(-3px);
+}
+
+.view-projects span {
+  margin-left: 10px;
+}
+
+/* ==========================
+   RIGHT: IMAGE GALLERY
+========================== */
+
+.work-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.work-card {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.work-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: 0.4s;
+}
+
+.work-card:hover img {
+  transform: scale(1.05);
+}
+
+.work-loading {
+  grid-column: 1 / -1;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: #666;
+  border-radius: 12px;
+  background: #f6f6f6;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 992px) {
+  .work-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .work-content .work-title {
+    font-size: 34px;
+  }
+
+  .work-gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .work-card {
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .work {
+    padding: 60px 5%;
+  }
+
+  .work-content .work-title {
+    font-size: 28px;
+  }
+
+  .work-content .work-description {
+    font-size: 13px;
+    max-width: 100%;
+  }
+
+  .work-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .work-card {
+    height: 160px;
+  }
+
+  .view-projects {
+    width: 100%;
+    justify-content: center;
+  }
+}

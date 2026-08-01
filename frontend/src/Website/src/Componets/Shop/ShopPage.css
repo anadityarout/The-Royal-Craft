@@ -1,0 +1,327 @@
+/* ===========================
+   Shop Details
+=========================== */
+
+.shop-details-page{
+    width:100%;
+    background:#f8f9fb;
+    padding:60px 7%;
+    box-sizing:border-box;
+}
+
+/* ===========================
+   Header
+=========================== */
+
+.shop-details-header{
+    margin-bottom:35px;
+}
+
+.back-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 22px;
+    border:none;
+    background:#0c63e7;
+    color:#fff;
+    font-size:15px;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.back-btn:hover{
+    background:#084fb9;
+}
+
+/* ===========================
+   Main Layout
+=========================== */
+
+.shop-details-container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:60px;
+    align-items:flex-start;
+}
+
+/* ===========================
+   Left
+=========================== */
+
+.main-image-box{
+    width:100%;
+    height:500px;
+    background:#fff;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.main-image-box img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.thumbnail-wrapper{
+    display:flex;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-top:25px;
+}
+
+.thumbnail{
+    width:95px;
+    height:95px;
+    border-radius:8px;
+    overflow:hidden;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:.3s;
+    background:#fff;
+}
+
+.thumbnail img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.thumbnail:hover{
+    transform:translateY(-4px);
+}
+
+.thumbnail.active{
+    border:2px solid #0c63e7;
+}
+
+/* ===========================
+   Right
+=========================== */
+
+.shop-right{
+    background:#fff;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+}
+
+.product-category{
+    display:inline-block;
+    padding:8px 18px;
+    background:#eef4ff;
+    color:#0c63e7;
+    border-radius:30px;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:18px;
+}
+
+.shop-right h1{
+    font-size:38px;
+    margin:0 0 18px;
+    color:#1d2b44;
+}
+
+.product-description{
+    color:#666;
+    line-height:1.9;
+    margin-top:15px;
+    font-size:16px;
+}
+
+/* ===========================
+   Specification Count
+=========================== */
+
+.spec-count-box{
+    margin-top:30px;
+    display:inline-block;
+    padding:12px 20px;
+    background:#f4f6f8;
+    border-radius:8px;
+    font-size:15px;
+}
+
+/* ===========================
+   Enquiry Button
+=========================== */
+
+.enquiry-btn{
+    margin-top:35px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    width:220px;
+    height:55px;
+    border:none;
+    background:#0c63e7;
+    color:#fff;
+    font-size:17px;
+    font-weight:600;
+    border-radius:8px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.enquiry-btn:hover{
+    background:#084fb9;
+}
+
+/* ===========================
+   Tabs
+=========================== */
+
+.product-tabs{
+    display:flex;
+    gap:15px;
+    margin-top:60px;
+    margin-bottom:25px;
+}
+
+.tab{
+    border:none;
+    background:#fff;
+    padding:14px 35px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:600;
+    color:#555;
+    box-shadow:0 3px 10px rgba(0,0,0,.05);
+}
+
+.tab.active{
+    background:#0c63e7;
+    color:#fff;
+}
+
+/* ===========================
+   Content
+=========================== */
+
+.tab-content{
+    background:#fff;
+    padding:35px;
+    border-radius:12px;
+    box-shadow:0 8px 25px rgba(0,0,0,.08);
+    margin-bottom:30px;
+}
+
+.tab-content h2{
+    margin-bottom:20px;
+    color:#1d2b44;
+}
+
+.tab-content p{
+    color:#666;
+    line-height:1.9;
+}
+
+/* ===========================
+   Specification Table
+=========================== */
+
+.spec-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.spec-table tr{
+    border-bottom:1px solid #eee;
+}
+
+.spec-title{
+    width:35%;
+    font-weight:700;
+    color:#222;
+    padding:18px;
+}
+
+.spec-value{
+    padding:18px;
+    color:#666;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media(max-width:991px){
+
+.shop-details-container{
+
+grid-template-columns:1fr;
+
+}
+
+.main-image-box{
+
+height:420px;
+
+}
+
+.shop-right h1{
+
+font-size:30px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.shop-details-page{
+
+padding:30px 20px;
+
+}
+
+.main-image-box{
+
+height:300px;
+
+}
+
+.thumbnail{
+
+width:70px;
+
+height:70px;
+
+}
+
+.shop-right{
+
+padding:25px;
+
+}
+
+.shop-right h1{
+
+font-size:26px;
+
+}
+
+.product-tabs{
+
+flex-wrap:wrap;
+
+}
+
+.tab{
+
+width:100%;
+
+}
+
+.enquiry-btn{
+
+width:100%;
+
+}
+
+}

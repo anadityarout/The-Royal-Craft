@@ -1,0 +1,292 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+.rk-client-section {
+  position: relative;
+  width: 100%;
+  padding: 70px 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ==========================
+   BACKGROUND IMAGE + OVERLAY
+========================== */
+
+.rk-client-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.rk-client-bg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rk-client-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(253, 250, 245, 0.92);
+}
+
+/* ==========================
+   CONTENT
+========================== */
+
+.rk-client-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================
+   HEADER
+========================== */
+
+.rk-client-header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 0 5%;
+}
+
+.rk-client-tag {
+  display: block;
+  color: #333;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.rk-client-title {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+/* ==========================
+   MARQUEE
+========================== */
+
+.rk-client-marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    #000 5%,
+    #000 95%,
+    transparent 100%
+  );
+}
+
+.rk-client-marquee-track {
+  display: flex;
+  gap: 20px;
+  width: max-content;
+  animation: rk-marquee-scroll 60s linear infinite;
+}
+
+.rk-client-marquee-wrapper:hover .rk-client-marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes rk-marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================
+   TESTIMONIAL CARD
+========================== */
+
+.rk-client-card {
+  flex: 0 0 300px;
+  background: #fff;
+  padding: 30px 26px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+}
+
+.rk-client-quote {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #c9a15d;
+  line-height: 1;
+  margin-bottom: 10px;
+  opacity: 0.85;
+}
+.rk-client-text {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 14.5px;
+  color: #3a3a3a;
+  line-height: 1.85;
+  letter-spacing: 0.2px;
+  margin-bottom: 20px;
+  min-height: 92px;
+}
+
+.rk-client-stars {
+  color: #c9a15d;
+  font-size: 13px;
+  letter-spacing: 2px;
+  margin-bottom: 18px;
+}
+
+/* ==========================
+   PERSON ROW (avatar + name + role)
+========================== */
+
+.rk-client-person {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #eee;
+  padding-top: 16px;
+}
+
+.rk-client-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #c9a15d;
+  flex-shrink: 0;
+}
+
+.rk-client-name {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+.rk-client-role {
+  font-family: "Inter", sans-serif;
+  font-size: 11.5px;
+  color: #888;
+  margin-top: 2px;
+}
+
+/* ==========================
+   TRUST BADGES STRIP
+========================== */
+
+.rk-client-badges {
+  max-width: 1500px;
+  margin: 45px auto 0;
+  padding: 0 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.rk-client-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.rk-client-badge-icon {
+  color: #c9a15d;
+  flex-shrink: 0;
+}
+
+.rk-client-badge-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+
+.rk-client-badge-text span {
+  font-family: "Inter", sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  color: #333;
+  white-space: nowrap;
+}
+
+.rk-client-badge-divider {
+  width: 1px;
+  height: 34px;
+  background: #e2ddd0;
+  flex-shrink: 0;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 1100px) {
+  .rk-client-badges {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .rk-client-badge {
+    flex: 1 1 40%;
+  }
+
+  .rk-client-badge-divider {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .rk-client-badges {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .rk-client-badge {
+    flex: 1 1 100%;
+  }
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+
+@media (max-width: 768px) {
+  .rk-client-section {
+    padding: 50px 0;
+  }
+
+  .rk-client-header {
+    padding: 0 6%;
+  }
+
+  .rk-client-title {
+    font-size: 20px;
+  }
+
+  .rk-client-card {
+    flex: 0 0 250px;
+  }
+}
