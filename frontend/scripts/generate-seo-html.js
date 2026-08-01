@@ -31,9 +31,9 @@ const TEMPLATE_PATH = path.join(DIST_DIR, "index.html");
 const PAGE_ROUTE_MAP = {
   Home: "",
   Project: "Project",
-  Product: "product",
+  Product: "Product",
   Shop: "shop",
-  Service: "service",
+  Service: "Service",
   Blog: "blog",
   Gallery: "gallery",
   About: "about",
