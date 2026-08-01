@@ -30,7 +30,7 @@ const TEMPLATE_PATH = path.join(DIST_DIR, "index.html");
 // "" means site root (dist/index.html itself).
 const PAGE_ROUTE_MAP = {
   Home: "",
-  Project: "project",
+  Project: "Project",
   Product: "product",
   Shop: "shop",
   Service: "service",
