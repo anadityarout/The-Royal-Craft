@@ -24,47 +24,43 @@ const ProductPage = () => {
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
-    category: "",
-    image: null,
-    preview: "",
-    base64: "",
-    name: "",
-    description: "",
-    date: "",
-  });
+  category: "",
+  image: null,
+  preview: "",
+  name: "",
+  description: "",
+  date: "",
+});
 
   const [products, setProducts] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     loadProducts();
   }, []);
 
   // =====================================
-  // Convert Image To Base64
+  // Convert Image To remove Base64
   // =====================================
 
   const handleImage = (e) => {
 
-    const file = e.target.files[0];
+  const file = e.target.files[0];
 
-    if (!file) return;
+  if (!file) return;
 
-    const reader = new FileReader();
+  setForm((prev) => ({
 
-    reader.onloadend = () => {
+    ...prev,
 
-      setForm((prev) => ({
-        ...prev,
-        image: file,
-        preview: URL.createObjectURL(file),
-        base64: reader.result,
-      }));
+    image: file,
 
-    };
+    preview: URL.createObjectURL(file),
 
-    reader.readAsDataURL(file);
+  }));
 
-  };
+};
 
   // =====================================
   // Load Products
@@ -99,66 +95,145 @@ const ProductPage = () => {
     }
 
   };
+
+  const uploadImage = async (file) => {
+
+  const response = await fetch(
+
+    `${API_URL}?upload=true&fileName=${encodeURIComponent(
+      file.name
+    )}&fileType=${encodeURIComponent(file.type)}`
+
+  );
+
+  if (!response.ok) {
+
+    throw new Error("Unable to generate upload URL.");
+
+  }
+
+  const uploadData = await response.json();
+
+  const uploadResponse = await fetch(uploadData.uploadUrl, {
+
+    method: "PUT",
+
+    headers: {
+
+      "Content-Type": file.type,
+
+    },
+
+    body: file,
+
+  });
+
+  if (!uploadResponse.ok) {
+
+    throw new Error("Image upload failed.");
+
+  }
+
+  return uploadData.fileUrl;
+
+};
     // =====================================
   // Save Product
   // =====================================
 
   const saveProduct = async () => {
 
-    if (
-      !form.category ||
-      !form.base64 ||
-      !form.name.trim() ||
-      !form.date
-    ) {
-      alert("Please fill all required fields.");
-      return;
-    }
+  if (
 
-    try {
+    !form.category ||
 
-      setLoading(true);
+    !form.name.trim() ||
 
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          category: form.category,
-          image: form.base64,
-          name: form.name,
-          description: form.description,
-          date: form.date,
-        }),
-      });
+    !form.date ||
 
-      const result = await response.json();
+    (!isEditing && !form.image)
 
-      if (!response.ok) {
-        throw new Error(result.message || "Upload failed");
-      }
+  ) {
 
-      alert("Product saved successfully.");
+    alert("Please fill all required fields.");
 
-      await loadProducts();
+    return;
 
-      resetForm();
+  }
 
-    } catch (err) {
+  try {
 
-      console.error(err);
+    setLoading(true);
 
-      alert(err.message);
+    let imageUrl = form.preview;
 
-    } finally {
+    if (form.image) {
 
-      setLoading(false);
+      imageUrl = await uploadImage(form.image);
 
     }
 
-  };
+    const response = await fetch(API_URL, {
 
+      method: isEditing ? "PUT" : "POST",
+
+      headers: {
+
+        "Content-Type": "application/json",
+
+      },
+
+      body: JSON.stringify({
+
+        id: editId,
+
+        category: form.category,
+
+        image: imageUrl,
+
+        name: form.name,
+
+        description: form.description,
+
+        date: form.date,
+
+      }),
+
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(result.message);
+
+    }
+
+    await loadProducts();
+
+    resetForm();
+
+    alert(
+
+      isEditing
+
+        ? "Product updated successfully."
+
+        : "Product saved successfully."
+
+    );
+
+  } catch (err) {
+
+    alert(err.message);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
   // =====================================
   // Delete Product
   // =====================================
@@ -215,19 +290,55 @@ const ProductPage = () => {
 
   const resetForm = () => {
 
-    setForm({
-      category: "",
-      image: null,
-      preview: "",
-      base64: "",
-      name: "",
-      description: "",
-      date: "",
-    });
+  setForm({
 
-    setShowForm(false);
+    category: "",
 
-  };
+    image: null,
+
+    preview: "",
+
+    name: "",
+
+    description: "",
+
+    date: "",
+
+  });
+
+  setIsEditing(false);
+
+  setEditId(null);
+
+  setShowForm(false);
+
+};
+
+const editProduct = (item) => {
+
+  setIsEditing(true);
+
+  setEditId(item.id);
+
+  setForm({
+
+    category: item.category,
+
+    image: null,
+
+    preview: item.image,
+
+    name: item.name,
+
+    description: item.description,
+
+    date: item.date,
+
+  });
+
+  setShowForm(true);
+
+};
     return (
     <div className="productpage">
 
@@ -238,7 +349,13 @@ const ProductPage = () => {
         <h2>Product Page</h2>
 
         <button
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+
+  resetForm();
+
+  setShowForm(true);
+
+}}
           disabled={loading}
         >
           + Add Image
@@ -335,7 +452,13 @@ const ProductPage = () => {
               onClick={saveProduct}
               disabled={loading}
             >
-              {loading ? "Saving..." : "Save"}
+              {loading
+  ? isEditing
+    ? "Updating..."
+    : "Saving..."
+  : isEditing
+    ? "Update"
+    : "Save"}
             </button>
 
             <button
@@ -414,12 +537,20 @@ const ProductPage = () => {
                   <td>
 
                     <button
-                      className="delete-btn"
-                      onClick={() => deleteProduct(item.id)}
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
+  className="edit-btn"
+  onClick={() => editProduct(item)}
+  disabled={loading}
+>
+  Edit
+</button>
+
+<button
+  className="delete-btn"
+  onClick={() => deleteProduct(item.id)}
+  disabled={loading}
+>
+  Delete
+</button>
 
                   </td>
 

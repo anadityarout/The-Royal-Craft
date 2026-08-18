@@ -26,11 +26,17 @@
   width: 100%;
   padding: 80px 80px 60px;
   box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .gallery-tag {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   font-size: 13px;
   font-weight: 600;
@@ -49,12 +55,12 @@
 
 .gallery-title {
   max-width: 700px;
+  margin: 0 auto;
   font-family: "Playfair Display", serif;
   font-size: 52px;
   font-weight: 500;
   line-height: 1.2;
   color: #111;
-  margin: 0;
 }
 
 .gallery-title span {
@@ -63,7 +69,7 @@
 
 .gallery-description {
   max-width: 560px;
-  margin-top: 24px;
+  margin: 24px auto 0;
   font-size: 18px;
   line-height: 1.8;
   color: #666;
@@ -73,17 +79,15 @@
    Gallery
 =========================== */
 
- /* ===========================
-   Gallery
-=========================== */
-
 .gallery-container {
     width: 90%;
+    max-width: 1500px;
     margin: 0 auto 80px;
 
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;   /* Left align */
+    justify-content: center;   /* Center align */
+    align-items: stretch;
     gap: 30px;
 }
 
@@ -109,6 +113,7 @@
 
 .gallery-content {
     padding: 20px;
+    text-align: center;
 }
 
 .gallery-content h3 {

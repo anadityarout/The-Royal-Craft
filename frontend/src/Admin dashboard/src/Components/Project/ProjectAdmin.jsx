@@ -36,6 +36,9 @@ const ProjectAdmin = () => {
   const [showForm, setShowForm] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+const [editId, setEditId] = useState(null);
 
   /* =========================================
      LOAD PROJECTS
@@ -123,19 +126,24 @@ const ProjectAdmin = () => {
   ========================================= */
 
   const handleGalleryImage = (index, e) => {
-    const file = e.target.files[0];
 
-    if (!file) return;
+  const file = e.target.files[0];
 
-    const updated = [...galleryImages];
+  if (!file) return;
 
-    updated[index].file = file;
+  const updated = [...galleryImages];
 
-    updated[index].preview =
-      URL.createObjectURL(file);
+  updated[index] = {
 
-    setGalleryImages(updated);
+    file,
+
+    preview: URL.createObjectURL(file),
+
   };
+
+  setGalleryImages(updated);
+
+};
 
   /* =========================================
      REMOVE GALLERY IMAGE
@@ -160,100 +168,91 @@ const ProjectAdmin = () => {
       return;
     }
 
-    if (!mainImage) {
-      alert("Please select Main Image.");
-      return;
-    }
+    if (!isEditing && !mainImage) {
+  alert("Please select Main Image.");
+  return;
+}
+   try {
 
-    try {
+  setLoading(true);
 
-      setLoading(true);
+  let mainImageUrl = mainPreview;
 
-      /* Upload Main Image */
+  if (mainImage) {
+    mainImageUrl = await uploadImage(mainImage);
+  }
 
-      const mainImageUrl =
-        await uploadImage(mainImage);
+  const galleryUrls = [];
 
-      /* Upload Gallery Images */
+  for (const image of galleryImages) {
 
-      const galleryUrls = [];
+    if (image.file) {
 
-      for (const image of galleryImages) {
+      const url = await uploadImage(image.file);
 
-        if (image.file) {
+      galleryUrls.push(url);
 
-          const url =
-            await uploadImage(image.file);
+    } else {
 
-          galleryUrls.push(url);
-
-        }
-
-      }
-
-      /* Save Project */
-
-      const response = await fetch(API_URL, {
-
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-
-          projectName,
-
-          description,
-
-          projectDate,
-
-          location,
-
-          mainImage: mainImageUrl,
-
-          galleryImages: galleryUrls,
-
-        }),
-
-      });
-
-      if (!response.ok) {
-
-        throw new Error("Unable to save project.");
-
-      }
-
-      await loadProjects();
-
-      /* Reset Form */
-
-      setProjectName("");
-      setDescription("");
-      setProjectDate("");
-      setLocation("");
-
-      setMainImage(null);
-      setMainPreview("");
-
-      setGalleryImages([]);
-
-      setShowForm(false);
-
-      alert("Project saved successfully.");
-
-    } catch (err) {
-
-      console.error(err);
-
-      alert("Failed to save project.");
-
-    } finally {
-
-      setLoading(false);
+      galleryUrls.push(image.preview);
 
     }
+
+  }
+
+  const response = await fetch(API_URL, {
+
+    method: isEditing ? "PUT" : "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+    },
+
+    body: JSON.stringify({
+
+      id: editId,
+
+      projectName,
+
+      description,
+
+      projectDate,
+
+      location,
+
+      mainImage: mainImageUrl,
+
+      galleryImages: galleryUrls,
+
+    }),
+
+  });
+
+  if (!response.ok) {
+    throw new Error("Unable to save project.");
+  }
+
+  await loadProjects();
+
+  resetForm();
+
+  alert(
+    isEditing
+      ? "Project updated successfully."
+      : "Project saved successfully."
+  );
+
+} catch (err) {
+
+  console.error(err);
+
+  alert(err.message);
+
+} finally {
+
+  setLoading(false);
+
+}
 
   };
 
@@ -295,6 +294,61 @@ const ProjectAdmin = () => {
 
   };
 
+  const resetForm = () => {
+
+  setProjectName("");
+  setDescription("");
+  setProjectDate("");
+  setLocation("");
+
+  setMainImage(null);
+  setMainPreview("");
+
+  setGalleryImages([]);
+
+  setIsEditing(false);
+
+  setEditId(null);
+
+  setShowForm(false);
+
+};
+
+/* =========================================
+   EDIT PROJECT
+========================================= */
+
+const editProject = (project) => {
+
+  setIsEditing(true);
+
+  setEditId(project.id);
+
+  setProjectName(project.projectName);
+
+  setDescription(project.description);
+
+  setProjectDate(project.projectDate);
+
+  setLocation(project.location);
+
+  setMainImage(null);
+
+  setMainPreview(project.mainImage);
+
+  setGalleryImages(
+
+    (project.galleryImages || []).map((image) => ({
+      file: null,
+      preview: image,
+    }))
+
+  );
+
+  setShowForm(true);
+
+};
+
     return (
     <div className="project-admin">
 
@@ -306,7 +360,13 @@ const ProjectAdmin = () => {
 
         <button
           className="add-btn"
-          onClick={() => setShowForm(true)}
+          onClick={() => {
+
+  resetForm();
+
+  setShowForm(true);
+
+}}
         >
           + Add Project
         </button>
@@ -405,7 +465,9 @@ const ProjectAdmin = () => {
 
           <div className="section">
 
-            <h3>Project Details</h3>
+            <h3>
+  {isEditing ? "Edit Project" : "Project Details"}
+</h3>
 
             <div className="form-group">
 
@@ -476,14 +538,18 @@ const ProjectAdmin = () => {
             <div className="save-section">
 
               <button
-                className="save-btn"
-                onClick={handleSave}
-                disabled={loading}
-              >
-                {loading
-                  ? "Saving..."
-                  : "Save Project"}
-              </button>
+  className="save-btn"
+  onClick={handleSave}
+  disabled={loading}
+>
+  {loading
+    ? isEditing
+      ? "Updating..."
+      : "Saving..."
+    : isEditing
+      ? "Update Project"
+      : "Save Project"}
+</button>
 
             </div>
 
@@ -588,16 +654,23 @@ const ProjectAdmin = () => {
 
                   <td>
 
-                    <button
-                      className="delete-btn"
-                      onClick={() =>
-                        deleteProject(project.id)
-                      }
-                    >
-                      Delete
-                    </button>
+  <button
+    className="edit-btn"
+    onClick={() => editProject(project)}
+    disabled={loading}
+  >
+    Edit
+  </button>
 
-                  </td>
+  <button
+    className="delete-btn"
+    onClick={() => deleteProject(project.id)}
+    disabled={loading}
+  >
+    Delete
+  </button>
+
+</td>
 
                 </tr>
 

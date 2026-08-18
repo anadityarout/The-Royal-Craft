@@ -4,6 +4,33 @@ import "./Process.css";
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/process";
 
+// Fixed display order — edit this list if your category names differ
+const CATEGORY_ORDER = [
+  "Design",
+  "Mould Making",
+  "Fiber Crafting",
+  "Finishing",
+  "Quality Check",
+  "Delivery & Installation",
+];
+
+const normalize = (str) => (str || "").trim().toLowerCase();
+
+const sortByFixedOrder = (list) => {
+  const normalizedOrder = CATEGORY_ORDER.map(normalize);
+
+  return [...list].sort((a, b) => {
+    const indexA = normalizedOrder.indexOf(normalize(a.category));
+    const indexB = normalizedOrder.indexOf(normalize(b.category));
+
+    // Unknown categories (not in the list) go to the end, in original order
+    const safeA = indexA === -1 ? CATEGORY_ORDER.length : indexA;
+    const safeB = indexB === -1 ? CATEGORY_ORDER.length : indexB;
+
+    return safeA - safeB;
+  });
+};
+
 const Process = () => {
 
   const [processes, setProcesses] = useState([]);
@@ -27,7 +54,9 @@ const Process = () => {
 
       const data = await response.json();
 
-      setProcesses(Array.isArray(data) ? data : []);
+      const list = Array.isArray(data) ? data : [];
+
+      setProcesses(sortByFixedOrder(list));
 
     } catch (error) {
 
@@ -62,15 +91,13 @@ const Process = () => {
           </span>
 
           <h2 className="rk-process-title">
-            FROM OUR FACTORY
+            Precision Manufacturing,
             <br />
-            TO YOUR PROPERTY.
+            Crafted to Perfection.
           </h2>
 
           <p className="rk-process-desc">
-            Every element is designed, moulded and crafted in-house with
-            precision and passion. From raw material to the final
-            masterpiece – quality is in our DNA.
+            Every masterpiece begins with a vision and is transformed through expert craftsmanship. At The Royal Kraft, our manufacturing process combines innovative technology with traditional artistry to create premium FRP architectural décor that exceeds expectations in durability, elegance, and detail.
           </p>
 
           <button className="rk-process-btn">

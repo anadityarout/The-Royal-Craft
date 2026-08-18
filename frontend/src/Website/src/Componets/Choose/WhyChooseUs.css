@@ -6,20 +6,20 @@
 
 .rk-why-section {
   width: 100%;
-  padding: 70px 5%;
+  padding: 70px 5% 70px 4%;
   background: #fdfaf5;
   box-sizing: border-box;
 }
 
 .rk-why-container {
-  max-width: 1500px;
-  margin: 0 auto;
+  width: 100%;
+  max-width: 1700px;
+  margin: 40px auto 0;
   display: grid;
-  grid-template-columns: 0.62fr 2.3fr;
+  grid-template-columns: 0.6fr 3fr;
   gap: 40px;
   align-items: center;
 }
-
 /* ===================================
    LEFT
 =================================== */
@@ -44,6 +44,7 @@
   font-size: 30px;
   color: #1a1a1a;
   margin-bottom: 28px;
+  white-space: nowrap;
 }
 
 .rk-why-list {
@@ -88,14 +89,17 @@
 
 .rk-why-images {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(3, minmax(340px, 1fr));
+  gap: 18px;
+  transform: translateY(30px);
 }
 
 .rk-why-image {
   position: relative;
-  height: 240px;
+  width: 100%;
+  aspect-ratio: 16 / 9;   /* Wide landscape */
   overflow: hidden;
+  border-radius: 12px;
   background: #eee;
 }
 
@@ -178,6 +182,8 @@
   background: white;
   padding: 24px 30px;
   gap: 12px;
+  margin: 30px auto 0;
+  max-width: 90%;
 }
 
 .rk-why-stat {
@@ -225,6 +231,11 @@
 
 .rk-why-container{
 grid-template-columns:1fr;
+margin-left:1%;
+}
+
+.rk-why-title{
+white-space:normal;
 }
 
 }
@@ -233,6 +244,10 @@ grid-template-columns:1fr;
 
 .rk-why-section{
 padding:60px 5%;
+}
+
+.rk-why-container{
+margin-left:0;
 }
 
 .rk-why-images{

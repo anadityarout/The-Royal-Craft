@@ -94,9 +94,9 @@ const ContactPage = () => {
               <div>
                 <h3>Location</h3>
                 <p>
-                  Royal Craft
+                  The Royal Kraft
                   <br />
-                  Bhubaneswar, Odisha, India
+                  108, First Floor, DLF Galleria Mall, Mayur Vihar, Phase-1 Extension, Near Metro Mayur Vihar Extention, New Delhi - 110091
                 </p>
               </div>
             </div>
@@ -106,8 +106,8 @@ const ContactPage = () => {
 
               <div>
                 <h3>Email</h3>
-                <p>info@theroyalcraft.com</p>
-                <p>support@theroyalcraft.com</p>
+                <p>info@theroyalkraft.com</p>
+                <p>support@theroyalkraft.com</p>
               </div>
             </div>
 
@@ -117,7 +117,7 @@ const ContactPage = () => {
               <div>
                 <h3>Phone</h3>
                 <p>+91 9876543210</p>
-                <p>Mon–Fri : 9:00 AM - 6:00 PM</p>
+                <p>Mon–sat : 9:30 AM - 5:30 PM</p>
               </div>
             </div>
 
@@ -127,8 +127,8 @@ const ContactPage = () => {
               <div>
                 <h3>Business Hours</h3>
 
-                <p>Monday - Friday : 9:00 AM - 6:00 PM</p>
-                <p>Saturday : 10:00 AM - 4:00 PM</p>
+                <p>Monday - saturday : 9:30 AM - 5:30 PM</p>
+                <p>Saturday : 9:30 AM - 5:30 PM</p>
                 <p>Sunday : Closed</p>
 
               </div>

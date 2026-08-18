@@ -24,6 +24,8 @@ import WhyChooseUs from "./Componets/Choose/WhyChooseUs";
 import Banner from "./Componets/Banner/Banner";
 import ProjectPage from "./Componets/Projects/ProjectPage";
 import Client from "./Componets/Client/Client";
+import ShopHome from "./Componets/Shop/ShopHome"
+import Popup from "./Componets/Popup/Popup";
 
 function Home() {
   return (
@@ -35,11 +37,13 @@ function Home() {
       <Process />
       <About />
       <Work />
+      <ShopHome />
       <Product />
       <Project />
       <WhyChooseUs />
       <Client />
       <Banner />
+            <Popup />
     </>
   );
 }

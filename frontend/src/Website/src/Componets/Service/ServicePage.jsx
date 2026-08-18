@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./ServicePage.css";
 import PageSeo from "../SeoPage/PageSeo";
 import serviceBanner from "../../assets/service.jpg";
+import { Building2, ArrowRight } from "lucide-react";
 
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/service";
@@ -21,24 +22,45 @@ const ServicePage = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const [companies, setCompanies] = useState([]);
+  const [companiesLoading, setCompaniesLoading] = useState(true);
+
   useEffect(() => {
     loadServices();
+    loadCompanies();
   }, []);
 
   const loadServices = async () => {
     try {
-      const response = await fetch(API_URL);
+      const response = await fetch(`${API_URL}?type=service`);
 
       if (!response.ok) {
         throw new Error("Failed to load services");
       }
 
       const data = await response.json();
-      setServices(data);
+      setServices(Array.isArray(data) ? data : []);
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadCompanies = async () => {
+    try {
+      const response = await fetch(`${API_URL}?type=logo`);
+
+      if (!response.ok) {
+        throw new Error("Failed to load companies");
+      }
+
+      const data = await response.json();
+      setCompanies(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setCompaniesLoading(false);
     }
   };
 
@@ -65,6 +87,56 @@ const ServicePage = () => {
         />
       </section>
 
+      {/* Our Companies */}
+      <section className="service-page-companies">
+        <div className="service-page-companies-wrapper">
+          <h2 className="service-page-companies-title">
+            <span className="service-page-companies-line" />
+            Our Companies
+            <span className="service-page-companies-line" />
+          </h2>
+
+          {companiesLoading ? (
+            <div className="service-page-empty">Loading...</div>
+          ) : companies.length > 0 ? (
+            <div className="service-page-companies-grid">
+              {companies.map((company) => (
+                <a
+                  href={company.url || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="service-page-company-card"
+                  key={company.id}
+                  style={{
+                    backgroundImage: `url(${company.image})`,
+                  }}
+                >
+                  <span className="service-page-company-overlay" />
+
+                  <div className="service-page-company-footer">
+                    <div className="service-page-company-name">
+                      <span className="service-page-company-icon">
+                        <Building2 size={16} />
+                      </span>
+                      <span>{company.name}</span>
+                    </div>
+
+                    <span className="service-page-company-arrow">
+                      <ArrowRight size={18} />
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <div className="service-page-empty">
+              No Companies Available
+            </div>
+          )}
+        </div>
+      </section>
+
+
       {/* Categories */}
       <section className="service-page-filter">
         <div className="service-page-filter-wrapper">
@@ -81,6 +153,8 @@ const ServicePage = () => {
           ))}
         </div>
       </section>
+
+      
 
       {/* Services */}
       <section className="service-page-list">
@@ -112,7 +186,6 @@ const ServicePage = () => {
 
                   <h3>{service.name}</h3>
 
-                  <p>{service.description}</p>
 
                 </div>
 

@@ -18,6 +18,9 @@ const ChooseAdmin = () => {
   const [mediaList, setMediaList] = useState([]);
 
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+
+const [editId, setEditId] = useState(null);
 
   // ================= Load Media =================
 
@@ -56,14 +59,27 @@ const ChooseAdmin = () => {
 
   // ================= Save =================
 
-  const handleSave = async () => {
-    if (!mediaType || !file) {
-      alert("Please select media type and upload a file.");
-      return;
-    }
+  // ================= Save / Update =================
 
-    try {
-      // Get Presigned URL
+const handleSave = async () => {
+
+  if (!mediaType) {
+  alert("Please select media type.");
+  return;
+}
+
+if (!isEditing && !file) {
+  alert("Please upload a file.");
+  return;
+}
+
+  try {
+
+    setLoading(true);
+
+    let fileUrl = preview;
+
+    if (file) {
 
       const uploadResponse = await fetch(
         `${API_URL}?upload=true&fileName=${encodeURIComponent(
@@ -73,8 +89,6 @@ const ChooseAdmin = () => {
 
       const uploadData = await uploadResponse.json();
 
-      // Upload to S3
-
       await fetch(uploadData.uploadUrl, {
         method: "PUT",
         headers: {
@@ -83,37 +97,59 @@ const ChooseAdmin = () => {
         body: file,
       });
 
-      // Save metadata
+      fileUrl = uploadData.fileUrl;
 
-      await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: mediaType,
-          url: uploadData.fileUrl,
-        }),
-      });
-
-      alert("Media uploaded successfully.");
-
-      setMediaType("");
-
-      setFile(null);
-
-      setPreview("");
-
-      setShowForm(false);
-
-      loadMedia();
-
-    } catch (error) {
-      console.error("Upload Error:", error);
-
-      alert("Upload failed.");
     }
-  };
+
+    const response = await fetch(API_URL, {
+
+      method: isEditing ? "PUT" : "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+
+        id: editId,
+
+        type: mediaType,
+
+        url: fileUrl,
+
+      }),
+
+    });
+
+    if (!response.ok) {
+
+      throw new Error("Save failed");
+
+    }
+
+    await loadMedia();
+
+    resetForm();
+
+    alert(
+      isEditing
+        ? "Media updated successfully."
+        : "Media uploaded successfully."
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(error.message);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
     // ================= Delete =================
 
   const handleDelete = async (id) => {
@@ -143,6 +179,41 @@ const ChooseAdmin = () => {
     }
   };
 
+  // ================= Edit =================
+
+const handleEdit = (item) => {
+
+  setIsEditing(true);
+
+  setEditId(item.id);
+
+  setMediaType(item.type);
+
+  setPreview(item.url);
+
+  setFile(null);
+
+  setShowForm(true);
+
+};
+// ================= Reset =================
+
+const resetForm = () => {
+
+  setShowForm(false);
+
+  setMediaType("");
+
+  setFile(null);
+
+  setPreview("");
+
+  setIsEditing(false);
+
+  setEditId(null);
+
+};
+
   return (
     <div className="choose-admin">
 
@@ -155,11 +226,12 @@ const ChooseAdmin = () => {
         <button
           className="add-btn"
           onClick={() => {
-            setShowForm(true);
-            setMediaType("");
-            setFile(null);
-            setPreview("");
-          }}
+
+  resetForm();
+
+  setShowForm(true);
+
+}}
         >
           + Add Media
         </button>
@@ -172,7 +244,9 @@ const ChooseAdmin = () => {
 
         <div className="section">
 
-          <h3>Add New Media</h3>
+          <h3>
+  {isEditing ? "Edit Media" : "Add New Media"}
+</h3>
 
           {/* Media Type */}
 
@@ -245,21 +319,23 @@ const ChooseAdmin = () => {
           <div className="save-section">
 
             <button
-              className="save-btn"
-              onClick={handleSave}
-            >
-              Save Media
+  className="save-btn"
+  onClick={handleSave}
+  disabled={loading}
+>
+              {loading
+  ? isEditing
+    ? "Updating..."
+    : "Saving..."
+  : isEditing
+  ? "Update Media"
+  : "Save Media"}
             </button>
 
             <button
               className="delete-btn"
               style={{ marginLeft: "10px" }}
-              onClick={() => {
-                setShowForm(false);
-                setMediaType("");
-                setFile(null);
-                setPreview("");
-              }}
+              onClick={resetForm}
             >
               Cancel
             </button>
@@ -360,14 +436,23 @@ const ChooseAdmin = () => {
 
                   <td>
 
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(item.id)}
-                    >
-                      Delete
-                    </button>
+  <button
+    className="edit-btn"
+    onClick={() => handleEdit(item)}
+    disabled={loading}
+  >
+    Edit
+  </button>
 
-                  </td>
+  <button
+    className="delete-btn"
+    onClick={() => handleDelete(item.id)}
+    disabled={loading}
+  >
+    Delete
+  </button>
+
+</td>
 
                 </tr>
 

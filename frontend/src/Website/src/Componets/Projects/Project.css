@@ -12,12 +12,12 @@
 ========================== */
 
 .rk-project-container {
-  max-width: 1500px;
+  max-width: 1700px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: 0.62fr 2.3fr;
   gap: 40px;
-  align-items: center;
+  align-items: start;
 }
 
 /* ==========================
@@ -78,24 +78,18 @@
 }
 
 /* ==========================
-   RIGHT: SLIDER
+   RIGHT: GRID
 ========================== */
 
-.rk-project-slider-wrapper {
-  position: relative;
-}
-
-.rk-project-slider {
-  display: flex;
-  gap: 22px;
-  overflow-x: auto;
-  scroll-behavior: smooth;
-  scrollbar-width: none;
+.rk-project-grid-wrapper {
   width: 100%;
 }
 
-.rk-project-slider::-webkit-scrollbar {
-  display: none;
+.rk-project-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 22px;
+  width: 100%;
 }
 
 /* ==========================
@@ -103,18 +97,28 @@
 ========================== */
 
 .rk-project-card {
-  min-width: 320px;
-  flex: 1 1 0;
   background: #fff;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  min-width: 0;
+  padding-top: 16px;
+}
+
+.rk-project-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
 .rk-project-image {
-  height: 260px;
+  height: 220px;
   overflow: hidden;
+  border-radius: 6px;
+  margin: 0 16px;
+  width: calc(100% - 32px);
 }
 
 .rk-project-image img {
@@ -122,67 +126,62 @@
   height: 100%;
   object-fit: cover;
   transition: 0.4s;
+  display: block;
 }
 
 .rk-project-card:hover .rk-project-image img {
   transform: scale(1.05);
 }
 
-.rk-project-info {
-  padding: 16px 18px;
+.rk-project-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  background: #1a1a1a;
+  margin-top: 16px;
 }
 
-.rk-project-info h4 {
-  font-family: "Playfair Display", serif;
-  font-size: 17px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0 0 5px;
-}
-
-.rk-project-info p {
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  color: #888;
-  margin: 0;
-}
-
-/* ==========================
-   ARROWS (overlapping edges)
-========================== */
-
-.rk-project-arrow {
-  position: absolute;
-  top: 40%;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: 1px solid #d8c49a;
-  background: #fff;
-  cursor: pointer;
-  font-size: 16px;
-  color: #333;
+.rk-project-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  transition: 0.3s;
-  z-index: 5;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  font-size: 14px;
 }
 
-.rk-project-arrow.left {
-  left: -22px;
-}
-
-.rk-project-arrow.right {
-  right: -22px;
-}
-
-.rk-project-arrow:hover {
-  background: #c9a15d;
-  border-color: #c9a15d;
+.rk-project-name {
+  flex: 1;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
   color: #fff;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rk-project-arrow-btn {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #c9a15d;
+  color: #1a1a1a;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.rk-project-card:hover .rk-project-arrow-btn {
+  background: #fff;
 }
 
 /* ==========================
@@ -199,12 +198,8 @@
     white-space: normal;
   }
 
-  .rk-project-arrow.left {
-    left: 6px;
-  }
-
-  .rk-project-arrow.right {
-    right: 6px;
+  .rk-project-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
 
@@ -217,16 +212,11 @@
     font-size: 22px;
   }
 
-  .rk-project-card {
-    min-width: 250px;
+  .rk-project-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 
   .rk-project-image {
     height: 180px;
-  }
-
-  .rk-project-arrow {
-    width: 36px;
-    height: 36px;
   }
 }

@@ -1,292 +1,509 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
 
-.rk-client-section {
-  position: relative;
-  width: 100%;
-  padding: 70px 0;
-  overflow: hidden;
-  box-sizing: border-box;
+/* =====================================================
+   CLIENT SECTION
+===================================================== */
+
+.rk-client-section{
+    position:relative;
+    width:100%;
+    padding:80px 0;
+    overflow:hidden;
+    background:#fdfaf5;
+    box-sizing:border-box;
 }
 
-/* ==========================
-   BACKGROUND IMAGE + OVERLAY
-========================== */
+/* =====================================================
+   BACKGROUND
+===================================================== */
 
-.rk-client-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 0;
+.rk-client-bg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
 }
 
-.rk-client-bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.rk-client-bg-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
 }
 
-.rk-client-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(253, 250, 245, 0.92);
+.rk-client-overlay{
+    position:absolute;
+    inset:0;
+    background:rgba(253,250,245,.92);
 }
 
-/* ==========================
-   CONTENT
-========================== */
+/* =====================================================
+   CONTAINER
+===================================================== */
 
-.rk-client-content {
-  position: relative;
-  z-index: 2;
+.rk-client-content{
+    position:relative;
+    z-index:2;
+    max-width:1800px;
+    margin:0 auto;
+    box-sizing:border-box;
 }
 
-/* ==========================
+/* =====================================================
    HEADER
-========================== */
+===================================================== */
 
-.rk-client-header {
-  text-align: center;
-  margin-bottom: 40px;
-  padding: 0 5%;
+.rk-client-header{
+    text-align:center;
+    max-width:760px;
+    margin:0 auto 60px;
 }
 
-.rk-client-tag {
-  display: block;
-  color: #333;
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+.rk-client-tag{
+    display:inline-block;
+    color:#C89A3D;
+    font-family:"Inter",sans-serif;
+    font-size:14px;
+    font-weight:700;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:14px;
 }
 
-.rk-client-title {
-  font-family: "Playfair Display", serif;
-  font-size: 26px;
-  font-weight: 700;
-  color: #1a1a1a;
-  margin: 0;
+.rk-client-title{
+    font-family:"Playfair Display",serif;
+    font-size:32px;
+    font-weight:700;
+    color:#1a1a1a;
+    line-height:1.3;
+    text-transform:uppercase;
+    margin:0;
 }
 
-/* ==========================
+.rk-client-header::after{
+    content:"";
+    width:55px;
+    height:2px;
+    background:#C89A3D;
+    display:block;
+    margin:22px auto 0;
+}
+/* =====================================================
    MARQUEE
-========================== */
+===================================================== */
 
-.rk-client-marquee-wrapper {
-  width: 100%;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 5%,
-    #000 95%,
-    transparent 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    #000 5%,
-    #000 95%,
-    transparent 100%
-  );
+.rk-client-marquee-wrapper{
+    width:100%;
+    overflow:hidden;
+    position:relative;
+    padding:15px 20px;
 }
 
-.rk-client-marquee-track {
-  display: flex;
-  gap: 20px;
-  width: max-content;
-  animation: rk-marquee-scroll 60s linear infinite;
+.rk-client-marquee-track{
+    display:flex;
+    align-items:stretch;
+    gap:24px;
+    width:max-content;
+    animation:rk-marquee-scroll 80s linear infinite;
 }
 
-.rk-client-marquee-wrapper:hover .rk-client-marquee-track {
-  animation-play-state: paused;
+.rk-client-marquee-wrapper:hover .rk-client-marquee-track{
+    animation-play-state:paused;
 }
 
-@keyframes rk-marquee-scroll {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
+@keyframes rk-marquee-scroll{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+
 }
 
-/* ==========================
+/* =====================================================
    TESTIMONIAL CARD
-========================== */
+===================================================== */
 
-.rk-client-card {
-  flex: 0 0 300px;
-  background: #fff;
-  padding: 30px 26px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-  display: flex;
-  flex-direction: column;
+.rk-client-card{
+
+    flex:0 0 340px;
+
+    background:#ffffff;
+
+    border-radius:14px;
+
+    overflow:hidden;
+
+    padding:35px 30px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    box-shadow:0 12px 30px rgba(0,0,0,.08);
+
+    transition:.35s ease;
+
 }
 
-.rk-client-quote {
-  font-family: "Playfair Display", serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: #c9a15d;
-  line-height: 1;
-  margin-bottom: 10px;
-  opacity: 0.85;
-}
-.rk-client-text {
-  font-family: "Playfair Display", serif;
-  font-style: italic;
-  font-weight: 500;
-  font-size: 14.5px;
-  color: #3a3a3a;
-  line-height: 1.85;
-  letter-spacing: 0.2px;
-  margin-bottom: 20px;
-  min-height: 92px;
+.rk-client-card:hover{
+
+    transform:translateY(-8px);
+
+    box-shadow:0 24px 45px rgba(0,0,0,.15);
+
 }
 
-.rk-client-stars {
-  color: #c9a15d;
-  font-size: 13px;
-  letter-spacing: 2px;
-  margin-bottom: 18px;
+.rk-client-quote{
+
+    font-family:"Playfair Display",serif;
+
+    font-size:48px;
+
+    line-height:1;
+
+    color:#C89A3D;
+
+    opacity:.9;
+
+    margin-bottom:18px;
+
 }
 
-/* ==========================
-   PERSON ROW (avatar + name + role)
-========================== */
+.rk-client-text{
 
-.rk-client-person {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-top: 1px solid #eee;
-  padding-top: 16px;
+    font-family:"Inter",sans-serif;
+
+    font-size:15px;
+
+    font-weight:400;
+
+    color:#555;
+
+    line-height:1.9;
+
+    margin-bottom:24px;
+
+    min-height:120px;
+
 }
 
-.rk-client-avatar {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #c9a15d;
-  flex-shrink: 0;
+.rk-client-stars{
+
+    color:#C89A3D;
+
+    font-size:14px;
+
+    letter-spacing:3px;
+
+    margin-bottom:20px;
+
 }
 
-.rk-client-name {
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1a1a;
+/* =====================================================
+   CLIENT INFO
+===================================================== */
+
+.rk-client-person{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    border-top:1px solid #ececec;
+
+    padding-top:18px;
+
 }
 
-.rk-client-role {
-  font-family: "Inter", sans-serif;
-  font-size: 11.5px;
-  color: #888;
-  margin-top: 2px;
+.rk-client-avatar{
+
+    width:58px;
+
+    height:58px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:2px solid #C89A3D;
+
+    flex-shrink:0;
+
 }
 
-/* ==========================
-   TRUST BADGES STRIP
-========================== */
+.rk-client-name{
 
-.rk-client-badges {
-  max-width: 1500px;
-  margin: 45px auto 0;
-  padding: 0 5%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
+    font-family:"Inter",sans-serif;
+
+    font-size:15px;
+
+    font-weight:700;
+
+    color:#222;
+
 }
 
-.rk-client-badge {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
+.rk-client-role{
+
+    font-family:"Inter",sans-serif;
+
+    font-size:12px;
+
+    color:#777;
+
+    margin-top:4px;
+
+}
+/* =====================================================
+   TRUST BADGES
+===================================================== */
+
+/* ==========================================
+   TRUST BADGES
+========================================== */
+
+.rk-client-badges{
+    max-width:2500px;
+    margin:55px auto 0;
+    padding:20px ;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-sizing:border-box;
 }
 
-.rk-client-badge-icon {
-  color: #c9a15d;
-  flex-shrink: 0;
+.rk-client-badge{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
 }
 
-.rk-client-badge-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.4;
+.rk-client-badge-icon{
+    color:#C89A3D;
+    width:26px;
+    height:26px;
+    flex-shrink:0;
 }
 
-.rk-client-badge-text span {
-  font-family: "Inter", sans-serif;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  color: #333;
-  white-space: nowrap;
+.rk-client-badge-text{
+    display:flex;
+    flex-direction:column;
+    line-height:1.2;
 }
 
-.rk-client-badge-divider {
-  width: 1px;
-  height: 34px;
-  background: #e2ddd0;
-  flex-shrink: 0;
+.rk-client-badge-text span:first-child{
+    font-family:"Inter",sans-serif;
+    font-size:18px;
+    font-weight:700;
+    color:#111;
+    text-transform:uppercase;
 }
 
-/* ==========================
-   RESPONSIVE
-========================== */
-
-@media (max-width: 1100px) {
-  .rk-client-badges {
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .rk-client-badge {
-    flex: 1 1 40%;
-  }
-
-  .rk-client-badge-divider {
-    display: none;
-  }
+.rk-client-badge-text span:last-child{
+    font-family:"Inter",sans-serif;
+    font-size:15px;
+    color:#777;
+    text-transform:uppercase;
+    margin-top:3px;
 }
 
-@media (max-width: 768px) {
-  .rk-client-badges {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-  }
-
-  .rk-client-badge {
-    flex: 1 1 100%;
-  }
+.rk-client-badge-divider{
+    width:1px;
+    height:50px;
+    background:#ddd;
+    margin:0 25px;
 }
 
-/* ==========================
-   RESPONSIVE
-========================== */
+/* =====================================================
+   LARGE TABLET
+===================================================== */
 
-@media (max-width: 768px) {
-  .rk-client-section {
-    padding: 50px 0;
-  }
+@media(max-width:1200px){
 
-  .rk-client-header {
-    padding: 0 6%;
-  }
+.rk-client-card{
+    flex:0 0 320px;
+}
 
-  .rk-client-title {
-    font-size: 20px;
-  }
+.rk-client-badges{
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:25px;
+}
 
-  .rk-client-card {
-    flex: 0 0 250px;
-  }
+.rk-client-badge{
+    flex:0 0 calc(50% - 20px);
+    justify-content:flex-start;
+}
+
+.rk-client-badge-divider{
+    display:none;
+}
+
+}
+
+/* =====================================================
+   TABLET
+===================================================== */
+
+@media(max-width:992px){
+
+.rk-client-section{
+    padding:70px 0;
+}
+
+.rk-client-content{
+    padding:0 5%;
+}
+
+.rk-client-title{
+    font-size:28px;
+}
+
+.rk-client-header{
+    margin-bottom:45px;
+}
+
+.rk-client-marquee-wrapper{
+    padding:10px;
+}
+
+.rk-client-marquee-track{
+    gap:18px;
+}
+
+.rk-client-card{
+    flex:0 0 300px;
+    padding:28px 24px;
+}
+
+.rk-client-avatar{
+    width:52px;
+    height:52px;
+}
+
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px){
+
+.rk-client-section{
+    padding:60px 0;
+}
+
+.rk-client-content{
+    padding:0 20px;
+}
+
+.rk-client-header{
+    margin-bottom:35px;
+}
+
+.rk-client-tag{
+    font-size:13px;
+    letter-spacing:2px;
+}
+
+.rk-client-title{
+    font-size:24px;
+}
+
+.rk-client-card{
+    flex:0 0 270px;
+    padding:24px 20px;
+}
+
+.rk-client-quote{
+    font-size:40px;
+}
+
+.rk-client-text{
+    font-size:14px;
+    min-height:auto;
+}
+
+.rk-client-stars{
+    font-size:13px;
+}
+
+.rk-client-avatar{
+    width:48px;
+    height:48px;
+}
+
+.rk-client-name{
+    font-size:14px;
+}
+
+.rk-client-role{
+    font-size:11px;
+}
+
+.rk-client-badges{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:20px;
+    margin-top:45px;
+}
+
+.rk-client-badge{
+    width:100%;
+    justify-content:flex-start;
+}
+
+}
+
+/* =====================================================
+   SMALL MOBILE
+===================================================== */
+
+@media(max-width:480px){
+
+.rk-client-content{
+    padding:0 16px;
+}
+
+.rk-client-title{
+    font-size:21px;
+}
+
+.rk-client-card{
+    flex:0 0 240px;
+}
+
+.rk-client-text{
+    font-size:13px;
+    line-height:1.8;
+}
+
+.rk-client-avatar{
+    width:44px;
+    height:44px;
+}
+
+.rk-client-badge-icon{
+    width:22px;
+    height:22px;
+}
+
+.rk-client-badge-text span:first-child{
+    font-size:12px;
+}
+
+.rk-client-badge-text span:last-child{
+    font-size:11px;
+}
+
 }

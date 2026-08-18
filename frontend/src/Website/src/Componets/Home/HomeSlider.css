@@ -6,157 +6,284 @@
 
 .home-slider{
     width:100%;
+    height:100vh;
     position:relative;
     overflow:hidden;
     background:#000;
 }
 
-/* Change the height here */
+/* ===================================
+   SLIDE
+=================================== */
+
 .slide{
     position:absolute;
     inset:0;
     width:100%;
-    height:auto;   /* <-- Change this */
+    height:100%;
     opacity:0;
-    transition:opacity .8s ease;
+    transition:opacity .8s ease-in-out;
+    display:flex;
+    align-items:center; /* vertical centering of content */
 }
 
 .slide.active{
-    position:relative;
     opacity:1;
+    z-index:2;
 }
 
 /* ===================================
-   IMAGE / VIDEO
+   IMAGE
 =================================== */
 
 .slider-media{
+    position:absolute;
+    inset:0;
     width:100%;
     height:100%;
     object-fit:cover;
     display:block;
+    user-select:none;
+    -webkit-user-drag:none;
 }
 
 /* ===================================
-   OVERLAY
+   LIGHT OVERLAY
 =================================== */
 
 .slider-overlay{
     position:absolute;
     inset:0;
-    background:
-    linear-gradient(
-        90deg,
-        rgba(0,0,0,.78) 0%,
-        rgba(0,0,0,.45) 45%,
-        rgba(0,0,0,.2) 100%
+    background:linear-gradient(
+        to right,
+        rgba(0,0,0,0.12),
+        rgba(0,0,0,0.04),
+        rgba(0,0,0,0)
     );
+    z-index:1;
 }
 
 /* ===================================
-   CONTENT
+   CONTENT — editorial card style, flex-centered
 =================================== */
 
 .slider-content{
-    position:absolute;
-    top:50%;
-    left:8%;
-    transform:translateY(-50%);
+    position:relative;
+    left:15%;
+    max-width:560px;
     z-index:10;
-    max-width:650px;
     color:#fff;
     font-family:"Inter",sans-serif;
+    padding-top:4%; /* nudges content slightly below true center */
+    opacity:0; /* hidden until the delayed fade-in animation runs */
 }
 
-.slider-tag{
-    display:block;
-    color:#D6A54A;
-    font-size:15px;
+.slide.active .slider-content{
+    animation:contentFadeIn .8s ease forwards;
+    animation-delay:1s; /* content appears 2s after the slide becomes active */
+}
+
+@keyframes contentFadeIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.slider-kicker{
+    display:inline-block;
+    background:#0B2A4A;
+    color:#fff;
+    font-size:12px;
     font-weight:600;
-    letter-spacing:2px;
-    margin-bottom:18px;
+    letter-spacing:.5px;
     text-transform:uppercase;
+    padding:6px 14px;
+    border-radius:3px;
+    margin-bottom:16px;
 }
 
 .slider-content h1{
     font-family:"Playfair Display",serif;
-    font-size:72px;
-    line-height:1.1;
-    margin-bottom:22px;
+    font-size:44px;
+    font-weight:700;
+    line-height:1.15;
+    margin-bottom:14px;
+    text-shadow:0 4px 15px rgba(0,0,0,.35);
 }
 
 .slider-content p{
-    font-size:18px;
-    line-height:1.8;
-    color:#e8e8e8;
-    margin-bottom:35px;
+    font-size:15px;
+    line-height:1.6;
+    margin-bottom:24px;
+    color:#f1f1f1;
+    text-shadow:0 2px 8px rgba(0,0,0,.35);
+    max-width:460px;
 }
 
 /* ===================================
-   BUTTONS
+   CTA BUTTON
 =================================== */
 
-.slider-buttons{
-    display:flex;
-    gap:20px;
-}
-
-.explore-btn{
-    padding:16px 34px;
+.slider-cta{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 28px;
     border:none;
     background:#D6A54A;
     color:#fff;
-    cursor:pointer;
-    font-size:15px;
+    font-size:14px;
     font-weight:600;
+    cursor:pointer;
     transition:.3s;
 }
 
-.explore-btn:hover{
+.slider-cta:hover{
     background:#bf8d34;
-}
-
-.contact-btn{
-    padding:16px 34px;
-    background:transparent;
-    border:1px solid rgba(255,255,255,.8);
-    color:#fff;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-    transition:.3s;
-}
-
-.contact-btn:hover{
-    background:#fff;
-    color:#111;
+    transform:translateY(-2px);
 }
 
 /* ===================================
-   DOTS
+   PROGRESS BAR INDICATOR
 =================================== */
 
-.slider-dots{
+.slider-progress-bar{
     position:absolute;
-    left:50%;
-    bottom:30px;
+    left:27%;
+    bottom:35px;
     transform:translateX(-50%);
     display:flex;
-    gap:12px;
-    z-index:20;
+    align-items:center;
+    gap:14px;
+    z-index:150;
+    width:min(500px, 80%);
 }
 
-.dot{
-    width:12px;
-    height:12px;
-    border-radius:50%;
-    background:rgba(255,255,255,.5);
+.progress-pause-btn{
+    background:none;
+    border:none;
+    color:#fff;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:4px;
+    opacity:.85;
     transition:.3s;
+    flex-shrink:0;
 }
 
-.dot.active{
+.progress-pause-btn:hover{
+    opacity:1;
+}
+
+.progress-track-group{
+    flex:1;
+    display:flex;
+    gap:8px;
+    position:relative; /* anchors the scrub preview */
+    cursor:pointer;
+    touch-action:none; /* let JS handle the drag instead of the browser scrolling */
+}
+
+.progress-track{
+    flex:1;
+    height:3px;
+    background:rgba(255,255,255,.3);
+    border:none;
+    padding:0;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
+}
+
+.progress-fill{
+    position:absolute;
+    left:0;
+    top:0;
+    height:100%;
+    width:0%;
     background:#D6A54A;
+    display:block;
+}
+
+.progress-fill.filled{
+    width:100%;
+    background:#fff;
+}
+
+.progress-fill.active{
+    animation-name:fillProgress;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+}
+
+@keyframes fillProgress{
+    from{ width:0%; }
+    to{ width:100%; }
+}
+
+.progress-counter{
+    color:#fff;
+    font-family:"Inter",sans-serif;
+    font-size:13px;
+    font-weight:500;
+    letter-spacing:.5px;
+    flex-shrink:0;
+    white-space:nowrap;
+}
+
+/* ===================================
+   SCRUB PREVIEW (follows mouse / touch)
+=================================== */
+
+.segment-preview{
+    position:absolute;
+    bottom:calc(100% + 14px);
+    transform:translateX(-50%);
+    width:220px;
+    background:rgba(20,20,25,.95);
+    border-radius:6px;
+    padding:10px;
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    box-shadow:0 6px 20px rgba(0,0,0,.4);
+    z-index:300;
+    animation:fadeInUp .15s ease;
+    pointer-events:none; /* prevents the card from stealing touch/drag events */
+}
+
+.segment-preview-img{
+    width:100%;
+    height:110px;
+    object-fit:cover;
+    border-radius:4px;
+    display:block;
+}
+
+.segment-preview-title{
+    color:#fff;
+    font-family:"Inter",sans-serif;
+    font-size:14px;
+    font-weight:600;
+    line-height:1.3;
+}
+
+@keyframes fadeInUp{
+    from{
+        opacity:0;
+        transform:translateX(-50%) translateY(6px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(-50%) translateY(0);
+    }
 }
 
 /* ===================================
@@ -165,12 +292,12 @@
 
 .slider-empty{
     width:100%;
-    height:700px; /* Change this too if needed */
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
     color:#fff;
-    font-size:30px;
+    font-size:32px;
     background:#071321;
 }
 
@@ -178,27 +305,45 @@
    RESPONSIVE
 =================================== */
 
-@media(max-width:992px){
+@media (max-width:1200px){
+
+.slider-content h1{
+    font-size:38px;
+}
+
+}
+
+@media (max-width:992px){
+
+.home-slider{
+    height:700px;
+}
 
 .slider-content{
-    left:6%;
-    max-width:500px;
+    left:20%;
+    max-width:460px;
 }
 
 .slider-content h1{
-    font-size:55px;
+    font-size:34px;
+}
+
+.slider-content p{
+    font-size:14px;
+}
+
+.slider-progress-bar{
+    left:20%;
+    transform:none;
+    width:min(420px, 70%);
 }
 
 }
 
-@media(max-width:768px){
+@media (max-width:768px){
 
-.slide{
-    height:550px;
-}
-
-.slider-empty{
-    height:550px;
+.home-slider{
+    height:600px;
 }
 
 .slider-content{
@@ -207,46 +352,71 @@
     max-width:100%;
 }
 
-.slider-content h1{
-    font-size:40px;
-}
-
-.slider-content p{
-    font-size:15px;
-}
-
-.slider-buttons{
-    flex-direction:column;
-    width:220px;
-}
-
-.explore-btn,
-.contact-btn{
-    width:100%;
-}
-
-}
-
-@media(max-width:480px){
-
-.slide{
-    height:450px;
-}
-
-.slider-empty{
-    height:450px;
+.slider-kicker{
+    font-size:11px;
+    padding:5px 12px;
+    margin-bottom:12px;
 }
 
 .slider-content h1{
-    font-size:32px;
-}
-
-.slider-tag{
-    font-size:12px;
+    font-size:30px;
 }
 
 .slider-content p{
     font-size:14px;
+    line-height:1.6;
+}
+
+.slider-cta{
+    width:100%;
+    justify-content:center;
+    padding:14px 20px;
+}
+
+.slider-progress-bar{
+    left:25px;
+    right:25px;
+    bottom:20px;
+    width:auto;
+    transform:none;
+}
+
+.segment-preview{
+    width:170px;
+}
+
+.segment-preview-img{
+    height:85px;
+}
+
+}
+
+@media (max-width:480px){
+
+.home-slider{
+    height:500px;
+}
+
+.slider-content{
+    left:20px;
+    right:20px;
+}
+
+.slider-content h1{
+    font-size:26px;
+}
+
+.slider-content p{
+    font-size:13px;
+}
+
+.slider-cta{
+    width:100%;
+}
+
+.slider-progress-bar{
+    left:20px;
+    right:20px;
 }
 
 }

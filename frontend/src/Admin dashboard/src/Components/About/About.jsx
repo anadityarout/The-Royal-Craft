@@ -12,6 +12,8 @@ const About = () => {
   const [loading, setLoading] = useState(true);
 
   const [saving, setSaving] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   const [form, setForm] = useState({
   slideImage: null,
@@ -58,20 +60,45 @@ const About = () => {
     }
   };
 
-  // ==============================
-  // Convert Image To Base64
-  // ==============================
-  const convertToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
+  
+ const uploadImage = async (file) => {
 
-      reader.readAsDataURL(file);
+  const response = await fetch(
 
-      reader.onload = () => resolve(reader.result);
+    `${API_URL}?upload=true&fileName=${encodeURIComponent(
+      file.name
+    )}&fileType=${encodeURIComponent(file.type)}`
 
-      reader.onerror = (error) => reject(error);
-    });
+  );
 
+  if (!response.ok) {
+
+    throw new Error("Unable to get upload URL.");
+
+  }
+
+  const uploadData = await response.json();
+
+  const upload = await fetch(uploadData.uploadUrl, {
+
+    method: "PUT",
+
+    headers: {
+
+      "Content-Type": file.type,
+
+    },
+
+    body: file,
+
+  });
+  if (!upload.ok) {
+  throw new Error("Image upload failed.");
+}
+
+  return uploadData.fileUrl;
+
+};
   // ==============================
   // Slide Image Upload
   // ==============================
@@ -124,7 +151,9 @@ const handleLifeImage = (e) => {
   // Reset Form
   // ==============================
    const resetForm = () => {
+
   setForm({
+
     slideImage: null,
     slidePreview: "",
 
@@ -139,109 +168,243 @@ const handleLifeImage = (e) => {
 
     lifeImage: null,
     lifePreview: "",
+
   });
 
+  setIsEditing(false);
+
+  setEditId(null);
+
   setShowForm(false);
+
 };
     // ==============================
   // Save About
   // ==============================
-  const saveAbout = async () => {
-    try {
-      setSaving(true);
+    
+   // ==============================
+// Save About
+// ==============================
 
-      let slideBase64 = "";
-let storyBase64 = "";
-let founderBase64 = "";
-let lifeBase64 = "";
-      // Convert only if image selected
-      if (form.slideImage) {
-        slideBase64 = await convertToBase64(form.slideImage);
-      }
+const saveAbout = async () => {
 
-      if (form.storyImage) {
-    storyBase64 = await convertToBase64(form.storyImage);
-}
+  try {
 
-if (form.founderImage) {
-    founderBase64 = await convertToBase64(form.founderImage);
-}
+    setSaving(true);
 
-if (form.lifeImage) {
-    lifeBase64 = await convertToBase64(form.lifeImage);
-}
+    let slideImage = form.slidePreview;
 
-      const payload = {
-  slideImage: slideBase64,
+    let storyImage = form.storyPreview;
 
-  storyImage: storyBase64,
+    let founderImage = form.founderPreview;
 
-  founderImage: founderBase64,
+    let lifeImage = form.lifePreview;
 
-  lifeImage: lifeBase64,
+    // Upload only selected images
 
-  name: form.name.trim(),
-  description: form.description.trim(),
+    if (form.slideImage) {
+
+      slideImage = await uploadImage(form.slideImage);
+
+    }
+
+    if (form.storyImage) {
+
+      storyImage = await uploadImage(form.storyImage);
+
+    }
+
+    if (form.founderImage) {
+
+      founderImage = await uploadImage(form.founderImage);
+
+    }
+
+    if (form.lifeImage) {
+
+      lifeImage = await uploadImage(form.lifeImage);
+
+    }
+
+    // While adding, Slide Image is required
+
+    if (!isEditing && !slideImage) {
+
+      alert("Please select a slide image.");
+
+      setSaving(false);
+
+      return;
+
+    }
+
+    const payload = {
+
+      id: editId,
+
+      slideImage,
+
+      storyImage,
+
+      founderImage,
+
+      lifeImage,
+
+      name: form.name.trim(),
+
+      description: form.description.trim(),
+
+    };
+
+    const response = await fetch(API_URL, {
+
+      method: isEditing ? "PUT" : "POST",
+
+      headers: {
+
+        "Content-Type": "application/json",
+
+      },
+
+      body: JSON.stringify(payload),
+
+    });
+
+    if (!response.ok) {
+
+      throw new Error(
+
+        isEditing
+
+          ? "Failed to update About."
+
+          : "Failed to save About."
+
+      );
+
+    }
+
+    await loadAbout();
+
+    resetForm();
+
+    alert(
+
+      isEditing
+
+        ? "About updated successfully."
+
+        : "About saved successfully."
+
+    );
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(err.message);
+
+  } finally {
+
+    setSaving(false);
+
+  }
+
 };
 
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
 
-      if (!response.ok) {
-        throw new Error("Failed to save About section.");
-      }
+  const editAbout = (item) => {
 
-      await loadAbout();
+  setIsEditing(true);
 
-      resetForm();
+  setEditId(item.id);
 
-      alert("About section saved successfully.");
-    } catch (err) {
-      console.error(err);
-      alert("Upload failed.");
-    } finally {
-      setSaving(false);
-    }
-  };
+  setForm({
+
+    slideImage: null,
+    slidePreview: item.slideImage,
+
+    storyImage: null,
+    storyPreview: item.storyImage,
+
+    founderImage: null,
+    founderPreview: item.founderImage,
+
+    lifeImage: null,
+    lifePreview: item.lifeImage,
+
+    name: item.name,
+
+    description: item.description,
+
+  });
+
+  setShowForm(true);
+
+};
 
   // ==============================
   // Delete About
   // ==============================
-  const deleteAbout = async (id) => {
-    if (!window.confirm("Delete this About section?")) return;
+   const deleteAbout = async (id) => {
 
-    try {
-      const response = await fetch(API_URL, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
-      });
+  if (!window.confirm("Delete this About section?")) return;
 
-      if (!response.ok) {
-        throw new Error("Delete failed");
-      }
+  try {
 
-      await loadAbout();
+    setSaving(true);
 
-      alert("Deleted successfully.");
-    } catch (err) {
-      console.error(err);
-      alert("Delete failed.");
+    const response = await fetch(API_URL, {
+
+      method: "DELETE",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({ id }),
+
+    });
+
+    if (!response.ok) {
+
+      throw new Error("Delete failed");
+
     }
-  };
+
+    await loadAbout();
+
+    alert("Deleted successfully.");
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert("Delete failed.");
+
+  } finally {
+
+    setSaving(false);
+
+  }
+
+};
+ 
+
     return (
     <div className="about-page">
       <div className="header">
         <h2>About Page</h2>
 
-        <button onClick={() => setShowForm(true)}>
+        <button
+  onClick={() => {
+
+    resetForm();
+
+    setShowForm(true);
+
+  }}
+>
           + Add Image
         </button>
       </div>
@@ -355,11 +518,27 @@ if (form.lifeImage) {
 
           <div className="btns">
             <button
-              onClick={saveAbout}
-              disabled={saving}
-            >
-              {saving ? "Saving..." : "Save"}
-            </button>
+  onClick={saveAbout}
+  disabled={saving}
+>
+
+{saving
+
+? isEditing
+
+? "Updating..."
+
+: "Saving..."
+
+: isEditing
+
+? "Update"
+
+: "Save"
+
+}
+
+</button>
 
             <button
               onClick={resetForm}
@@ -466,14 +645,25 @@ if (form.lifeImage) {
   )}
 </td>
 
-                    <td>
-                      <button
-                        className="delete-btn"
-                        onClick={() => deleteAbout(item.id)}
-                      >
-                        Delete
-                      </button>
-                    </td>
+                   <td>
+
+  <button
+  className="edit-btn"
+  onClick={() => editAbout(item)}
+  disabled={saving}
+>
+    Edit
+  </button>
+
+  <button
+    className="delete-btn"
+    onClick={() => deleteAbout(item.id)}
+    disabled={saving}
+  >
+    Delete
+  </button>
+
+</td>
                   </tr>
                 ))
               ) : (

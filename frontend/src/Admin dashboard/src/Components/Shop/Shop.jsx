@@ -20,7 +20,7 @@ const Shop = () => {
     "Decorative Elements",
     "Stage",
     "Mandap",
-    "Root Court",
+    "Food Court",
     "Front Elevation",
     "Main Gate",
     "Fountain",
@@ -39,6 +39,8 @@ const Shop = () => {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [products, setProducts] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editId, setEditId] = useState(null);
 
   const [form, setForm] = useState({
     category: "",
@@ -46,6 +48,7 @@ const Shop = () => {
     primaryPreview: "",
     secondaryImages: [],
     name: "",
+    overview: "",
     description: "",
     specifications: [],
   });
@@ -147,11 +150,9 @@ const Shop = () => {
   // ==========================
   // Reset Form
   // ==========================
-  // ==========================
-// Reset Form
-// ==========================
+  
 
-const resetForm = () => {
+  const resetForm = () => {
 
   setForm({
 
@@ -165,11 +166,17 @@ const resetForm = () => {
 
     name: "",
 
+      overview: "",
+
     description: "",
 
     specifications: [],
 
   });
+
+  setIsEditing(false);
+
+  setEditId(null);
 
   setShowForm(false);
 
@@ -352,17 +359,11 @@ const removeSpecification = (index) => {
 // Save Product
 // ==========================
 
-const saveProduct = async () => {
+  const saveProduct = async () => {
 
-  if (
-    !form.category ||
-    !form.primaryImage ||
-    !form.name.trim()
-  ) {
+  if (!form.category || !form.name.trim()) {
 
-    alert(
-      "Category, Primary Image and Product Name are required."
-    );
+    alert("Category and Product Name are required.");
 
     return;
 
@@ -370,16 +371,27 @@ const saveProduct = async () => {
 
   try {
 
-    // ==========================
-    // Upload Primary Image
-    // ==========================
+    setLoading(true);
 
-    const primaryImage =
-      await uploadImage(form.primaryImage);
+    // Your existing upload image code
 
-    // ==========================
-    // Upload Secondary Images
-    // ==========================
+    let primaryImage = form.primaryPreview;
+
+    if (form.primaryImage) {
+
+      primaryImage = await uploadImage(form.primaryImage);
+
+    }
+
+    if (!isEditing && !primaryImage) {
+
+      alert("Please select a primary image.");
+
+      setLoading(false);
+
+      return;
+
+    }
 
     const secondaryImages = [];
 
@@ -387,20 +399,21 @@ const saveProduct = async () => {
 
       if (item.image) {
 
-        const imageUrl =
-          await uploadImage(item.image);
+        const url = await uploadImage(item.image);
 
-        secondaryImages.push(imageUrl);
+        secondaryImages.push(url);
+
+      } else {
+
+        secondaryImages.push(item.preview);
 
       }
 
     }
 
-    // ==========================
-    // Payload
-    // ==========================
-
     const payload = {
+
+      id: editId,
 
       category: form.category,
 
@@ -408,71 +421,64 @@ const saveProduct = async () => {
 
       secondaryImages,
 
-      name: form.name.trim(),
+      name: form.name,
 
-      description:
-        form.description.trim(),
+       overview: form.overview,
 
-      specifications:
-        form.specifications.filter(
-          (spec) =>
-            spec.title.trim() !== "" ||
-            spec.value.trim() !== ""
-        ),
+      description: form.description,
+
+      specifications: form.specifications,
 
     };
 
-    // ==========================
-    // Save Product
-    // ==========================
+    const response = await fetch(API_URL, {
 
-    const response =
-      await fetch(API_URL, {
+      method: isEditing ? "PUT" : "POST",
 
-        method: "POST",
+      headers: {
 
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
+        "Content-Type": "application/json",
 
-        body: JSON.stringify(payload),
+      },
 
-      });
+      body: JSON.stringify(payload),
 
-    const result =
-      await response.json();
+    });
 
     if (!response.ok) {
 
-      throw new Error(
-        result.message ||
-        "Unable to save product."
-      );
+      throw new Error("Unable to save product.");
 
     }
-
-    alert(
-      "Product Saved Successfully"
-    );
 
     await loadProducts();
 
     resetForm();
 
+    alert(
+
+      isEditing
+
+        ? "Product Updated Successfully"
+
+        : "Product Saved Successfully"
+
+    );
+
   } catch (err) {
 
     console.error(err);
 
-    alert(
-      err.message ||
-      "Unable to save product."
-    );
+    alert(err.message);
+
+  } finally {
+
+    setLoading(false);
 
   }
 
 };
-
+  
 // ==========================
 // Delete Product
 // ==========================
@@ -530,6 +536,41 @@ const deleteProduct = async (id) => {
 
 };
 
+const editProduct = (product) => {
+
+  setIsEditing(true);
+
+  setEditId(product.id);
+
+   setForm({
+  category: product.category,
+
+  primaryImage: null,
+  primaryPreview: product.primaryImage,
+
+  secondaryImages:
+    (product.secondaryImages || []).map((img) => ({
+      image: null,
+      preview:
+        typeof img === "string"
+          ? img
+          : img.image,
+    })),
+
+  name: product.name,
+
+  overview: product.overview || "",
+
+  description: product.description || "",
+
+  specifications:
+    product.specifications || [],
+});
+
+  setShowForm(true);
+
+};
+
 // ==========================
 // Return JSX
 // ==========================
@@ -545,7 +586,13 @@ return (
     <h2>Shop Page</h2>
 
     <button
-      onClick={() => setShowForm(true)}
+      onClick={() => {
+
+  resetForm();
+
+  setShowForm(true);
+
+}}
     >
       + Add Product
     </button>
@@ -681,7 +728,7 @@ return (
 
 </div>
 
-{/* Product Name */}
+ {/* Product Name */}
 
 <input
   type="text"
@@ -695,10 +742,24 @@ return (
   }
 />
 
+{/* Overview */}
+
+<textarea
+  rows="4"
+  placeholder="Product Overview"
+  value={form.overview}
+  onChange={(e) =>
+    setForm((prev) => ({
+      ...prev,
+      overview: e.target.value,
+    }))
+  }
+/>
+
 {/* Description */}
 
 <textarea
-  rows="5"
+  rows="6"
   placeholder="Product Description"
   value={form.description}
   onChange={(e) =>
@@ -708,6 +769,7 @@ return (
     }))
   }
 />
+
 
 {/* Specifications */}
 
@@ -783,7 +845,19 @@ return (
     type="button"
     onClick={saveProduct}
   >
-    Save Product
+    {loading
+
+  ? isEditing
+
+    ? "Updating..."
+
+    : "Saving..."
+
+  : isEditing
+
+    ? "Update Product"
+
+    : "Save Product"}
   </button>
 
   <button
@@ -912,16 +986,23 @@ return (
 
             <td>
 
-              <button
-                className="delete-btn"
-                onClick={() =>
-                  deleteProduct(item.id)
-                }
-              >
-                Delete
-              </button>
+  <button
+    className="edit-btn"
+    onClick={() => editProduct(item)}
+    disabled={loading}
+  >
+    Edit
+  </button>
 
-            </td>
+  <button
+    className="delete-btn"
+    onClick={() => deleteProduct(item.id)}
+    disabled={loading}
+  >
+    Delete
+  </button>
+
+</td>
 
           </tr>
 

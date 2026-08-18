@@ -6,7 +6,7 @@ const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/work";
 
 const Work = () => {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [images, setImages] = useState([]);
   const [workText, setWorkText] = useState({
     name: "",
@@ -52,30 +52,26 @@ const Work = () => {
     }
   };
 
-  // Use up to 3 images for the grid
-  const galleryImages = images.slice(0, 3);
+  // Show all uploaded images — grid wraps to a new row every 3 images
+  const galleryImages = images;
 
   return (
     <section className="work">
       <div className="work-container">
         {/* Left: Text content */}
         <div className="work-content">
-            <span className="work-tag">OUR IMPRESSIVE WORK</span>
-             <div className="work-line"></div>
-          {workText.name && (
-            <h2 className="work-title">{workText.name}</h2>
-          )}
+          <span className="work-tag">OUR IMPRESSIVE WORK</span>
+          <div className="work-line"></div>
+
+          {workText.name && <h2 className="work-title">{workText.name}</h2>}
 
           {workText.description && (
             <p className="work-description">{workText.description}</p>
           )}
 
-          <button
-  className="view-projects"
-  onClick={() => navigate("/project")}
->
-  VIEW ALL PROJECTS <span>→</span>
-</button>
+          <button className="view-projects" onClick={() => navigate("/project")}>
+            VIEW ALL PROJECTS <span>→</span>
+          </button>
         </div>
 
         {/* Right: Image Gallery */}

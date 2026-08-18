@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ProjectPage.css";
 import PageSeo from "../SeoPage/PageSeo";
 import ProjectDetails from "../Projects/ProjectDetails";
-import heroImage from "../../assets/image.png";
+import heroImage from "../../assets/1 (5).png";
 
 import {
   UserRound,
@@ -110,23 +110,21 @@ const ProjectPage = () => {
   };
 
   if (selectedProject) {
-  return (
-    <ProjectDetails
-      project={selectedProject}
-      onBack={() => setSelectedProject(null)}
-    />
-  );
-}
+    return (
+      <ProjectDetails
+        project={selectedProject}
+        onBack={() => setSelectedProject(null)}
+      />
+    );
+  }
 
-return (
-  <>
+  return (
+    <>
       <PageSeo page="Project" />
       {/* ================= HERO ================= */}
 
       <section className="rk-hero-page">
-
         <div className="rk-hero-page-bg">
-
           <img
             src={heroImage}
             alt="Royal Craft Project"
@@ -134,106 +132,62 @@ return (
           />
 
           <div className="rk-hero-page-gradient"></div>
-
         </div>
 
         <div className="rk-hero-page-content">
+          <div className="rk-hero-page-inner">
+            <span className="rk-hero-page-tag">CRAFTED TO PERFECTION</span>
 
-          <span className="rk-hero-page-tag">
-            CRAFTED TO PERFECTION
-          </span>
+           
 
-          <h1 className="rk-hero-page-title">
-            OUR <br />
-
-            <span className="rk-hero-page-gold">
-              PROJECTS
-            </span>
-
-          </h1>
-
-          <p className="rk-hero-page-desc">
-            Explore a curated collection of bespoke
-            spaces meticulously crafted with passion,
-            precision, and timeless elegance.
-          </p>
-
-          <div className="rk-hero-page-actions">
-
-            <button className="rk-hero-page-btn-gold">
-              EXPLORE PROJECTS
-            </button>
-
-            <button className="rk-hero-page-btn-outline">
-              DISCUSS YOUR PROJECT
-            </button>
-
+            
+            
           </div>
-
         </div>
 
         <div className="rk-hero-page-social">
-
-          <a
-            href="#"
-            className="rk-hero-page-icon"
-          >
+          <a href="#" className="rk-hero-page-icon">
             📱
           </a>
 
-          <a
-            href="#"
-            className="rk-hero-page-icon"
-          >
+          <a href="#" className="rk-hero-page-icon">
             📞
           </a>
 
-          <a
-            href="#"
-            className="rk-hero-page-icon"
-          >
+          <a href="#" className="rk-hero-page-icon">
             ✉️
           </a>
-
         </div>
-
       </section>
-            {/* ================= INTRO ================= */}
+
+      {/* ================= INTRO ================= */}
 
       <section className="rk-project-intro">
+        <div className="rk-project-intro-inner">
+          <div className="rk-project-intro-left">
+            <span className="rk-project-intro-tag">
+              BUILT ON TRUST. INSPIRED BY VISION.
+            </span>
 
-        <div className="rk-project-intro-left">
+            <h2 className="rk-project-intro-title">SPACES THAT INSPIRE</h2>
 
-          <span className="rk-project-intro-tag">
-            BUILT ON TRUST. INSPIRED BY VISION.
-          </span>
+            <div className="rk-project-intro-line"></div>
+          </div>
 
-          <h2 className="rk-project-intro-title">
-            SPACES THAT INSPIRE
-          </h2>
-
-          <div className="rk-project-intro-line"></div>
-
+          <div className="rk-project-intro-right">
+            <p>
+              From palatial residences to luxury commercial spaces, each
+              project reflects our commitment to excellence, innovation, and
+              timeless design.
+            </p>
+          </div>
         </div>
-
-        <div className="rk-project-intro-right">
-
-          <p>
-            From palatial residences to luxury commercial
-            spaces, each project reflects our commitment
-            to excellence, innovation, and timeless design.
-          </p>
-
-        </div>
-
       </section>
 
       {/* ================= PROJECT GRID ================= */}
 
       <section className="rk-project-grid-section">
-
         {loading ? (
-
           <div
             style={{
               textAlign: "center",
@@ -244,71 +198,45 @@ return (
           >
             Loading Projects...
           </div>
-
         ) : projects.length === 0 ? (
-
           <div
             style={{
               textAlign: "center",
               padding: "60px 20px",
             }}
           >
-
             <h2>No Projects Found</h2>
 
             <p>
-              Projects uploaded from the Admin Dashboard
-              will appear here.
+              Projects uploaded from the Admin Dashboard will appear here.
             </p>
-
           </div>
-
         ) : (
-
           <div className="rk-project-grid">
-
             {projects.map((project) => (
-
               <div
-  className="rk-project-grid-card"
-  key={project.id}
-  onClick={() => setSelectedProject(project)}
-  style={{ cursor: "pointer" }}
->
-
+                className="rk-project-grid-card"
+                key={project.id}
+                onClick={() => setSelectedProject(project)}
+                style={{ cursor: "pointer" }}
+              >
                 <div className="rk-project-grid-image">
-
-                  <img
-                    src={project.mainImage}
-                    alt={project.projectName}
-                  />
-
+                  <img src={project.mainImage} alt={project.projectName} />
                 </div>
 
                 <div className="rk-project-grid-name">
-
                   <h3>{project.projectName}</h3>
-
-                 
-
                 </div>
-
               </div>
-
             ))}
-
           </div>
-
         )}
-
       </section>
 
       {/* ================= CTA ================= */}
 
       <section className="rk-project-cta">
-
         <div className="rk-project-cta-bg">
-
           <img
             src="https://picsum.photos/1600/400?random=70"
             alt="Craftsmanship"
@@ -316,68 +244,54 @@ return (
           />
 
           <div className="rk-project-cta-gradient"></div>
-
         </div>
 
         <div className="rk-project-cta-content">
+          <div className="rk-project-cta-container">
+            <div className="rk-project-cta-inner">
+              <span className="rk-project-cta-tag">
+                HAVE A PROJECT IN MIND?
+              </span>
 
-          <span className="rk-project-cta-tag">
-            HAVE A PROJECT IN MIND?
-          </span>
+              <h2 className="rk-project-cta-title">
+                LET'S CRAFT SOMETHING
+                <br />
+                EXTRAORDINARY TOGETHER.
+              </h2>
 
-          <h2 className="rk-project-cta-title">
-            LET'S CRAFT SOMETHING
-            <br />
-            EXTRAORDINARY TOGETHER.
-          </h2>
-
-          <button className="rk-project-cta-btn">
-            DISCUSS YOUR PROJECT
-          </button>
-
+              <button className="rk-project-cta-btn">
+                DISCUSS YOUR PROJECT
+              </button>
+            </div>
+          </div>
         </div>
-
       </section>
-            {/* ================= PROJECT JOURNEY ================= */}
+
+      {/* ================= PROJECT JOURNEY ================= */}
 
       <section className="rk-journey-section">
-
         <div className="rk-journey-header">
-
           <div>
+            <span className="rk-journey-tag">OUR PROJECT JOURNEY</span>
 
-            <span className="rk-journey-tag">
-              OUR PROJECT JOURNEY
-            </span>
-
-            <h2 className="rk-journey-title">
-              FROM CONCEPT TO CREATION
-            </h2>
+            <h2 className="rk-journey-title">FROM CONCEPT TO CREATION</h2>
 
             <div className="rk-journey-line"></div>
-
           </div>
 
           <p className="rk-journey-desc">
-            Every project we undertake follows a thoughtful
-            process that ensures precision, transparency,
-            and perfection at every stage.
+            Every project we undertake follows a thoughtful process that
+            ensures precision, transparency, and perfection at every stage.
           </p>
-
         </div>
 
         <div className="rk-journey-steps">
-
           {journeySteps.map((step, index) => {
-
             const Icon = step.icon;
 
             return (
-
               <React.Fragment key={step.no}>
-
                 <div className="rk-journey-step">
-
                   <Icon
                     className="rk-journey-step-icon"
                     size={30}
@@ -385,49 +299,31 @@ return (
                   />
 
                   <div className="rk-journey-step-text">
-
-                    <div className="rk-journey-step-no">
-                      {step.no}
-                    </div>
+                    <div className="rk-journey-step-no">{step.no}</div>
 
                     <h4>{step.title}</h4>
 
                     <p>{step.desc}</p>
-
                   </div>
-
                 </div>
 
                 {index < journeySteps.length - 1 && (
-
-                  <span className="rk-journey-arrow">
-                    →
-                  </span>
-
+                  <span className="rk-journey-arrow">→</span>
                 )}
-
               </React.Fragment>
-
             );
-
           })}
-
         </div>
 
         {/* ================= STATS ================= */}
 
         <div className="rk-journey-stats">
-
           {journeyStats.map((item, index) => {
-
             const Icon = item.icon;
 
             return (
-
               <React.Fragment key={index}>
-
                 <div className="rk-journey-stat">
-
                   <Icon
                     className="rk-journey-stat-icon"
                     size={28}
@@ -435,40 +331,22 @@ return (
                   />
 
                   <div>
+                    <strong>{item.value}</strong>
 
-                    <strong>
-                      {item.value}
-                    </strong>
-
-                    <span>
-                      {item.label}
-                    </span>
-
+                    <span>{item.label}</span>
                   </div>
-
                 </div>
 
-                {index <
-                  journeyStats.length - 1 && (
-
+                {index < journeyStats.length - 1 && (
                   <div className="rk-journey-stat-divider"></div>
-
                 )}
-
               </React.Fragment>
-
             );
-
           })}
-
         </div>
-
       </section>
-
     </>
-
   );
-
 };
 
 export default ProjectPage;

@@ -1,3 +1,7 @@
+/* ======================================
+   LOGIN PAGE
+====================================== */
+
 .login-page {
   min-height: 100vh;
   display: flex;
@@ -6,6 +10,11 @@
   background-color: #f3f4f6;
   padding: 20px;
 }
+
+
+/* ======================================
+   LOGIN BOX
+====================================== */
 
 .login-box {
   background-color: #ffffff;
@@ -18,7 +27,11 @@
   flex-direction: column;
 }
 
-/* Brand header */
+
+/* ======================================
+   BRAND HEADER
+====================================== */
+
 .login-brand {
   text-align: center;
   margin-bottom: 28px;
@@ -47,7 +60,11 @@
   margin: 0 auto;
 }
 
-/* Title */
+
+/* ======================================
+   TITLE
+====================================== */
+
 .login-title {
   font-family: "Georgia", "Times New Roman", serif;
   font-size: 28px;
@@ -62,7 +79,11 @@
   margin: 0 0 24px 0;
 }
 
-/* Labels + inputs */
+
+/* ======================================
+   LABELS
+====================================== */
+
 .login-box label {
   font-size: 12px;
   font-weight: 600;
@@ -70,6 +91,11 @@
   color: #374151;
   margin-bottom: 6px;
 }
+
+
+/* ======================================
+   NORMAL INPUT
+====================================== */
 
 .login-box input {
   padding: 12px 14px;
@@ -79,39 +105,166 @@
   border-radius: 4px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .login-box input:focus {
   border-color: #b08d57;
-  box-shadow: 0 0 0 3px rgba(176, 141, 87, 0.15);
+  box-shadow:
+    0 0 0 3px rgba(176, 141, 87, 0.15);
 }
 
-/* Button */
-.login-box button {
+
+/* ======================================
+   PASSWORD WRAPPER
+====================================== */
+
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+
+/* Password input inside wrapper */
+
+.password-wrapper input {
+  width: 100%;
+  padding: 12px 46px 12px 14px;
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+
+/* ======================================
+   PASSWORD EYE BUTTON
+====================================== */
+
+.password-eye {
+  position: absolute;
+
+  right: 10px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  padding: 0;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent !important;
+
+  border: none !important;
+
+  color: #6b7280;
+
+  cursor: pointer;
+
+  box-shadow: none !important;
+
+  outline: none;
+
+  z-index: 5;
+}
+
+
+/* Eye SVG */
+
+.password-eye svg {
+  width: 19px;
+  height: 19px;
+
+  display: block;
+
+  pointer-events: none;
+}
+
+
+/* Eye hover */
+
+.password-eye:hover {
+  background: transparent !important;
+  color: #111111;
+}
+
+
+/* Eye focus */
+
+.password-eye:focus,
+.password-eye:active {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none;
+}
+
+
+/* ======================================
+   MAIN SIGN IN BUTTON
+====================================== */
+
+.login-box > button[type="submit"] {
   background-color: #111111;
   color: #ffffff;
+
   border: none;
+
   padding: 14px;
+
   border-radius: 4px;
+
   font-size: 14px;
+
   font-weight: 700;
+
   letter-spacing: 1px;
+
   cursor: pointer;
-  transition: background-color 0.2s ease;
+
+  transition:
+    background-color 0.2s ease;
+
   margin-top: 4px;
+
+  width: 100%;
 }
 
-.login-box button:hover {
+.login-box > button[type="submit"]:hover {
   background-color: #2a2a2a;
 }
 
-/* Back link */
+
+/* Disabled button */
+
+.login-box > button[type="submit"]:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+/* ======================================
+   BACK LINK
+====================================== */
+
 .login-back {
   text-align: center;
+
   margin-top: 18px;
+
   font-size: 13px;
+
   color: #b08d57;
+
   text-decoration: none;
 }
 
@@ -119,10 +272,43 @@
   text-decoration: underline;
 }
 
-/* Error */
+
+/* ======================================
+   ERROR
+====================================== */
+
 .login-box .error {
   color: #dc2626;
+
   font-size: 13px;
+
   margin: -10px 0 14px 0;
+
   text-align: center;
+}
+
+
+/* ======================================
+   MOBILE
+====================================== */
+
+@media (max-width: 480px) {
+
+  .login-page {
+    padding: 15px;
+  }
+
+  .login-box {
+    max-width: 100%;
+    padding: 32px 24px;
+  }
+
+  .login-brand h1 {
+    font-size: 24px;
+  }
+
+  .login-title {
+    font-size: 26px;
+  }
+
 }

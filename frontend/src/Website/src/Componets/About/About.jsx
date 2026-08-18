@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Gem, PencilRuler, Settings, Truck } from "lucide-react";
 import "./About.css";
 
 const API_URL =
@@ -55,6 +56,29 @@ const About = () => {
   // Use up to 6 images for the grid
   const galleryImages = images.slice(0, 6);
 
+  const features = [
+    {
+      icon: Gem,
+      title: "Premium",
+      lines: ["Premium Quality", "Fiber Materials"],
+    },
+    {
+      icon: PencilRuler,
+      title: "Custom",
+      lines: ["Custom Designs", "Tailored for You"],
+    },
+    {
+      icon: Settings,
+      title: "Expert",
+      lines: ["Expert Installation", "& Setup"],
+    },
+    {
+      icon: Truck,
+      title: "Pan India",
+      lines: ["Pan India", "Delivery & Support"],
+    },
+  ];
+
   return (
     <section className="about-section">
       <div className="about-container">
@@ -99,30 +123,45 @@ const About = () => {
 
       {/* Features */}
       <div className="about-features">
-        <div className="feature-item">
-          <div className="feature-icon">🏵️</div>
-          <h4>Premium</h4>
-          <p>Materials</p>
-        </div>
-        <div className="feature-divider"></div>
-        <div className="feature-item">
-          <div className="feature-icon">🛠️</div>
-          <h4>Custom</h4>
-          <p>Designs</p>
-        </div>
-        <div className="feature-divider"></div>
-        <div className="feature-item">
-          <div className="feature-icon">⚙️</div>
-          <h4>Expert</h4>
-          <p>Installation</p>
-        </div>
-        <div className="feature-divider"></div>
-        <div className="feature-item">
-          <div className="feature-icon">🎧</div>
-          <h4>Pan India</h4>
-          <p>Delivery</p>
-        </div>
+        {features.map((feature, index) => {
+          const Icon = feature.icon;
+          return (
+            <div className="feature-card" key={feature.title}>
+              <div className="feature-badge">
+                <span className="feature-badge-arc"></span>
+                <span className="feature-badge-line feature-badge-line-left"></span>
+                <span className="feature-badge-line feature-badge-line-right"></span>
+                <div className="feature-badge-circle">
+                  <Icon size={26} strokeWidth={1.5} />
+                </div>
+              </div>
+
+              <h4 className="feature-title">{feature.title}</h4>
+              <div className="feature-underline"></div>
+
+              <p className="feature-text">
+                {feature.lines.map((line, i) => (
+                  <React.Fragment key={i}>
+                    {line}
+                    {i < feature.lines.length - 1 && <br />}
+                  </React.Fragment>
+                ))}
+              </p>
+
+              <span className="feature-card-curve"></span>
+            </div>
+          );
+        })}
       </div>
+
+      <div className="features-tagline">
+        <span className="tagline-dot"></span>
+        <span className="tagline-line"></span>
+        <span className="tagline-text">COMPLETE ROYAL KRAFT SOLUTIONS</span>
+        <span className="tagline-line"></span>
+        <span className="tagline-dot"></span>
+      </div>
+      <div className="tagline-flourish">❦</div>
     </section>
   );
 };

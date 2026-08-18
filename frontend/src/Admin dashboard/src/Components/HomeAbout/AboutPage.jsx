@@ -19,6 +19,8 @@ const AboutPage = () => {
   });
 
   const [images, setImages] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     loadImages();
@@ -88,54 +90,72 @@ const AboutPage = () => {
   // Save Image
   // =====================================
 
-  const saveImage = async () => {
+    // =====================================
+// Save / Update Image
+// =====================================
 
-    if (!form.base64) {
-      alert("Please upload an image.");
-      return;
+const saveImage = async () => {
+
+  if (!isEditing && !form.base64) {
+    alert("Please upload an image.");
+    return;
+  }
+
+  try {
+
+    setLoading(true);
+
+    const response = await fetch(API_URL, {
+
+      method: isEditing ? "PUT" : "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+
+        id: editId,
+
+        image: form.base64 || form.preview,
+
+        name: form.name,
+
+        description: form.description,
+
+      }),
+
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.message || "Operation failed");
     }
 
-    try {
+    alert(
+      isEditing
+        ? "Updated successfully."
+        : "Saved successfully."
+    );
 
-      setLoading(true);
+    await loadImages();
 
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          image: form.base64,
-          name: form.name,
-          description: form.description,
-        }),
-      });
+    resetForm();
 
-      const result = await response.json();
+  } catch (err) {
 
-      if (!response.ok) {
-        throw new Error(result.message || "Upload failed");
-      }
+    console.error(err);
 
-      alert("About page image saved successfully.");
+    alert(err.message);
 
-      await loadImages();
+  } finally {
 
-      resetForm();
+    setLoading(false);
 
-    } catch (err) {
+  }
 
-      console.error(err);
-
-      alert(err.message);
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  }; 
+};
 
   // =====================================
   // Delete Image
@@ -186,6 +206,27 @@ const AboutPage = () => {
     }
 
   };
+  // =====================================
+// Edit Image
+// =====================================
+
+const editImage = (item) => {
+
+  setIsEditing(true);
+
+  setEditId(item.id);
+
+  setForm({
+    image: null,
+    preview: item.image,
+    base64: "",
+    name: item.name,
+    description: item.description,
+  });
+
+  setShowForm(true);
+
+};
 
   // =====================================
   // Reset Form
@@ -193,17 +234,21 @@ const AboutPage = () => {
 
   const resetForm = () => {
 
-    setForm({
-      image: null,
-      preview: "",
-      base64: "",
-      name: "",
-      description: "",
-    });
+  setForm({
+    image: null,
+    preview: "",
+    base64: "",
+    name: "",
+    description: "",
+  });
 
-    setShowForm(false);
+  setEditId(null);
 
-  };
+  setIsEditing(false);
+
+  setShowForm(false);
+
+};
     return (
     <div className="homepage">
 
@@ -273,13 +318,18 @@ const AboutPage = () => {
 
           <div className="btns">
 
-            <button
-              onClick={saveImage}
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save"}
-            </button>
-
+          <button
+  onClick={saveImage}
+  disabled={loading}
+>
+  {loading
+    ? isEditing
+      ? "Updating..."
+      : "Saving..."
+    : isEditing
+    ? "Update"
+    : "Save"}
+</button>
             <button
               onClick={resetForm}
               disabled={loading}
@@ -354,15 +404,23 @@ const AboutPage = () => {
 
                   <td>
 
-                    <button
-                      className="delete-btn"
-                      onClick={() => deleteImage(item.id)}
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
+  <button
+    className="edit-btn"
+    onClick={() => editImage(item)}
+    disabled={loading}
+  >
+    Edit
+  </button>
 
-                  </td>
+  <button
+    className="delete-btn"
+    onClick={() => deleteImage(item.id)}
+    disabled={loading}
+  >
+    Delete
+  </button>
+
+</td>
 
                 </tr>
 

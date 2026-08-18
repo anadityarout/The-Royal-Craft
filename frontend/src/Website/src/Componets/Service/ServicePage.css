@@ -13,18 +13,29 @@ BANNER
 ========================================== */
 
 .service-page-banner{
-    width:100%;
+    width:100vw;
+    max-width:100vw;
+
+    margin-left:calc(50% - 50vw);
+    margin-right:calc(50% - 50vw);
+
+    padding:0;
     overflow:hidden;
+
     background:#000;
 }
 
 .service-page-banner-image{
     width:100%;
     height:auto;
+
     display:block;
+
+    margin:0;
+    padding:0;
+
     object-fit:cover;
 }
-
 /* ==========================================
 CATEGORY FILTER
 ========================================== */
@@ -84,6 +95,161 @@ CATEGORY FILTER
 }
 
 /* ==========================================
+OUR COMPANIES
+========================================== */
+
+.service-page-companies{
+    width:100%;
+    background:#fff;
+    padding:60px 4% 20px;
+}
+
+.service-page-companies-wrapper{
+    width:100%;
+    max-width:1500px;
+    margin:0 auto;
+}
+
+.service-page-companies-title{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:20px;
+
+    text-align:center;
+
+    font-family:"Playfair Display", serif;
+    font-size:28px;
+    font-weight:700;
+    letter-spacing:1px;
+    color:#111;
+
+    margin:0 0 40px;
+}
+
+.service-page-companies-line{
+    flex:1;
+    max-width:120px;
+    height:1px;
+    background:#C89A2B;
+}
+
+.service-page-companies-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:25px;
+}
+
+/* Full-bleed logo-as-background card */
+.service-page-company-card{
+    position:relative;
+    display:block;
+
+    border-radius:14px;
+    overflow:hidden;
+
+    aspect-ratio:1 / 1;
+    min-height:200px;
+
+    background-color:#0d0d0d;
+    background-size:contain;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.18);
+    transition:.35s ease;
+}
+
+.service-page-company-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 15px 35px rgba(0,0,0,.28);
+}
+
+/* Dark gradient so text/icons stay readable over any logo image */
+.service-page-company-overlay{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+        180deg,
+        rgba(0,0,0,0) 45%,
+        rgba(0,0,0,.55) 75%,
+        rgba(0,0,0,.85) 100%
+    );
+    pointer-events:none;
+}
+
+.service-page-company-footer{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+
+    padding:16px;
+    z-index:1;
+}
+
+.service-page-company-name{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    color:#fff;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:.5px;
+    line-height:1.3;
+
+    min-width:0;
+}
+
+.service-page-company-name span:last-child{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.service-page-company-icon{
+    width:32px;
+    height:32px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.3);
+    border-radius:8px;
+
+    color:#fff;
+}
+
+.service-page-company-arrow{
+    width:34px;
+    height:34px;
+    flex-shrink:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#C89A2B;
+    color:#111;
+    border-radius:8px;
+
+    transition:.3s ease;
+}
+
+.service-page-company-card:hover .service-page-company-arrow{
+    background:#b3861f;
+}
+
+/* ==========================================
 SERVICE LIST
 ========================================== */
 
@@ -98,10 +264,14 @@ SERVICE GRID
 
 .service-page-grid{
     width:100%;
+    max-width:1500px;
+    margin:0 auto;
 
-    display:grid;
+    display:flex;
+    flex-wrap:wrap;
 
-    grid-template-columns:repeat(4,1fr);
+    justify-content:center;
+    align-items:stretch;
 
     gap:25px;
 }
@@ -111,7 +281,8 @@ SERVICE CARD
 ========================================== */
 
 .service-page-card{
-    width:100%;
+    flex:0 1 calc(25% - 19px); /* 4 per row */
+    min-width:280px;
 
     background:#fff;
 
@@ -174,7 +345,6 @@ EMPTY
 
 .service-page-empty{
     width:100%;
-    grid-column:1/-1;
 
     text-align:center;
 
@@ -191,8 +361,8 @@ EMPTY
 
 @media (max-width:1200px){
 
-    .service-page-grid{
-        grid-template-columns:repeat(3,1fr);
+    .service-page-card{
+        flex:0 1 calc(33.333% - 17px); /* 3 per row */
     }
 
 }
@@ -203,8 +373,12 @@ EMPTY
 
 @media (max-width:992px){
 
-    .service-page-grid{
-        grid-template-columns:repeat(2,1fr);
+    .service-page-card{
+        flex:0 1 calc(50% - 13px); /* 2 per row */
+    }
+
+    .service-page-companies-grid{
+        grid-template-columns:repeat(2, 1fr);
     }
 
 }
@@ -228,9 +402,53 @@ EMPTY
         font-size:14px;
     }
 
+    .service-page-companies{
+        padding:45px 5% 10px;
+    }
+
+    .service-page-companies-title{
+        font-size:22px;
+        gap:12px;
+        margin-bottom:28px;
+    }
+
+    .service-page-companies-line{
+        max-width:60px;
+    }
+
+    .service-page-companies-grid{
+        grid-template-columns:repeat(2, 1fr);
+        gap:16px;
+    }
+
+    .service-page-company-card{
+        min-height:170px;
+    }
+
+    .service-page-company-footer{
+        padding:12px;
+    }
+
+    .service-page-company-name{
+        font-size:13px;
+    }
+
+    .service-page-company-icon{
+        width:28px;
+        height:28px;
+    }
+
+    .service-page-company-arrow{
+        width:30px;
+        height:30px;
+    }
+
     .service-page-grid{
-        grid-template-columns:1fr;
         gap:20px;
+    }
+
+    .service-page-card{
+        flex:0 1 100%; /* 1 per row */
     }
 
     .service-page-image{
@@ -264,6 +482,19 @@ EMPTY
     .service-page-filter-btn{
         padding:9px 16px;
         font-size:13px;
+    }
+
+    .service-page-companies-grid{
+        grid-template-columns:1fr;
+    }
+
+    .service-page-company-card{
+        min-height:auto;
+        aspect-ratio:1 / 1;
+    }
+
+    .service-page-card{
+        min-width:100%;
     }
 
     .service-page-image{

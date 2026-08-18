@@ -6,7 +6,7 @@
 
 .about-section{
     width:100%;
-    padding:80px 20px;
+    padding:80px 5%;
     background:#fff;
     box-sizing:border-box;
 }
@@ -16,12 +16,12 @@
 ========================================== */
 
 .about-container{
-    max-width:1300px;
-    margin:0 auto 70px;
+    max-width:1700px;
+    margin:0 auto;
     display:grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap:70px;
-    align-items:center;
+    grid-template-columns: 0.7fr 2fr;
+    gap:50px;
+    align-items:start;
 }
 
 /* ==========================================
@@ -45,7 +45,7 @@
 
 .about-content .about-title{
     font-family:"Playfair Display",serif;
-    font-size:42px;
+    font-size:24px;
     font-weight:700;
     color:#1a1a1a;
     line-height:1.25;
@@ -96,14 +96,15 @@
 }
 
 /* ==========================================
-   RIGHT: IMAGE GALLERY GRID
+   RIGHT: IMAGE GALLERY GRID — 2 PER ROW, WIDER
 ========================================== */
 
 .about-gallery{
     display:grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 200px);
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows:200px;
     gap:16px;
+    margin-top:30px;
 }
 
 .gallery-item{
@@ -111,6 +112,7 @@
     height:100%;
     overflow:hidden;
     border-radius:12px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.12);
 }
 
 .gallery-item img{
@@ -138,56 +140,176 @@
 }
 
 /* ==========================================
-   FEATURES
+   FEATURES — CARD STYLE
 ========================================== */
 
 .about-features{
-    max-width:900px;
-    margin:0 auto;
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:15px;
-    flex-wrap:nowrap;
+    max-width:1400px;
+    margin:80px auto 0;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:28px;
+    position:relative;
+    z-index:1;
 }
 
-.feature-item{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
+.feature-card{
+    position:relative;
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:16px;
+    padding:70px 24px 34px;
     text-align:center;
-    flex:1;
-    min-width:0;
+    box-shadow:0 12px 30px rgba(0,0,0,0.06);
+    overflow:hidden;
+    transition:.3s;
 }
 
-.feature-icon{
-    font-size:34px;
-    margin-bottom:12px;
+.feature-card:hover{
+    transform:translateY(-6px);
+    box-shadow:0 18px 40px rgba(0,0,0,0.1);
 }
 
-.feature-item h4{
+/* Gold curved accent bottom-right of each card */
+.feature-card-curve{
+    position:absolute;
+    right:-30%;
+    bottom:-55%;
+    width:110%;
+    height:90%;
+    background:linear-gradient(135deg, #C89A3D, #e0bb63);
+    border-radius:50%;
+    opacity:.16;
+    pointer-events:none;
+}
+
+/* Badge (icon) block */
+.feature-badge{
+    position:absolute;
+    top:-6px;
+    left:50%;
+    transform:translateX(-50%);
+    width:150px;
+    height:100px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.feature-badge-circle{
+    position:relative;
+    z-index:2;
+    width:72px;
+    height:72px;
+    border-radius:50%;
+    background:#1a1a1a;
+    border:3px solid #C89A3D;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#C89A3D;
+    box-shadow:0 8px 18px rgba(200,154,61,0.35);
+}
+
+/* Dotted decorative arc above/right of the circle */
+.feature-badge-arc{
+    position:absolute;
+    top:6px;
+    left:50%;
+    transform:translateX(-50%);
+    width:92px;
+    height:92px;
+    border-radius:50%;
+    border:3px dotted #C89A3D;
+    -webkit-mask-image: conic-gradient(from 200deg, #000 0deg 95deg, transparent 95deg 360deg);
+    mask-image: conic-gradient(from 200deg, #000 0deg 95deg, transparent 95deg 360deg);
+    opacity:.75;
+}
+
+/* Horizontal gold lines flanking the circle */
+.feature-badge-line{
+    position:absolute;
+    top:44px;
+    height:2px;
+    width:38px;
+    background:#C89A3D;
+}
+
+.feature-badge-line-left{ left:6px; }
+.feature-badge-line-right{ right:6px; }
+
+.feature-title{
+    font-family:"Playfair Display",serif;
+    font-size:20px;
+    font-weight:700;
+    color:#1a1a1a;
+    margin:14px 0 10px;
+    position:relative;
+    z-index:2;
+}
+
+.feature-underline{
+    width:32px;
+    height:2px;
+    background:#C89A3D;
+    margin:0 auto 16px;
+    position:relative;
+    z-index:2;
+}
+
+.feature-text{
     font-family:"Inter",sans-serif;
-    font-size:16px;
-    font-weight:600;
-    color:#222;
-    margin:0 0 4px;
-    white-space:nowrap;
-}
-
-.feature-item p{
     font-size:14px;
     color:#666;
-    line-height:1.3;
+    line-height:1.6;
     margin:0;
+    position:relative;
+    z-index:2;
+}
+
+/* ==========================================
+   TAGLINE UNDER FEATURES
+========================================== */
+
+.features-tagline{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    margin:48px auto 0;
+    max-width:900px;
+}
+
+.tagline-line{
+    flex:1;
+    max-width:120px;
+    height:1px;
+    background:#C89A3D;
+}
+
+.tagline-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:#C89A3D;
+    flex-shrink:0;
+}
+
+.tagline-text{
+    font-family:"Inter",sans-serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#333;
     white-space:nowrap;
 }
 
-.feature-divider{
-    width:1px;
-    height:60px;
-    background:#ddd;
-    flex-shrink:0;
-    align-self:center;
+.tagline-flourish{
+    text-align:center;
+    color:#C89A3D;
+    font-size:20px;
+    margin-top:10px;
 }
 
 /* ==========================================
@@ -206,19 +328,20 @@
 }
 
 .about-gallery{
-    grid-template-rows: repeat(2, 160px);
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows:200px;
+    margin-top:30px;
 }
 
 .about-features{
-    gap:12px;
+    grid-template-columns: repeat(2, 1fr);
+    gap:24px;
+    margin-top:40px;
 }
 
-.feature-item h4{
-    font-size:15px;
-}
-
-.feature-item p{
-    font-size:13px;
+.tagline-text{
+    font-size:12px;
+    letter-spacing:3px;
 }
 
 }
@@ -230,7 +353,7 @@
 @media(max-width:768px){
 
 .about-section{
-    padding:60px 20px;
+    padding:60px 5%;
 }
 
 .about-content .about-title{
@@ -245,27 +368,35 @@
 
 .about-gallery{
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 140px);
+    grid-auto-rows:140px;
     gap:12px;
+    margin-top:20px;
 }
 
 .about-features{
+    grid-template-columns: 1fr;
+    gap:44px;
+    margin-top:40px;
+}
+
+.feature-card{
+    padding:60px 20px 28px;
+}
+
+.features-tagline{
     flex-wrap:wrap;
-    justify-content:center;
-    gap:24px;
+    gap:10px;
 }
 
-.feature-divider{
-    display:none;
+.tagline-line{
+    max-width:60px;
 }
 
-.feature-item{
-    flex:0 0 40%;
-}
-
-.feature-item h4,
-.feature-item p{
+.tagline-text{
+    font-size:11px;
+    letter-spacing:2px;
     white-space:normal;
+    text-align:center;
 }
 
 .about-btn{

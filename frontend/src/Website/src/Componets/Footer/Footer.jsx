@@ -12,6 +12,7 @@ import {
   FaGlobe,
   FaShieldAlt,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 import "./Footer.css";
 import logo from "../../assets/logo.png";
@@ -50,29 +51,53 @@ const Footer = () => {
 
             </div>
 
-            <div className="footer-social">
+           <div className="footer-social">
+  <a
+    href="https://www.facebook.com/people/The-Royal-Kraft/100085229783054/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Facebook"
+  >
+    <FaFacebookF />
+  </a>
 
-              <a href="#">
-                <FaFacebookF />
-              </a>
+  <a
+    href="https://www.instagram.com/theroyalkraft"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Instagram"
+  >
+    <FaInstagram />
+  </a>
 
-              <a href="#">
-                <FaInstagram />
-              </a>
+    <a
+    href="https://x.com/TheRoyalkraft"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="X (Twitter)"
+  >
+    <FaXTwitter />
+  </a>
 
-              <a href="#">
-                <FaLinkedinIn />
-              </a>
 
-              <a href="#">
-                <FaPinterestP />
-              </a>
+  <a
+    href="https://in.pinterest.com/theroyalkraft/"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Pinterest"
+  >
+    <FaPinterestP />
+  </a>
 
-              <a href="#">
-                <FaYoutube />
-              </a>
-
-            </div>
+  <a
+    href="https://www.youtube.com/@theroyalkraft1"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="YouTube"
+  >
+    <FaYoutube />
+  </a>
+</div>
 
           </div>
 
@@ -185,9 +210,9 @@ const Footer = () => {
                 <FaMapMarkerAlt />
 
                 <span>
-                  123, Craft House,
+                  108, First Floor, DLF Galleria Mall, Mayur Phase-1,
                   <br />
-                  Bhubaneswar, Odisha, India
+                  Extension, Near Metro Mayur Extension New Delhi - 110091
                 </span>
               </div>
 
@@ -195,7 +220,7 @@ const Footer = () => {
                 <FaPhoneAlt />
 
                 <span>
-                  +91 98765 43210
+                  +91-9311826565
                 </span>
               </div>
 
@@ -203,7 +228,7 @@ const Footer = () => {
                 <FaEnvelope />
 
                 <span>
-                  info@theroyalcraft.com
+                  info@theroyalkraft.com
                 </span>
               </div>
 

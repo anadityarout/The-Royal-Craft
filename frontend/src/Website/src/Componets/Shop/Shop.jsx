@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Shop.css";
+import BannerImage from "../../assets/banner.jpg";
 import PageSeo from "../SeoPage/PageSeo";
 import ShopPage from "../Shop/ShopPage";
 import {
@@ -30,7 +31,7 @@ const Shop = () => {
     "Decorative Elements",
     "Stage",
     "Mandap",
-    "Root Court",
+    "Food Court",
     "Front Elevation",
     "Main Gate",
     "Fountain",
@@ -47,9 +48,7 @@ const Shop = () => {
   =========================== */
 
   const [shopData, setShopData] = useState({
-    title: "Shop",
-    breadcrumb: "Home > Shop",
-    image: "",
+      image: BannerImage,
   });
 
   /* ===========================
@@ -114,8 +113,7 @@ const Shop = () => {
             data.breadcrumb ||
             "Home > Shop",
 
-          image:
-            data.image || "",
+          image: data.image || BannerImage,
 
         });
 
@@ -128,7 +126,7 @@ const Shop = () => {
 
       if (!response.ok) {
 
-        throw new Error(
+        throw new Error(         
           "Unable to load products."
         );
 
@@ -313,39 +311,25 @@ return (
 
     {/* ================= Banner ================= */}
 
-    <section
-      className="shop-banner"
-      style={{
-        backgroundImage: shopData.image
-          ? `url(${shopData.image})`
-          : "linear-gradient(rgba(0,0,0,.80),rgba(0,0,0,.80))",
-      }}
-    >
+    <section className="shop-banner">
 
-      <div className="shop-overlay"></div>
+  <img
+    src={shopData.image}
+    alt="Shop Banner"
+    className="shop-banner-img"
+  />
 
-      <div className="shop-container">
+  <div className="shop-container">
+    <div className="shop-content">
+      <h1>{shopData.title}</h1>
 
-        <div className="shop-content">
-
-          <h1>{shopData.title}</h1>
-
-          <div className="breadcrumb">
-
-            <span>Home</span>
-
-            <span>›</span>
-
-            <span>{shopData.title}</span>
-
-          </div>
-
-        </div>
-
+      <div className="breadcrumb">
+        <span>{shopData.title}</span>
       </div>
+    </div>
+  </div>
 
-    </section>
-
+</section>
     {/* ================= Shop ================= */}
 
     <section className="shop-body">
@@ -502,7 +486,13 @@ return (
 
         {/* Product Image */}
 
-        <div className="product-image">
+        <div
+          className="product-image"
+          onClick={() => {
+            setSelectedProduct(product);
+            setShowProductPage(true);
+          }}
+        >
 
           <img
             src={

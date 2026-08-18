@@ -11,14 +11,16 @@ const WorkPage = () => {
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
-    image: null,
-    preview: "",
-    base64: "",
-    name: "",
-    description: "",
-  });
+  image: null,
+  preview: "",
+  imageUrl: "",
+  name: "",
+  description: "",
+});
 
   const [images, setImages] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editId, setEditId] = useState(null);
 
   useEffect(() => {
     loadImages();
@@ -28,27 +30,19 @@ const WorkPage = () => {
   // Convert Image To Base64
   // =====================================
 
-  const handleImage = (e) => {
+ const handleImage = (e) => {
 
-    const file = e.target.files[0];
+  const file = e.target.files[0];
 
-    if (!file) return;
+  if (!file) return;
 
-    const reader = new FileReader();
+  setForm((prev) => ({
+    ...prev,
+    image: file,
+    preview: URL.createObjectURL(file),
+  }));
 
-    reader.onloadend = () => {
-
-      setForm((prev) => ({
-  ...prev,
-  image: file,
-  preview: URL.createObjectURL(file),
-  base64: reader.result,
-}));
-    };
-
-    reader.readAsDataURL(file);
-
-  };
+};
 
   // =====================================
   // Load Images
@@ -83,58 +77,114 @@ const WorkPage = () => {
     }
 
   };
-    // =====================================
-  // Save Image
-  // =====================================
+  
 
-  const saveImage = async () => {
+  
+ // =====================================
+// Save / Update Image
+// =====================================
 
-    if (!form.base64) {
-  alert("Please upload an image.");
-  return;
-}
+const saveImage = async () => {
 
-    try {
+  try {
 
-      setLoading(true);
+    // Upload image only if user selected a new one
+    let imageUrl = form.preview;
 
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-  image: form.base64,
-  name: form.name.trim() || "",
-  description: form.description.trim() || "",
-}),
-      });
+    if (form.image) {
 
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.message || "Upload failed");
-      }
-
-      alert("Work image saved successfully.");
-
-      await loadImages();
-
-      resetForm();
-
-    } catch (err) {
-
-      console.error(err);
-
-      alert(err.message);
-
-    } finally {
-
-      setLoading(false);
+      imageUrl = await uploadImage();
 
     }
 
-  };
+    setLoading(true);
+
+    const response = await fetch(API_URL, {
+
+      method: isEditing ? "PUT" : "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+
+        id: editId,
+
+        image: imageUrl,
+
+        name: form.name.trim(),
+
+        description: form.description.trim(),
+
+      }),
+
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+
+      throw new Error(
+        result.message || "Operation failed"
+      );
+
+    }
+
+    alert(
+
+      isEditing
+        ? "Work updated successfully."
+        : "Work saved successfully."
+
+    );
+
+    await loadImages();
+
+    resetForm();
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert(err.message);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
+
+
+const uploadImage = async () => {
+
+  if (!form.image) {
+    return form.preview;
+  }
+
+  // Get Upload URL
+
+  const uploadResponse = await fetch(
+    `${API_URL}?upload=true&fileName=${encodeURIComponent(form.image.name)}&fileType=${encodeURIComponent(form.image.type)}`
+  );
+
+  const uploadData = await uploadResponse.json();
+
+  // Upload file directly to S3
+
+  await fetch(uploadData.uploadUrl, {
+    method: "PUT",
+    headers: {
+      "Content-Type": form.image.type,
+    },
+    body: form.image,
+  });
+
+  return uploadData.fileUrl;
+
+};
 
   // =====================================
   // Delete Image
@@ -187,22 +237,44 @@ const WorkPage = () => {
   };
 
   // =====================================
+// Edit Image
+// =====================================
+
+const editImage = (item) => {
+
+  setIsEditing(true);
+  setEditId(item.id);
+
+   setForm({
+  image: null,
+  preview: item.image,
+  imageUrl: item.image,
+  name: item.name,
+  description: item.description,
+});
+
+  setShowForm(true);
+
+};
+  // =====================================
   // Reset Form
   // =====================================
 
   const resetForm = () => {
 
-    setForm({
-      image: null,
-      preview: "",
-      base64: "",
-      name: "",
-      description: "",
-    });
+  setForm({
+  image: null,
+  preview: "",
+  imageUrl: "",
+  name: "",
+  description: "",
+});
 
-    setShowForm(false);
+  setIsEditing(false);
+  setEditId(null);
+  setShowForm(false);
 
-  };
+};
     return (
     <div className="workpage">
 
@@ -214,15 +286,9 @@ const WorkPage = () => {
 
         <button
   onClick={() => {
-    setForm({
-      image: null,
-      preview: "",
-      base64: "",
-      name: "",
-      description: "",
-    });
-    setShowForm(true);
-  }}
+  resetForm();
+  setShowForm(true);
+}}
   disabled={loading}
 >
   + Add Image
@@ -286,7 +352,13 @@ const WorkPage = () => {
               onClick={saveImage}
               disabled={loading}
             >
-              {loading ? "Saving..." : "Save"}
+              {loading
+  ? isEditing
+    ? "Updating..."
+    : "Saving..."
+  : isEditing
+  ? "Update"
+  : "Save"}
             </button>
 
             <button
@@ -361,17 +433,25 @@ const WorkPage = () => {
 
                   <td>{item.created}</td>
 
-                  <td>
+                 <td>
 
-                    <button
-                      className="delete-btn"
-                      onClick={() => deleteImage(item.id)}
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
+  <button
+    className="edit-btn"
+    onClick={() => editImage(item)}
+    disabled={loading}
+  >
+    Edit
+  </button>
 
-                  </td>
+  <button
+    className="delete-btn"
+    onClick={() => deleteImage(item.id)}
+    disabled={loading}
+  >
+    Delete
+  </button>
+
+</td>
 
                 </tr>
 

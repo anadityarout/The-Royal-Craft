@@ -10,7 +10,7 @@ const ProcessAdmin = () => {
 
   const categories = [
     "Design",
-    "Module Making",
+    "Mould Making",
     "Fiber Crafting",
     "Finishing",
     "Quality Check",
@@ -34,6 +34,9 @@ const ProcessAdmin = () => {
   const [processes, setProcesses] = useState([]);
 
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+const [editId, setEditId] = useState(null);
 
   // ================= Load Processes =================
 
@@ -117,69 +120,119 @@ const ProcessAdmin = () => {
   };
     // ================= Save Process =================
 
-  const handleSave = async () => {
+  // ================= Save / Update Process =================
 
-    if (!category) {
-  alert("Please select a category.");
-  return;
-}
+const handleSave = async () => {
 
-if (!image) {
-  alert("Please upload an image.");
-  return;
-}
-    try {
+  if (!category) {
+    alert("Please select a category.");
+    return;
+  }
 
-      setLoading(true);
+  try {
 
-      // Upload image to S3
-      const imageUrl = await uploadImage(image);
+    setLoading(true);
 
-      // Save process data
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          category,
-          processName,
-          description,
-          image: imageUrl,
-        }),
-      });
+    let imageUrl = preview;
 
-      if (!response.ok) {
-        throw new Error("Unable to save process.");
-      }
-
-      // Reload latest data
-      await loadProcesses();
-
-      // Reset form
-      setCategory("");
-      setProcessName("");
-      setDescription("");
-      setImage(null);
-      setPreview("");
-
-      setShowForm(false);
-
-      alert("Process saved successfully!");
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert("Failed to save process.");
-
-    } finally {
-
-      setLoading(false);
-
+    // Upload new image only if selected
+    if (image) {
+      imageUrl = await uploadImage(image);
     }
 
-  };
+    const response = await fetch(API_URL, {
+
+      method: isEditing ? "PUT" : "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+
+        id: editId,
+
+        category,
+
+        processName,
+
+        description,
+
+        image: imageUrl,
+
+      }),
+
+    });
+
+    if (!response.ok) {
+      throw new Error("Unable to save process.");
+    }
+
+    await loadProcesses();
+
+    resetForm();
+
+    alert(
+      isEditing
+        ? "Process updated successfully!"
+        : "Process saved successfully!"
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(error.message);
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
+  // ================= Edit Process =================
+
+const handleEdit = (process) => {
+
+  setIsEditing(true);
+
+  setEditId(process.id);
+
+  setCategory(process.category);
+
+  setProcessName(process.processName);
+
+  setDescription(process.description);
+
+  setPreview(process.image);
+
+  setImage(null);
+
+  setShowForm(true);
+
+};
+
+const resetForm = () => {
+
+  setCategory("");
+
+  setProcessName("");
+
+  setDescription("");
+
+  setImage(null);
+
+  setPreview("");
+
+  setIsEditing(false);
+
+  setEditId(null);
+
+  setShowForm(false);
+
+};
+
     // ================= Delete Process =================
 
   const handleDelete = async (id) => {
@@ -233,7 +286,13 @@ return (
 
       <button
         className="add-btn"
-        onClick={() => setShowForm(!showForm)}
+onClick={() => {
+
+  resetForm();
+
+  setShowForm(true);
+
+}}
       >
         {showForm ? "Close Form" : "+ Add Process"}
       </button>
@@ -341,7 +400,13 @@ return (
             onClick={handleSave}
             disabled={loading}
           >
-            {loading ? "Saving..." : "Save Process"}
+            {loading
+  ? isEditing
+    ? "Updating..."
+    : "Saving..."
+  : isEditing
+  ? "Update Process"
+  : "Save Process"}
           </button>
 
         </div>
@@ -442,15 +507,23 @@ return (
 
             <td>
 
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(process.id)}
-                disabled={loading}
-              >
-                {loading ? "Deleting..." : "Delete"}
-              </button>
+  <button
+    className="edit-btn"
+    onClick={() => handleEdit(process)}
+    disabled={loading}
+  >
+    Edit
+  </button>
 
-            </td>
+  <button
+    className="delete-btn"
+    onClick={() => handleDelete(process.id)}
+    disabled={loading}
+  >
+    Delete
+  </button>
+
+</td>
 
           </tr>
 

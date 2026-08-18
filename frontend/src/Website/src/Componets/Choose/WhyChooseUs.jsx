@@ -14,12 +14,14 @@ const API_URL =
 // ================= Why Choose List =================
 
 const whyChooseUs = [
-  "In-house manufacturing with advanced technology",
-  "Premium quality raw materials",
-  "Skilled artisans & expert craftsmen",
-  "Custom designs for unique requirements",
-  "Timely delivery & professional installation",
-  "Pan-India presence & reliable support",
+  "Premium Quality Materials",
+  "Custom Design Solutions",
+  "Skilled Master Craftsmen",
+  "Pan India Delivery & Installation",
+  "Modern Manufacturing Facility",
+  "Durable Weather-Resistant Products",
+  "Competitive Pricing",
+  "Timely Project Completion",
 ];
 
 // ================= Stats =================
@@ -102,7 +104,7 @@ const WhyChooseUs = () => {
         <div className="rk-why-left">
 
           <span className="rk-why-tag">
-            WHY CHOOSE
+            Why The Royal Craft?
           </span>
 
           <h2 className="rk-why-title">

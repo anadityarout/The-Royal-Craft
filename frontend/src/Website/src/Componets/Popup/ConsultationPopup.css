@@ -1,0 +1,207 @@
+/* ===== Consultation Popup — Royal Kraft ===== */
+
+.rk-cp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 14, 0.55);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: rk-cp-fadeIn 0.25s ease;
+}
+
+@keyframes rk-cp-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.rk-cp-modal {
+  position: relative;
+  background: #ffffff;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 12px;
+  padding: 40px 44px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  animation: rk-cp-slideUp 0.3s ease;
+}
+
+@keyframes rk-cp-slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.rk-cp-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: #f4f2ee;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.rk-cp-close:hover {
+  background: #e8e4dc;
+}
+
+.rk-cp-eyebrow {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #C89A2B;
+  margin-bottom: 10px;
+}
+
+.rk-cp-title {
+  font-family: "Playfair Display", serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.rk-cp-title em {
+  font-style: italic;
+  color: #C89A2B;
+  font-weight: 500;
+}
+
+.rk-cp-subtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  color: #6b6b6b;
+  margin-bottom: 28px;
+  line-height: 1.5;
+}
+
+.rk-cp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rk-cp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.rk-cp-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.rk-cp-field label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #333;
+}
+
+.rk-cp-field input,
+.rk-cp-field select,
+.rk-cp-field textarea {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fafafa;
+  color: #1a1a1a;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rk-cp-field input:focus,
+.rk-cp-field select:focus,
+.rk-cp-field textarea:focus {
+  border-color: #C89A2B;
+  box-shadow: 0 0 0 3px rgba(200, 154, 43, 0.15);
+  background: #fff;
+}
+
+.rk-cp-field textarea {
+  resize: vertical;
+  min-height: 90px;
+}
+
+.rk-cp-submit {
+  margin-top: 6px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  padding: 15px 24px;
+  border-radius: 6px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.rk-cp-submit:hover:not(:disabled) {
+  background: #C89A2B;
+}
+
+.rk-cp-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.rk-cp-success {
+  text-align: center;
+  padding: 30px 10px;
+}
+
+.rk-cp-success h3 {
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  color: #1a1a1a;
+  margin-bottom: 10px;
+}
+
+.rk-cp-success p {
+  font-family: "Inter", sans-serif;
+  color: #6b6b6b;
+  font-size: 15px;
+}
+
+/* ===== Mobile ===== */
+@media (max-width: 600px) {
+  .rk-cp-modal {
+    padding: 28px 22px;
+    border-radius: 10px;
+  }
+
+  .rk-cp-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .rk-cp-title {
+    font-size: 26px;
+  }
+}

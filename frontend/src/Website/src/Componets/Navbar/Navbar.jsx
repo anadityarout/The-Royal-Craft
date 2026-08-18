@@ -2,15 +2,22 @@ import React, { useState } from "react";
 import "./Navbar.css";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/navbar.png";
+import ConsultationPopup from "../Popup/ConsultationPopup";;
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [popupOpen, setPopupOpen] = useState(false);
 
   const location = useLocation();
 
   const closeMenu = () => {
     setMenuOpen(false);
+  };
+
+  const handleBookClick = () => {
+    closeMenu();
+    setPopupOpen(true);
   };
 
   const navLinks = [
@@ -48,6 +55,11 @@ const Navbar = () => {
               {item.name}
             </Link>
           ))}
+
+          {/* Book Consultation CTA */}
+          <button className="nav-cta-btn" onClick={handleBookClick}>
+            Book Consultation
+          </button>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -60,6 +72,12 @@ const Navbar = () => {
         </button>
 
       </div>
+
+      {/* Popup lives here, controlled entirely by Navbar's own state */}
+      <ConsultationPopup
+        isOpen={popupOpen}
+        onClose={() => setPopupOpen(false)}
+      />
     </header>
   );
 };

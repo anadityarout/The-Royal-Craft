@@ -10,6 +10,7 @@
     box-sizing: border-box;
 }
 
+
 /* ==========================================
    HEADER
 ========================================== */
@@ -27,6 +28,138 @@
     font-weight: 700;
     color: #1f2937;
 }
+
+
+/* ==========================================
+   SECTION DROPDOWN
+========================================== */
+
+.section-dropdown {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.section-select {
+    width: 220px;
+    height: 46px;
+    padding: 0 14px;
+    border: 1px solid #d8d8d8;
+    border-radius: 7px;
+    background: #fff;
+    color: #222;
+    font-size: 15px;
+    cursor: pointer;
+    outline: none;
+    transition: 0.3s;
+}
+
+.section-select:hover {
+    border-color: #1677ff;
+}
+
+.section-select:focus {
+    border-color: #1677ff;
+    box-shadow: 0 0 0 3px rgba(22, 119, 255, 0.1);
+}
+
+
+/* ==========================================
+   SHOP SECTION
+========================================== */
+
+.shop-section {
+    width: 100%;
+}
+
+.shop-header {
+    margin-bottom: 20px;
+}
+
+.shop-header h2 {
+    margin: 0 0 5px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.shop-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   CUSTOMERS SECTION
+========================================== */
+
+.customers-section {
+    width: 100%;
+}
+
+.customers-section .shop-header {
+    margin-bottom: 20px;
+}
+
+.customers-section .shop-header h2 {
+    margin: 0 0 5px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.customers-section .shop-header p {
+    margin: 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* ==========================================
+   SHOP / CUSTOMERS TABLE
+========================================== */
+
+.shop-table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.shop-table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+.shop-table-container th {
+    padding: 16px;
+    text-align: center;
+    background: #1677ff;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.shop-table-container td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+    color: #444;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.shop-table-container tbody tr {
+    transition: 0.2s;
+}
+
+.shop-table-container tbody tr:hover {
+    background: #f8fbff;
+}
+
 
 /* ==========================================
    SEARCH & FILTER
@@ -47,12 +180,14 @@
     border-radius: 8px;
     outline: none;
     font-size: 15px;
-    transition: .3s;
+    transition: 0.3s;
     background: #fff;
+    box-sizing: border-box;
 }
 
 .search-box:focus {
     border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.08);
 }
 
 .filter-select {
@@ -70,28 +205,30 @@
     border-color: #0d6efd;
 }
 
+
 /* ==========================================
-   TABLE
+   LEADS TABLE
 ========================================== */
 
 .table-container {
+    width: 100%;
     background: #fff;
     border-radius: 12px;
     overflow-x: auto;
-    box-shadow: 0 4px 15px rgba(0,0,0,.08);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-table {
+.table-container table {
     width: 100%;
     border-collapse: collapse;
     min-width: 1200px;
 }
 
-thead {
+.table-container thead {
     background: #0d6efd;
 }
 
-thead th {
+.table-container thead th {
     color: #fff;
     padding: 16px;
     text-align: center;
@@ -99,7 +236,7 @@ thead th {
     white-space: nowrap;
 }
 
-tbody td {
+.table-container tbody td {
     padding: 15px;
     text-align: center;
     border-bottom: 1px solid #ececec;
@@ -107,9 +244,14 @@ tbody td {
     vertical-align: middle;
 }
 
-tbody tr:hover {
+.table-container tbody tr {
+    transition: 0.2s;
+}
+
+.table-container tbody tr:hover {
     background: #f8fbff;
 }
+
 
 /* ==========================================
    STATUS
@@ -137,6 +279,7 @@ tbody tr:hover {
     background: #198754;
 }
 
+
 /* ==========================================
    BUTTONS
 ========================================== */
@@ -150,8 +293,12 @@ tbody tr:hover {
     color: #fff;
     font-size: 14px;
     margin: 3px;
-    transition: .3s;
+    transition: 0.3s;
+    font-weight: 500;
 }
+
+
+/* VIEW BUTTON */
 
 .view-btn {
     background: #0d6efd;
@@ -159,7 +306,11 @@ tbody tr:hover {
 
 .view-btn:hover {
     background: #0b5ed7;
+    transform: translateY(-1px);
 }
+
+
+/* DELETE BUTTON */
 
 .delete-btn {
     background: #dc3545;
@@ -167,36 +318,97 @@ tbody tr:hover {
 
 .delete-btn:hover {
     background: #bb2d3b;
+    transform: translateY(-1px);
 }
 
+
 /* ==========================================
-   POPUP
+   POPUP OVERLAY
 ========================================== */
 
 .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,.45);
+    background: rgba(0, 0, 0, 0.48);
+
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+
+    z-index: 9999;
+
+    padding: 20px;
+    box-sizing: border-box;
 }
+
+
+/* ==========================================
+   POPUP
+========================================== */
 
 .popup {
     width: 650px;
     max-width: 95%;
+    max-height: 90vh;
+
+    overflow-y: auto;
+
     background: #fff;
-    border-radius: 12px;
+    border-radius: 14px;
+
     padding: 30px;
-    box-shadow: 0 15px 40px rgba(0,0,0,.2);
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+
+    box-sizing: border-box;
+
+    animation: popupOpen 0.2s ease;
 }
+
+
+/* ==========================================
+   CUSTOMER POPUP
+========================================== */
+
+.customer-popup {
+    width: 500px;
+    max-width: 95%;
+}
+
+
+/* ==========================================
+   POPUP ANIMATION
+========================================== */
+
+@keyframes popupOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-15px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+/* ==========================================
+   POPUP TITLE
+========================================== */
 
 .popup h2 {
     margin: 0 0 25px;
     text-align: center;
     color: #1f2937;
+    font-size: 23px;
+    font-weight: 700;
 }
+
+
+/* ==========================================
+   POPUP CONTENT
+========================================== */
 
 .popup-content {
     display: flex;
@@ -204,31 +416,83 @@ tbody tr:hover {
     gap: 18px;
 }
 
+
+/* ==========================================
+   POPUP ROW
+========================================== */
+
 .popup-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+
     gap: 20px;
+
     border-bottom: 1px solid #eee;
+
     padding-bottom: 12px;
 }
+
+.popup-row:last-child {
+    border-bottom: none;
+}
+
+
+/* ==========================================
+   POPUP LABEL
+========================================== */
 
 .popup-row strong {
     width: 180px;
     color: #111827;
+    font-size: 14px;
+    font-weight: 600;
 }
+
+
+/* ==========================================
+   POPUP VALUE
+========================================== */
 
 .popup-row span {
     flex: 1;
+
     text-align: right;
+
     color: #555;
+
+    font-size: 14px;
+
+    word-break: break-word;
 }
+
+
+/* ==========================================
+   POPUP SELECT
+========================================== */
 
 .popup-row select {
     width: 180px;
+
     padding: 10px;
+
     border: 1px solid #ddd;
+
     border-radius: 6px;
+
+    background: #fff;
+
+    outline: none;
+
+    cursor: pointer;
+
+    font-size: 14px;
 }
+
+.popup-row select:focus {
+    border-color: #0d6efd;
+}
+
 
 /* ==========================================
    POPUP BUTTONS
@@ -237,19 +501,34 @@ tbody tr:hover {
 .popup-buttons {
     display: flex;
     justify-content: flex-end;
+
     gap: 15px;
+
     margin-top: 30px;
 }
+
+
+/* ==========================================
+   SAVE BUTTON
+========================================== */
 
 .save-btn,
 .close-btn {
     border: none;
+
     padding: 12px 24px;
+
     border-radius: 8px;
+
     cursor: pointer;
+
     color: #fff;
+
     font-size: 15px;
-    transition: .3s;
+
+    transition: 0.3s;
+
+    font-weight: 500;
 }
 
 .save-btn {
@@ -260,6 +539,11 @@ tbody tr:hover {
     background: #157347;
 }
 
+
+/* ==========================================
+   CLOSE BUTTON
+========================================== */
+
 .close-btn {
     background: #6c757d;
 }
@@ -267,6 +551,7 @@ tbody tr:hover {
 .close-btn:hover {
     background: #5a6268;
 }
+
 
 /* ==========================================
    EMPTY STATE
@@ -276,18 +561,31 @@ tbody td[colspan] {
     line-height: 1.8;
 }
 
+
 /* ==========================================
    SCROLLBAR
 ========================================== */
 
-.table-container::-webkit-scrollbar {
+.table-container::-webkit-scrollbar,
+.shop-table-container::-webkit-scrollbar,
+.popup::-webkit-scrollbar {
     height: 8px;
+    width: 8px;
 }
 
-.table-container::-webkit-scrollbar-thumb {
+.table-container::-webkit-scrollbar-thumb,
+.shop-table-container::-webkit-scrollbar-thumb,
+.popup::-webkit-scrollbar-thumb {
     background: #c8c8c8;
     border-radius: 20px;
 }
+
+.table-container::-webkit-scrollbar-track,
+.shop-table-container::-webkit-scrollbar-track,
+.popup::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
 
 /* ==========================================
    RESPONSIVE
@@ -299,28 +597,69 @@ tbody td[colspan] {
         padding: 20px;
     }
 
+
+    /* HEADER */
+
     .header {
         flex-direction: column;
         align-items: flex-start;
         gap: 15px;
     }
 
+    .header h2 {
+        font-size: 24px;
+    }
+
+
+    /* DROPDOWN */
+
+    .section-select {
+        width: 100%;
+    }
+
+
+    /* SEARCH */
+
     .top-bar {
         flex-direction: column;
+        gap: 12px;
     }
 
     .search-box,
     .filter-select {
         width: 100%;
+        min-width: 100%;
     }
 
-    .popup {
-        padding: 20px;
+
+    /* TABLE */
+
+    .table-container,
+    .shop-table-container {
+        border-radius: 8px;
     }
+
+
+    /* POPUP */
+
+    .popup {
+        width: 100%;
+        max-width: 100%;
+        padding: 22px;
+        border-radius: 12px;
+    }
+
+    .customer-popup {
+        width: 100%;
+    }
+
+
+    /* POPUP ROW */
 
     .popup-row {
         flex-direction: column;
-        gap: 8px;
+        align-items: flex-start;
+        gap: 7px;
     }
 
     .popup-row strong,
@@ -333,6 +672,9 @@ tbody td[colspan] {
         width: 100%;
     }
 
+
+    /* POPUP BUTTONS */
+
     .popup-buttons {
         flex-direction: column;
     }
@@ -340,5 +682,43 @@ tbody td[colspan] {
     .save-btn,
     .close-btn {
         width: 100%;
+    }
+}
+
+
+/* ==========================================
+   SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .leads-page {
+        padding: 15px;
+    }
+
+    .header h2 {
+        font-size: 22px;
+    }
+
+    .shop-header h2 {
+        font-size: 21px;
+    }
+
+    .shop-header p {
+        font-size: 13px;
+    }
+
+    .popup {
+        padding: 18px;
+    }
+
+    .popup h2 {
+        font-size: 20px;
+    }
+
+    .view-btn,
+    .delete-btn {
+        padding: 8px 12px;
+        font-size: 13px;
     }
 }
