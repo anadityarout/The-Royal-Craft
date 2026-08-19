@@ -28,7 +28,7 @@ const ShopHome = () => {
 
       const data = await response.json();
 
-      setProducts(Array.isArray(data) ? data.slice(0, 12) : []);
+      setProducts(Array.isArray(data) ? data : []);
     } catch (err) {
       console.log(err);
       setProducts([]);

@@ -1,5 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
 
+/* =========================================================
+   PROJECT SECTION
+========================================================= */
+
 .rk-project-section {
   width: 100%;
   padding: 70px 5%;
@@ -7,9 +11,9 @@
   box-sizing: border-box;
 }
 
-/* ==========================
-   CONTAINER (2-column layout)
-========================== */
+/* =========================================================
+   CONTAINER - 2 COLUMN LAYOUT
+========================================================= */
 
 .rk-project-container {
   max-width: 1700px;
@@ -20,9 +24,9 @@
   align-items: start;
 }
 
-/* ==========================
-   LEFT: TEXT CONTENT
-========================== */
+/* =========================================================
+   LEFT - TEXT CONTENT
+========================================================= */
 
 .rk-project-content {
   text-align: left;
@@ -58,6 +62,10 @@
   margin-bottom: 26px;
 }
 
+/* =========================================================
+   VIEW ALL PROJECTS BUTTON
+========================================================= */
+
 .rk-project-btn {
   padding: 13px 28px;
   border: 1px solid #333;
@@ -68,7 +76,7 @@
   font-weight: 700;
   letter-spacing: 1px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: 0.3s ease;
   white-space: nowrap;
 }
 
@@ -77,9 +85,9 @@
   color: #fff;
 }
 
-/* ==========================
-   RIGHT: GRID
-========================== */
+/* =========================================================
+   RIGHT - PROJECT GRID
+========================================================= */
 
 .rk-project-grid-wrapper {
   width: 100%;
@@ -92,17 +100,25 @@
   width: 100%;
 }
 
-/* ==========================
+/* =========================================================
    PROJECT CARD
-========================== */
+   IMPORTANT:
+   Card itself is NOT clickable.
+========================================================= */
 
 .rk-project-card {
   background: #fff;
   border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
-  cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  /* Changed from pointer */
+  cursor: default;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
   width: 100%;
   min-width: 0;
   padding-top: 16px;
@@ -112,6 +128,11 @@
   transform: translateY(-4px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
+
+/* =========================================================
+   PROJECT IMAGE
+   Image is NOT clickable.
+========================================================= */
 
 .rk-project-image {
   height: 220px;
@@ -125,13 +146,21 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: 0.4s;
   display: block;
+
+  transition: transform 0.4s ease;
+
+  /* Image itself is not clickable */
+  cursor: default;
 }
 
 .rk-project-card:hover .rk-project-image img {
   transform: scale(1.05);
 }
+
+/* =========================================================
+   PROJECT FOOTER
+========================================================= */
 
 .rk-project-footer {
   display: flex;
@@ -142,51 +171,113 @@
   margin-top: 16px;
 }
 
+/* =========================================================
+   PROJECT ICON
+========================================================= */
+
 .rk-project-icon {
   width: 28px;
   height: 28px;
   flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: rgba(255, 255, 255, 0.1);
   border-radius: 6px;
+
   font-size: 14px;
+
+  /* Not clickable */
+  cursor: default;
 }
+
+/* =========================================================
+   PROJECT NAME
+========================================================= */
 
 .rk-project-name {
   flex: 1;
+
   font-family: "Inter", sans-serif;
   font-size: 13px;
   font-weight: 600;
   color: #fff;
   letter-spacing: 0.3px;
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  /* Not clickable */
+  cursor: default;
 }
+
+/* =========================================================
+   ARROW BUTTON
+   ONLY THIS ELEMENT IS CLICKABLE
+========================================================= */
 
 .rk-project-arrow-btn {
   width: 30px;
   height: 30px;
   flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   background: #c9a15d;
   color: #1a1a1a;
+
   border-radius: 6px;
+
   font-size: 14px;
-  transition: 0.3s;
+  font-weight: 600;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.2s ease;
+
+  /* IMPORTANT */
+  cursor: pointer;
+
+  /* Makes it feel like a button */
+  user-select: none;
 }
 
-.rk-project-card:hover .rk-project-arrow-btn {
+/* =========================================================
+   ARROW HOVER
+========================================================= */
+
+.rk-project-arrow-btn:hover {
   background: #fff;
+  color: #1a1a1a;
+  transform: translateX(2px);
 }
 
-/* ==========================
-   RESPONSIVE
-========================== */
+/* =========================================================
+   ARROW ACTIVE
+========================================================= */
+
+.rk-project-arrow-btn:active {
+  transform: translateX(2px) scale(0.95);
+}
+
+/* =========================================================
+   ARROW KEYBOARD FOCUS
+========================================================= */
+
+.rk-project-arrow-btn:focus-visible {
+  outline: 2px solid #c9a15d;
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
 
 @media (max-width: 1100px) {
   .rk-project-container {
@@ -198,10 +289,18 @@
     white-space: normal;
   }
 
+  .rk-project-desc {
+    max-width: 600px;
+  }
+
   .rk-project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
   }
 }
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
 
 @media (max-width: 768px) {
   .rk-project-section {
@@ -212,11 +311,50 @@
     font-size: 22px;
   }
 
+  .rk-project-desc {
+    font-size: 13px;
+    max-width: 100%;
+  }
+
   .rk-project-grid {
     grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px;
   }
 
   .rk-project-image {
     height: 180px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  .rk-project-section {
+    padding: 40px 4%;
+  }
+
+  .rk-project-title {
+    font-size: 21px;
+  }
+
+  .rk-project-tag {
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  .rk-project-btn {
+    padding: 12px 22px;
+  }
+
+  .rk-project-image {
+    height: 170px;
+    margin: 0 12px;
+    width: calc(100% - 24px);
+  }
+
+  .rk-project-footer {
+    padding: 12px;
   }
 }
