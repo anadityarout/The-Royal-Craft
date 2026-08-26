@@ -33,7 +33,7 @@ const Footer = () => {
 
               <img
                 src={logo}
-                alt="The Royal Craft"
+                alt="The Royal Kraft"
                 className="footer-logo"
               />
 
@@ -42,7 +42,7 @@ const Footer = () => {
             <div className="footer-description">
 
               <p>
-                The Royal Craft is a leading provider of premium
+                The Royal Kraft is a leading provider of premium
                 architectural and decorative solutions. We blend
                 innovation, craftsmanship and quality to deliver
                 timeless creations that elevate spaces and exceed
@@ -220,7 +220,7 @@ const Footer = () => {
                 <FaPhoneAlt />
 
                 <span>
-                  +91-9311826565
+                  +91-8130462200
                 </span>
               </div>
 
@@ -236,7 +236,7 @@ const Footer = () => {
                 <FaGlobe />
 
                 <span>
-                  www.theroyalcraft.com
+                  www.theroyalkraft.com
                 </span>
               </div>
 
@@ -255,7 +255,7 @@ const Footer = () => {
             <FaShieldAlt className="shield-icon" />
 
             <span>
-              © 2026 The Royal Craft. All Rights Reserved.
+              © 2026 The Royal Kraft. All Rights Reserved.
             </span>
 
           </div>

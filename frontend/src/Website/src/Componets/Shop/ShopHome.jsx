@@ -71,7 +71,7 @@ const ShopHome = () => {
 
         <p className="shop-home-desc">
           Handpicked décor accents and luxury pieces available for purchase.
-          Bring home the elegance of The Royal Craft.
+          Bring home the elegance of The Royal Kraft.
         </p>
       </div>
 

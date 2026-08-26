@@ -115,7 +115,7 @@ const ContactPage = () => {
 
               <div>
                 <h3>Phone</h3>
-                <p>+91 9876543210</p>
+                <p>+91 8130462200</p>
                 <p>Mon–sat : 9:30 AM - 5:30 PM</p>
               </div>
             </div>
@@ -127,7 +127,6 @@ const ContactPage = () => {
                 <h3>Business Hours</h3>
 
                 <p>Monday - saturday : 9:30 AM - 5:30 PM</p>
-                <p>Saturday : 9:30 AM - 5:30 PM</p>
                 <p>Sunday : Closed</p>
 
               </div>

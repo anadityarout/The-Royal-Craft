@@ -133,7 +133,7 @@ const HomeSlider = () => {
             alt={slide.name}
             className="slider-media"
             loading={index === 0 ? "eager" : "lazy"}
-            fetchpriority={index === 0 ? "high" : "auto"}
+            fetchPriority={index === 0 ? "high" : "auto"}
           />
 
           <div className="slider-overlay"></div>

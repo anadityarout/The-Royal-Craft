@@ -499,7 +499,7 @@ const saveAbout = async () => {
 )}
 
 <label className="upload-title">
-  Life at Royal Craft Image
+  Life at Royal Kraft Image
 </label>
 
 <input
@@ -571,7 +571,7 @@ const saveAbout = async () => {
                 <th>Description</th>
                 <th>Our Story</th>
                 <th>Founder Vision</th>
-                <th>Life at Royal Craft</th>
+                <th>Life at Royal Kraft</th>
                 <th>Action</th>
                 
               </tr>

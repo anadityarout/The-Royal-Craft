@@ -485,22 +485,19 @@ const AboutPage = () => {
             </h3>
 
             <p>
-              Vinay Gupta is the visionary founder and CEO of Royal Craft,
-              bringing years of expertise in technology innovation and digital
-              transformation. His journey began with a mission to bridge the
-              gap between advanced technology and practical business solutions.
+             Vinay Gupta, Founder & CEO of The Royal Kraft, leads the company with a vision to transform ordinary spaces into remarkable destinations.
+              With extensive experience in construction, architecture and project execution
+             , he has built The Royal Kraft around innovation, quality craftsmanship and customer-focused design.
             </p>
 
             <p>
-              Under his leadership, Royal Craft has grown into a trusted
-              technology partner serving businesses across multiple industries
-              with innovative and reliable digital solutions.
+              Under his leadership, The Royal Kraft has developed expertise in fiber-based banquet halls, wedding resorts, architectural structures, interiors, exteriors and customized spaces. The company combines creative design with advanced fiber solutions and professional construction expertise to deliver distinctive projects.
             </p>
 
             <p>
-              His passion for innovation, customer success and continuous
-              improvement inspires the entire team to deliver exceptional
-              results and build long-term client relationships.
+             His vision is to create spaces that are not only visually impressive but also functional,
+              durable and memorable. With a strong focus on quality, innovation and client satisfaction,
+               Vinay Gupta and his team continue to turn unique ideas into beautifully crafted spaces.
             </p>
 
             <div className="fv-cards">
@@ -541,7 +538,7 @@ const AboutPage = () => {
 
         <div className="lo-heading">
 
-          <h2>Life at Royal Craft</h2>
+          <h2>Life at Royal Kraft</h2>
 
         </div>
 
@@ -555,7 +552,7 @@ const AboutPage = () => {
             </h3>
 
             <p>
-              At Royal Craft, we foster a dynamic and inclusive workplace where
+              At Royal Kraft, we foster a dynamic and inclusive workplace where
               creativity, collaboration and innovation thrive. Every team member
               is encouraged to contribute ideas, embrace challenges and grow
               both personally and professionally.
@@ -581,7 +578,7 @@ const AboutPage = () => {
 
             <img
               src={about?.lifeImage || ""}
-              alt="Life at Royal Craft"
+              alt="Life at Royal Kraft"
               className="lo-image"
             />
 
@@ -675,7 +672,7 @@ const AboutPage = () => {
 
             <p>
               Every project is completed with strict quality standards,
-              premium materials and expert craftsmanship.
+              premium materials and expert kraftsmanship.
             </p>
 
           </div>
@@ -751,7 +748,7 @@ const AboutPage = () => {
         <div className="scale-card">
 
           <h2>
-            Build Your Dream Space with Royal Craft
+            Build Your Dream Space with Royal Kraft
           </h2>
 
           <p>

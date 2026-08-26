@@ -104,7 +104,7 @@ const WhyChooseUs = () => {
         <div className="rk-why-left">
 
           <span className="rk-why-tag">
-            Why The Royal Craft?
+            Why The Royal Kraft?
           </span>
 
           <h2 className="rk-why-title">
