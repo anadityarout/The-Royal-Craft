@@ -1,5 +1,10 @@
 import React from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Outlet,
+  useLocation,
+} from "react-router-dom";
 
 import Navbar from "./Componets/Navbar/Navbar";
 import PageSeo from "./Componets/SeoPage/PageSeo";
@@ -18,13 +23,16 @@ import GalleryPage from "./Componets/Gallery/GalleryPage";
 import AboutPage from "./Componets/AboutPage/AboutPage";
 import Footer from "./Componets/Footer/Footer";
 import ContactPage from "./Componets/Contact/ContactPage";
+
 import Shop from "./Componets/Shop/Shop";
+import ShopHome from "./Componets/Shop/ShopHome";
+import ShopPage from "./Componets/Shop/ShopPage";
+
 import Project from "./Componets/Projects/Project";
 import WhyChooseUs from "./Componets/Choose/WhyChooseUs";
 import Banner from "./Componets/Banner/Banner";
 import ProjectPage from "./Componets/Projects/ProjectPage";
 import Client from "./Componets/Client/Client";
-import ShopHome from "./Componets/Shop/ShopHome";
 import Popup from "./Componets/Popup/Popup";
 
 
@@ -42,7 +50,10 @@ function Home() {
       <Process />
       <About />
       <Work />
+
+      {/* SHOP HOME */}
       <ShopHome />
+
       <Product />
       <Project />
       <WhyChooseUs />
@@ -55,8 +66,51 @@ function Home() {
 
 
 /* =========================================================
+   SHOP ROUTE
+========================================================= */
+
+function ShopRoute() {
+  const location = useLocation();
+
+  const product = location.state?.product;
+
+  const showAllProducts =
+    location.state?.showAllProducts;
+
+  /*
+   * PRODUCT CLICKED FROM SHOP HOME
+   *
+   * ShopHome sends:
+   *
+   * state={{
+   *   product: item
+   * }}
+   *
+   * So directly open ShopPage.
+   */
+
+  if (product && !showAllProducts) {
+    return (
+      <ShopPage
+        product={product}
+        onBack={() => window.history.back()}
+      />
+    );
+  }
+
+  /*
+   * VIEW ALL PRODUCTS
+   *
+   * If there is no selected product,
+   * show the normal Shop listing.
+   */
+
+  return <Shop />;
+}
+
+
+/* =========================================================
    WEBSITE LAYOUT
-   Navbar + Footer only appear on valid website pages
 ========================================================= */
 
 function WebsiteLayout() {
@@ -74,8 +128,6 @@ function WebsiteLayout() {
 
 /* =========================================================
    404 PAGE
-   No Navbar
-   No Footer
 ========================================================= */
 
 function NotFound() {
@@ -163,51 +215,71 @@ function App() {
       <Route element={<WebsiteLayout />}>
 
         {/* HOME */}
-        <Route path="/" element={<Home />} />
+
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
 
         {/* PROJECT */}
+
         <Route
           path="/project"
           element={<ProjectPage />}
         />
 
+
         {/* PRODUCT */}
+
         <Route
           path="/product"
           element={<ProductPage />}
         />
 
+
         {/* SHOP */}
+
         <Route
           path="/shop"
-          element={<Shop />}
+          element={<ShopRoute />}
         />
 
+
         {/* SERVICE */}
+
         <Route
           path="/service"
           element={<ServicePage />}
         />
 
+
         {/* BLOG */}
+
         <Route
           path="/blog"
           element={<BlogPage />}
         />
 
+
         {/* GALLERY */}
+
         <Route
           path="/gallery"
           element={<GalleryPage />}
         />
 
+
         {/* ABOUT */}
+
         <Route
           path="/about"
           element={<AboutPage />}
         />
 
+
         {/* CONTACT */}
+
         <Route
           path="/contact"
           element={<ContactPage />}
@@ -218,7 +290,6 @@ function App() {
 
       {/* =====================================================
           INVALID URL
-          IMPORTANT: OUTSIDE WebsiteLayout
       ===================================================== */}
 
       <Route

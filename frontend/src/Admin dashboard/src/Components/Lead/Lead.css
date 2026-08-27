@@ -4,9 +4,10 @@
 
 .leads-page {
     flex: 1;
+    width: 100%;
+    min-height: 100vh;
     padding: 30px;
     background: #f5f7fb;
-    min-height: 100vh;
     box-sizing: border-box;
 }
 
@@ -129,8 +130,8 @@
 
 .shop-table-container table {
     width: 100%;
+    min-width: 1100px;
     border-collapse: collapse;
-    min-width: 700px;
 }
 
 .shop-table-container th {
@@ -158,6 +159,32 @@
 
 .shop-table-container tbody tr:hover {
     background: #f8fbff;
+}
+
+
+/* ==========================================
+   SHOP REQUIREMENTS COLUMN
+========================================== */
+
+.requirements-cell {
+    width: 220px;
+    max-width: 220px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    color: #444;
+}
+
+
+/*
+   Make the requirements easier to identify
+   when there is actual text.
+*/
+
+.requirements-cell:not(:empty) {
+    font-weight: 500;
 }
 
 
@@ -264,6 +291,7 @@
     color: #fff;
     font-size: 13px;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .status.new {
@@ -298,7 +326,9 @@
 }
 
 
-/* VIEW BUTTON */
+/* ==========================================
+   VIEW BUTTON
+========================================== */
 
 .view-btn {
     background: #0d6efd;
@@ -310,7 +340,9 @@
 }
 
 
-/* DELETE BUTTON */
+/* ==========================================
+   DELETE BUTTON
+========================================== */
 
 .delete-btn {
     background: #dc3545;
@@ -329,6 +361,7 @@
 .popup-overlay {
     position: fixed;
     inset: 0;
+
     background: rgba(0, 0, 0, 0.48);
 
     display: flex;
@@ -338,6 +371,7 @@
     z-index: 9999;
 
     padding: 20px;
+
     box-sizing: border-box;
 }
 
@@ -354,11 +388,13 @@
     overflow-y: auto;
 
     background: #fff;
+
     border-radius: 14px;
 
     padding: 30px;
 
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+    box-shadow:
+        0 15px 40px rgba(0, 0, 0, 0.2);
 
     box-sizing: border-box;
 
@@ -373,6 +409,26 @@
 .customer-popup {
     width: 500px;
     max-width: 95%;
+}
+
+
+/* ==========================================
+   SHOP REQUIREMENTS POPUP
+========================================== */
+
+.requirements-popup-row {
+    align-items: flex-start;
+}
+
+.requirements-popup-row span {
+    max-width: 100%;
+
+    text-align: right;
+
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    line-height: 1.6;
 }
 
 
@@ -399,8 +455,11 @@
 
 .popup h2 {
     margin: 0 0 25px;
+
     text-align: center;
+
     color: #1f2937;
+
     font-size: 23px;
     font-weight: 700;
 }
@@ -423,6 +482,7 @@
 
 .popup-row {
     display: flex;
+
     justify-content: space-between;
     align-items: center;
 
@@ -444,9 +504,14 @@
 
 .popup-row strong {
     width: 180px;
+
     color: #111827;
+
     font-size: 14px;
+
     font-weight: 600;
+
+    flex-shrink: 0;
 }
 
 
@@ -500,6 +565,7 @@
 
 .popup-buttons {
     display: flex;
+
     justify-content: flex-end;
 
     gap: 15px;
@@ -563,25 +629,39 @@ tbody td[colspan] {
 
 
 /* ==========================================
-   SCROLLBAR
+   TABLE SCROLLBAR
 ========================================== */
 
 .table-container::-webkit-scrollbar,
-.shop-table-container::-webkit-scrollbar,
-.popup::-webkit-scrollbar {
+.shop-table-container::-webkit-scrollbar {
     height: 8px;
-    width: 8px;
 }
 
 .table-container::-webkit-scrollbar-thumb,
-.shop-table-container::-webkit-scrollbar-thumb,
-.popup::-webkit-scrollbar-thumb {
+.shop-table-container::-webkit-scrollbar-thumb {
     background: #c8c8c8;
     border-radius: 20px;
 }
 
 .table-container::-webkit-scrollbar-track,
-.shop-table-container::-webkit-scrollbar-track,
+.shop-table-container::-webkit-scrollbar-track {
+    background: #f5f5f5;
+}
+
+
+/* ==========================================
+   POPUP SCROLLBAR
+========================================== */
+
+.popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.popup::-webkit-scrollbar-thumb {
+    background: #c8c8c8;
+    border-radius: 20px;
+}
+
 .popup::-webkit-scrollbar-track {
     background: #f5f5f5;
 }
@@ -640,6 +720,19 @@ tbody td[colspan] {
     }
 
 
+    .shop-table-container table {
+        min-width: 1100px;
+    }
+
+
+    /* REQUIREMENTS */
+
+    .requirements-cell {
+        width: 180px;
+        max-width: 180px;
+    }
+
+
     /* POPUP */
 
     .popup {
@@ -670,6 +763,15 @@ tbody td[colspan] {
 
     .popup-row select {
         width: 100%;
+    }
+
+
+    /* REQUIREMENTS POPUP */
+
+    .requirements-popup-row span {
+        text-align: left;
+        width: 100%;
+        max-width: 100%;
     }
 
 
@@ -720,5 +822,19 @@ tbody td[colspan] {
     .delete-btn {
         padding: 8px 12px;
         font-size: 13px;
+    }
+
+
+    /* REQUIREMENTS */
+
+    .requirements-cell {
+        width: 150px;
+        max-width: 150px;
+    }
+
+
+    .requirements-popup-row span {
+        font-size: 14px;
+        line-height: 1.6;
     }
 }

@@ -185,6 +185,7 @@ const ShopPage = ({
     email: "",
     phone: "",
     city: "",
+    requirements: "",
   });
 
   // =====================================================
@@ -359,24 +360,16 @@ const ShopPage = ({
       // =================================================
 
       const enquiryData = {
-        fullName: formData.fullName.trim(),
+  fullName: formData.fullName.trim(),
+  email: formData.email.trim(),
+  phone: formData.phone.trim(),
+  city: formData.city.trim(),
+  requirements: formData.requirements.trim(),
 
-        email: formData.email.trim(),
-
-        phone: formData.phone.trim(),
-
-        city: formData.city.trim(),
-
-        productId:
-          product?.id || "",
-
-        productName:
-          product?.name ||
-          "Unknown Product",
-
-        category:
-          product?.category || "",
-      };
+  productId: product?.id || "",
+  productName: product?.name || "Unknown Product",
+  category: product?.category || "",
+};
 
       console.log(
         "Sending enquiry:",
@@ -451,6 +444,7 @@ const ShopPage = ({
         email: "",
         phone: "",
         city: "",
+          requirements: "",
       });
 
       // Close popup
@@ -1212,6 +1206,25 @@ const ShopPage = ({
                 />
 
               </div>
+
+              {/* REQUIREMENTS */}
+
+<div className="rk-enquiry-field">
+
+  <label>
+    Requirements
+  </label>
+
+  <textarea
+    name="requirements"
+    placeholder="Tell us about your requirements..."
+    value={formData.requirements}
+    onChange={handleChange}
+    disabled={submitting}
+    rows={4}
+  />
+
+</div>
 
               {/* BUTTONS */}
 
