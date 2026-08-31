@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Heart,
-  ShoppingCart,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
@@ -11,11 +10,35 @@ import "./ShopHome.css";
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/shop-product";
 
+const FALLBACK_IMAGE =
+  "https://via.placeholder.com/400x400?text=No+Image";
+
+// =====================================================
+// CREATE PRODUCT SLUG
+// =====================================================
+
+const createProductSlug = (name) => {
+  return String(name || "product")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+// =====================================================
+// SHOP HOME
+// =====================================================
+
 const ShopHome = () => {
   const [products, setProducts] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const trackRef = useRef(null);
+
+  // =====================================================
+  // LOAD PRODUCTS
+  // =====================================================
 
   useEffect(() => {
     loadProducts();
@@ -33,37 +56,62 @@ const ShopHome = () => {
 
       const data = await response.json();
 
-      setProducts(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.error("Product loading error:", err);
+      // =================================================
+      // HANDLE DIFFERENT API RESPONSE FORMATS
+      // =================================================
+
+      let productList = [];
+
+      if (Array.isArray(data)) {
+        productList = data;
+      } else if (Array.isArray(data?.products)) {
+        productList = data.products;
+      } else if (Array.isArray(data?.items)) {
+        productList = data.items;
+      } else if (Array.isArray(data?.data)) {
+        productList = data.data;
+      }
+
+      setProducts(productList);
+    } catch (error) {
+      console.error(
+        "Product loading error:",
+        error
+      );
+
       setProducts([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // ==============================
+  // =====================================================
   // WISHLIST
-  // ==============================
+  // =====================================================
 
   const toggleWishlist = (id) => {
-    setWishlist((prev) =>
-      prev.includes(id)
-        ? prev.filter((w) => w !== id)
-        : [...prev, id]
-    );
+    setWishlist((prev) => {
+      if (prev.includes(id)) {
+        return prev.filter(
+          (wishlistId) => wishlistId !== id
+        );
+      }
+
+      return [...prev, id];
+    });
   };
 
-  // ==============================
+  // =====================================================
   // CAROUSEL
-  // ==============================
+  // =====================================================
 
   const scrollByCard = (direction) => {
     const track = trackRef.current;
 
     if (!track) return;
 
-    const card = track.querySelector(".shop-card");
+    const card =
+      track.querySelector(".shop-card");
 
     const cardWidth = card
       ? card.offsetWidth + 16
@@ -78,13 +126,31 @@ const ShopHome = () => {
     });
   };
 
+  // =====================================================
+  // IMAGE ERROR HANDLER
+  // =====================================================
+
+  const handleImageError = (event) => {
+    if (
+      event.currentTarget.src !==
+      FALLBACK_IMAGE
+    ) {
+      event.currentTarget.src =
+        FALLBACK_IMAGE;
+    }
+  };
+
+  // =====================================================
+  // RETURN
+  // =====================================================
+
   return (
     <section className="shop-home">
       <div className="shop-home-inner">
 
-        {/* =========================
+        {/* =================================================
             HEADER
-        ========================== */}
+        ================================================= */}
 
         <div className="shop-home-header">
 
@@ -110,13 +176,15 @@ const ShopHome = () => {
 
         </div>
 
-        {/* =========================
+        {/* =================================================
             CAROUSEL
-        ========================== */}
+        ================================================= */}
 
         <div className="shop-home-carousel">
 
-          {/* LEFT ARROW */}
+          {/* =================================================
+              LEFT ARROW
+          ================================================= */}
 
           <button
             type="button"
@@ -129,61 +197,97 @@ const ShopHome = () => {
             <ChevronLeft size={20} />
           </button>
 
-          {/* =========================
+          {/* =================================================
               PRODUCTS
-          ========================== */}
+          ================================================= */}
 
           <div
             className="shop-home-right"
             ref={trackRef}
           >
 
-            {loading ? (
+            {/* =================================================
+                LOADING
+            ================================================= */}
 
+            {loading && (
               <div className="loading">
                 Loading Products...
               </div>
+            )}
 
-            ) : products.length === 0 ? (
+            {/* =================================================
+                EMPTY PRODUCTS
+            ================================================= */}
 
-              <div className="loading">
-                No products available.
-              </div>
+            {!loading &&
+              products.length === 0 && (
+                <div className="loading">
+                  No products available.
+                </div>
+              )}
 
-            ) : (
+            {/* =================================================
+                PRODUCT LIST
+            ================================================= */}
 
-              products.map((item) => {
+            {!loading &&
+              products.length > 0 &&
+              products.map((item, index) => {
+
+                const productId =
+                  item.id ||
+                  item.productId ||
+                  item._id ||
+                  index;
 
                 const isWished =
-                  wishlist.includes(item.id);
+                  wishlist.includes(
+                    productId
+                  );
+
+                const productSlug =
+                  createProductSlug(
+                    item.name
+                  );
 
                 return (
-
                   <Link
-                    to="/shop"
+                    to={`/shop/${productSlug}`}
                     state={{
                       product: item,
                     }}
-                    key={item.id}
+                    key={productId}
                     className="shop-card"
                   >
 
-                    {/* =========================
+                    {/* =================================================
                         PRODUCT IMAGE
-                    ========================== */}
+                    ================================================= */}
 
                     <div className="shop-image-wrap">
 
                       <img
-                        src={item.primaryImage}
+                        src={
+                          item.primaryImage ||
+                          item.image ||
+                          item.imageUrl ||
+                          FALLBACK_IMAGE
+                        }
                         alt={
                           item.name ||
                           "Royal Kraft Product"
                         }
                         className="shop-image"
+                        loading="lazy"
+                        onError={
+                          handleImageError
+                        }
                       />
 
-                      {/* WISHLIST */}
+                      {/* =================================================
+                          WISHLIST BUTTON
+                      ================================================= */}
 
                       <button
                         type="button"
@@ -192,15 +296,13 @@ const ShopHome = () => {
                             ? "active"
                             : ""
                         }`}
-                        onClick={(e) => {
-
-                          e.preventDefault();
-                          e.stopPropagation();
+                        onClick={(event) => {
+                          event.preventDefault();
+                          event.stopPropagation();
 
                           toggleWishlist(
-                            item.id
+                            productId
                           );
-
                         }}
                         aria-label={
                           isWished
@@ -208,7 +310,6 @@ const ShopHome = () => {
                             : "Add to wishlist"
                         }
                       >
-
                         <Heart
                           size={16}
                           fill={
@@ -217,19 +318,19 @@ const ShopHome = () => {
                               : "none"
                           }
                         />
-
                       </button>
 
                     </div>
 
-                    {/* =========================
+                    {/* =================================================
                         PRODUCT INFORMATION
-                    ========================== */}
+                    ================================================= */}
 
                     <div className="shop-info">
 
                       <h4>
-                        {item.name}
+                        {item.name ||
+                          "Product Name"}
                       </h4>
 
                       {item.category && (
@@ -238,67 +339,17 @@ const ShopHome = () => {
                         </span>
                       )}
 
-                      {/* PRICE */}
-
-                      <div className="price-row">
-
-                        <div className="price-group">
-
-                          {item.oldPrice && (
-                            <span className="old-price">
-                              ₹{item.oldPrice}
-                            </span>
-                          )}
-
-                          <span className="price">
-                            ₹
-                            {item.price ??
-                              "—"}
-                          </span>
-
-                        </div>
-
-                        {/* CART */}
-
-                        <button
-                          type="button"
-                          className="cart-btn"
-                          onClick={(e) => {
-
-                            e.preventDefault();
-                            e.stopPropagation();
-
-                            // Add to cart logic
-                            console.log(
-                              "Add to cart:",
-                              item
-                            );
-
-                          }}
-                          aria-label="Add to cart"
-                        >
-
-                          <ShoppingCart
-                            size={16}
-                          />
-
-                        </button>
-
-                      </div>
-
                     </div>
 
                   </Link>
-
                 );
-
-              })
-
-            )}
+              })}
 
           </div>
 
-          {/* RIGHT ARROW */}
+          {/* =================================================
+              RIGHT ARROW
+          ================================================= */}
 
           <button
             type="button"
@@ -313,19 +364,13 @@ const ShopHome = () => {
 
         </div>
 
-        {/* =========================
-            VIEW ALL
-        ========================== */}
+        {/* =================================================
+            VIEW ALL PRODUCTS
+        ================================================= */}
 
         <div className="shop-home-footer">
 
-          <Link
-            to="/shop"
-            state={{
-              products: products,
-              showAllProducts: true,
-            }}
-          >
+          <Link to="/shop">
             <button
               type="button"
               className="all-btn"

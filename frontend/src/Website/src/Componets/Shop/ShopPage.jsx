@@ -193,7 +193,18 @@ const ShopPage = ({
   // =====================================================
 
   if (!product) {
-    return null;
+    return (
+      <div className="rk-shop-product-not-found">
+        <h2>Product Not Found</h2>
+
+        <button
+          type="button"
+          onClick={onBack}
+        >
+          Back to Shop
+        </button>
+      </div>
+    );
   }
 
   // =====================================================
@@ -203,9 +214,13 @@ const ShopPage = ({
   const gallery = [
     product.primaryImage,
 
-    ...(product.secondaryImages || []).map(
-      (item) => item.image
-    ),
+    ...(Array.isArray(product.secondaryImages)
+      ? product.secondaryImages.map((item) =>
+          typeof item === "string"
+            ? item
+            : item?.image
+        )
+      : []),
   ].filter(Boolean);
 
   const selectedImage =
@@ -216,7 +231,7 @@ const ShopPage = ({
   // =====================================================
 
   const features =
-    product.features &&
+    Array.isArray(product.features) &&
     product.features.length > 0
       ? product.features
       : DEFAULT_FEATURES;
@@ -226,7 +241,7 @@ const ShopPage = ({
   // =====================================================
 
   const highlights =
-    product.highlights &&
+    Array.isArray(product.highlights) &&
     product.highlights.length > 0
       ? product.highlights
       : DEFAULT_HIGHLIGHTS;
@@ -236,7 +251,9 @@ const ShopPage = ({
   // =====================================================
 
   const customizationFeatures =
-    product.customizationFeatures &&
+    Array.isArray(
+      product.customizationFeatures
+    ) &&
     product.customizationFeatures.length > 0
       ? product.customizationFeatures
       : DEFAULT_CUSTOMIZATION_FEATURES;
@@ -252,8 +269,11 @@ const ShopPage = ({
     encodeURIComponent(
       `Hi, I'm interested in ${
         product.name || "your product"
-      }. I saw on your website. Could you please share more details and pricing?`
+      }. I saw it on your website. Could you please share more details and pricing?`
     );
+
+  const whatsappUrl =
+    `https://wa.me/${whatsappNumber}?text=${whatsappMessage}`;
 
   // =====================================================
   // IMAGE PREVIOUS
@@ -315,13 +335,11 @@ const ShopPage = ({
   };
 
   // =====================================================
-  // SUBMIT ENQUIRY TO AWS
+  // SUBMIT ENQUIRY
   // =====================================================
 
   const handleSubmit = async (e) => {
-    if (e) {
-      e.preventDefault();
-    }
+    e.preventDefault();
 
     // =================================================
     // VALIDATION
@@ -347,7 +365,6 @@ const ShopPage = ({
       return;
     }
 
-    // Prevent duplicate submissions
     if (submitting) {
       return;
     }
@@ -356,20 +373,27 @@ const ShopPage = ({
 
     try {
       // =================================================
-      // DATA SENT TO LAMBDA
+      // ENQUIRY DATA
       // =================================================
 
       const enquiryData = {
-  fullName: formData.fullName.trim(),
-  email: formData.email.trim(),
-  phone: formData.phone.trim(),
-  city: formData.city.trim(),
-  requirements: formData.requirements.trim(),
+        fullName: formData.fullName.trim(),
+        email: formData.email.trim(),
+        phone: formData.phone.trim(),
+        city: formData.city.trim(),
+        requirements:
+          formData.requirements.trim(),
 
-  productId: product?.id || "",
-  productName: product?.name || "Unknown Product",
-  category: product?.category || "",
-};
+        productId:
+          product?.id || "",
+
+        productName:
+          product?.name ||
+          "Unknown Product",
+
+        category:
+          product?.category || "",
+      };
 
       console.log(
         "Sending enquiry:",
@@ -377,7 +401,7 @@ const ShopPage = ({
       );
 
       // =================================================
-      // POST /enquiry
+      // API REQUEST
       // =================================================
 
       const response = await fetch(
@@ -397,7 +421,7 @@ const ShopPage = ({
       );
 
       // =================================================
-      // READ RESPONSE
+      // RESPONSE
       // =================================================
 
       let result;
@@ -438,18 +462,26 @@ const ShopPage = ({
         "Enquiry submitted successfully! Our team will contact you soon."
       );
 
-      // Reset form
+      // =================================================
+      // RESET FORM
+      // =================================================
+
       setFormData({
         fullName: "",
         email: "",
         phone: "",
         city: "",
-          requirements: "",
+        requirements: "",
       });
 
-      // Close popup
+      // =================================================
+      // CLOSE MODAL
+      // =================================================
+
       setShowEnquiry(false);
+
     } catch (error) {
+
       console.error(
         "Enquiry submission failed:",
         error
@@ -459,8 +491,11 @@ const ShopPage = ({
         error.message ||
           "Unable to submit enquiry. Please try again."
       );
+
     } finally {
+
       setSubmitting(false);
+
     }
   };
 
@@ -479,20 +514,29 @@ const ShopPage = ({
 
         <div className="rk-shop-breadcrumb">
 
-          <span onClick={onBack}>
+          <span
+            onClick={onBack}
+            role="button"
+            tabIndex={0}
+          >
             Home
           </span>
 
           <ChevronRight size={14} />
 
-          <span onClick={onBack}>
+          <span
+            onClick={onBack}
+            role="button"
+            tabIndex={0}
+          >
             Shop
           </span>
 
           <ChevronRight size={14} />
 
           <span>
-            {product.category}
+            {product.category ||
+              "Product"}
           </span>
 
           <ChevronRight size={14} />
@@ -504,22 +548,35 @@ const ShopPage = ({
         </div>
 
         {/* =================================================
-            MAIN SECTION
+            MAIN PRODUCT SECTION
         ================================================= */}
 
         <div className="rk-shop-main">
 
-          {/* ================= LEFT ================= */}
+          {/* =================================================
+              LEFT - PRODUCT GALLERY
+          ================================================= */}
 
           <div className="rk-shop-left">
 
             <div className="rk-main-image-box">
 
-              {selectedImage && (
+              {selectedImage ? (
+
                 <img
                   src={selectedImage}
-                  alt={product.name}
+                  alt={
+                    product.name ||
+                    "Product"
+                  }
                 />
+
+              ) : (
+
+                <div className="rk-no-product-image">
+                  No Image Available
+                </div>
+
               )}
 
               <button
@@ -558,18 +615,22 @@ const ShopPage = ({
 
             </div>
 
-            {/* THUMBNAILS */}
+            {/* =================================================
+                THUMBNAILS
+            ================================================= */}
 
             {gallery.length > 1 && (
+
               <div className="rk-thumbnail-wrapper">
 
                 {gallery.map(
                   (img, index) => (
-                    <div
+
+                    <button
+                      type="button"
                       key={index}
                       className={
-                        activeIndex ===
-                        index
+                        activeIndex === index
                           ? "rk-thumbnail active"
                           : "rk-thumbnail"
                       }
@@ -585,51 +646,79 @@ const ShopPage = ({
                           index + 1
                         }`}
                       />
-                    </div>
+                    </button>
+
                   )
                 )}
 
               </div>
+
             )}
 
           </div>
 
-          {/* ================= RIGHT ================= */}
+          {/* =================================================
+              RIGHT - PRODUCT INFORMATION
+          ================================================= */}
 
           <div className="rk-shop-right">
 
-            <span className="rk-product-category">
-              {product.category}
-            </span>
+            {/* CATEGORY */}
 
-            <h1>
-              {product.name}
+            {product.category && (
+
+              <span className="rk-product-category">
+                {product.category}
+              </span>
+
+            )}
+
+            {/* =================================================
+                PRODUCT NAME
+            ================================================= */}
+
+            <h1 className="rk-product-title">
+              {product.name ||
+                "Product Name"}
             </h1>
 
-            <p className="rk-product-description">
-              {product.description}
-            </p>
+            {/* DESCRIPTION */}
 
-            {/* FEATURES */}
+            {product.description && (
+
+              <p className="rk-product-description">
+                {product.description}
+              </p>
+
+            )}
+
+            {/* =================================================
+                FEATURES
+            ================================================= */}
 
             <div className="rk-feature-grid">
 
               {features.map(
                 (feature, index) => {
+
                   const Icon =
                     FEATURE_ICONS[
                       feature.icon
                     ] || PenTool;
 
                   return (
+
                     <div
                       className="rk-feature-item"
                       key={index}
                     >
+
                       <div className="rk-feature-icon">
+
                         <Icon
                           size={20}
                         />
+
                       </div>
 
                       <span>
@@ -637,13 +726,16 @@ const ShopPage = ({
                       </span>
 
                     </div>
+
                   );
                 }
               )}
 
             </div>
 
-            {/* ACTION BUTTONS */}
+            {/* =================================================
+                ACTION BUTTONS
+            ================================================= */}
 
             <div className="rk-shop-actions">
 
@@ -652,35 +744,47 @@ const ShopPage = ({
                 className="rk-enquiry-btn"
                 onClick={openEnquiry}
               >
+
                 <MessageCircle
                   size={18}
                 />
 
-                Enquiry Now
+                <span>
+                  Enquiry Now
+                </span>
 
                 <ArrowRight
                   size={16}
                 />
+
               </button>
 
               <a
                 className="rk-whatsapp-btn"
-                href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`}
+                href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
+
                 <Phone size={16} />
 
-                Chat on WhatsApp
+                <span>
+                  Chat on WhatsApp
+                </span>
+
               </a>
 
             </div>
 
+            {/* CONSULTATION */}
+
             <div className="rk-consultation-note">
+
               <span>
                 Get expert consultation
                 for your custom project
               </span>
+
             </div>
 
           </div>
@@ -688,12 +792,13 @@ const ShopPage = ({
         </div>
 
         {/* =================================================
-            TABS
+            PRODUCT TABS
         ================================================= */}
 
         <div className="rk-product-tabs">
 
           {TABS.map((tab) => (
+
             <button
               type="button"
               key={tab}
@@ -708,6 +813,7 @@ const ShopPage = ({
             >
               {tab}
             </button>
+
           ))}
 
         </div>
@@ -716,8 +822,7 @@ const ShopPage = ({
             OVERVIEW
         ================================================= */}
 
-        {activeTab ===
-          "Overview" && (
+        {activeTab === "Overview" && (
 
           <div className="rk-tab-panel rk-overview-panel">
 
@@ -736,13 +841,17 @@ const ShopPage = ({
 
                 {highlights.map(
                   (highlight, index) => (
-                    <li key={index}>
-                      <Check
-                        size={16}
-                      />
 
-                      {highlight}
+                    <li key={index}>
+
+                      <Check size={16} />
+
+                      <span>
+                        {highlight}
+                      </span>
+
                     </li>
+
                   )
                 )}
 
@@ -757,12 +866,16 @@ const ShopPage = ({
                   product.overviewImage ||
                   product.primaryImage
                 }
-                alt={product.name}
+                alt={
+                  product.name ||
+                  "Product"
+                }
               />
 
             </div>
 
           </div>
+
         )}
 
         {/* =================================================
@@ -778,19 +891,19 @@ const ShopPage = ({
               Specifications
             </h2>
 
-            {product.specifications &&
-            product.specifications
-              .length > 0 ? (
+            {Array.isArray(
+              product.specifications
+            ) &&
+            product.specifications.length >
+              0 ? (
 
               <table className="rk-spec-table">
 
                 <tbody>
 
                   {product.specifications.map(
-                    (
-                      item,
-                      index
-                    ) => (
+                    (item, index) => (
+
                       <tr key={index}>
 
                         <td className="rk-spec-title">
@@ -802,6 +915,7 @@ const ShopPage = ({
                         </td>
 
                       </tr>
+
                     )
                   )}
 
@@ -819,6 +933,7 @@ const ShopPage = ({
             )}
 
           </div>
+
         )}
 
         {/* =================================================
@@ -835,29 +950,35 @@ const ShopPage = ({
             </h2>
 
             <p className="rk-customization-intro">
+
               {product.customization ||
                 "We understand that every venue is unique. That's why we offer complete customization to match your theme, space and preferences."}
+
             </p>
 
             <div className="rk-customization-grid">
 
               {customizationFeatures.map(
                 (item, index) => {
+
                   const Icon =
                     CUSTOMIZATION_ICONS[
                       item.icon
                     ] || Scan;
 
                   return (
+
                     <div
                       className="rk-customization-item"
                       key={index}
                     >
 
                       <div className="rk-customization-icon">
+
                         <Icon
                           size={22}
                         />
+
                       </div>
 
                       <div>
@@ -873,20 +994,25 @@ const ShopPage = ({
                       </div>
 
                     </div>
+
                   );
                 }
               )}
 
             </div>
 
-            {/* CUSTOM DESIGN CTA */}
+            {/* =================================================
+                CUSTOM DESIGN CTA
+            ================================================= */}
 
             <div className="rk-customization-cta">
 
               <div className="rk-customization-cta-icon">
+
                 <Landmark
                   size={28}
                 />
+
               </div>
 
               <div className="rk-customization-cta-text">
@@ -910,16 +1036,21 @@ const ShopPage = ({
                 className="rk-customization-cta-btn"
                 onClick={openEnquiry}
               >
-                Request a Consultation
+
+                <span>
+                  Request a Consultation
+                </span>
 
                 <ArrowRight
                   size={16}
                 />
+
               </button>
 
             </div>
 
           </div>
+
         )}
 
         {/* =================================================
@@ -949,6 +1080,7 @@ const ShopPage = ({
                 </p>
 
               </div>
+
             )
           )}
 
@@ -958,8 +1090,7 @@ const ShopPage = ({
             EXPLORE MORE
         ================================================= */}
 
-        {relatedProducts.length >
-          0 && (
+        {relatedProducts.length > 0 && (
 
           <div className="rk-explore-section">
 
@@ -970,11 +1101,13 @@ const ShopPage = ({
               </h2>
 
               <span className="rk-view-all">
+
                 View All Products
 
                 <ArrowRight
                   size={14}
                 />
+
               </span>
 
             </div>
@@ -998,8 +1131,14 @@ const ShopPage = ({
                     <div className="rk-explore-image">
 
                       <img
-                        src={item.image}
-                        alt={item.name}
+                        src={
+                          item.image ||
+                          item.primaryImage
+                        }
+                        alt={
+                          item.name ||
+                          "Product"
+                        }
                       />
 
                     </div>
@@ -1019,12 +1158,14 @@ const ShopPage = ({
                     </span>
 
                   </div>
+
                 )
               )}
 
             </div>
 
           </div>
+
         )}
 
         {/* =================================================
@@ -1052,11 +1193,15 @@ const ShopPage = ({
             className="rk-shop-cta-btn"
             onClick={openEnquiry}
           >
-            Request a Consultation
+
+            <span>
+              Request a Consultation
+            </span>
 
             <ArrowRight
               size={16}
             />
+
           </button>
 
         </div>
@@ -1097,7 +1242,9 @@ const ShopPage = ({
               Enquiry Form
             </h3>
 
-            {/* FORM */}
+            {/* =================================================
+                FORM
+            ================================================= */}
 
             <form
               onSubmit={handleSubmit}
@@ -1209,22 +1356,28 @@ const ShopPage = ({
 
               {/* REQUIREMENTS */}
 
-<div className="rk-enquiry-field">
+              <div className="rk-enquiry-field">
 
-  <label>
-    Requirements
-  </label>
+                <label>
+                  Requirements
+                </label>
 
-  <textarea
-    name="requirements"
-    placeholder="Tell us about your requirements..."
-    value={formData.requirements}
-    onChange={handleChange}
-    disabled={submitting}
-    rows={4}
-  />
+                <textarea
+                  name="requirements"
+                  placeholder="Tell us about your requirements..."
+                  value={
+                    formData.requirements
+                  }
+                  onChange={
+                    handleChange
+                  }
+                  disabled={
+                    submitting
+                  }
+                  rows={4}
+                />
 
-</div>
+              </div>
 
               {/* BUTTONS */}
 
@@ -1262,10 +1415,11 @@ const ShopPage = ({
           </div>
 
         </div>
+
       )}
 
     </div>
-  );
+  ); 
 };
 
 export default ShopPage;

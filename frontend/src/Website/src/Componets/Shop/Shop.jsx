@@ -21,6 +21,18 @@ const PRODUCT_API =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/shop-product";
 
 // =====================================================
+// CREATE PRODUCT SLUG
+// =====================================================
+
+const createProductSlug = (name) => {
+  return String(name || "product")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+};
+
+// =====================================================
 // SHOP
 // =====================================================
 
@@ -59,7 +71,7 @@ const Shop = () => {
   // =====================================================
 
   const [shopData, setShopData] = useState({
-    
+    breadcrumb: "Home > Shop",
     image: BannerImage,
   });
 
@@ -88,15 +100,13 @@ const Shop = () => {
   // SORT
   // =====================================================
 
-  const [sortBy, setSortBy] =
-    useState("Newest");
+  const [sortBy, setSortBy] = useState("Newest");
 
   // =====================================================
   // LOADING
   // =====================================================
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
   // =====================================================
   // LOAD DATA
@@ -122,12 +132,10 @@ const Shop = () => {
           const data = JSON.parse(banner);
 
           setShopData({
-            title:
-              data.title || "Shop",
+            title: data.title || "Shop",
 
             breadcrumb:
-              data.breadcrumb ||
-              "Home > Shop",
+              data.breadcrumb || "Home > Shop",
 
             image:
               data.image || BannerImage,
@@ -144,9 +152,7 @@ const Shop = () => {
       // LOAD PRODUCTS
       // =================================================
 
-      const response = await fetch(
-        PRODUCT_API
-      );
+      const response = await fetch(PRODUCT_API);
 
       if (!response.ok) {
         throw new Error(
@@ -157,13 +163,13 @@ const Shop = () => {
       const productData =
         await response.json();
 
-      const safeProducts = Array.isArray(
-        productData
-      )
-        ? productData
-        : [];
+      const safeProducts =
+        Array.isArray(productData)
+          ? productData
+          : [];
 
       setProducts(safeProducts);
+
       setFilteredProducts(
         safeProducts
       );
@@ -195,9 +201,7 @@ const Shop = () => {
     // CATEGORY FILTER
     // =================================================
 
-    if (
-      category !== "All Products"
-    ) {
+    if (category !== "All Products") {
       result = result.filter(
         (item) =>
           item.category === category
@@ -208,9 +212,7 @@ const Shop = () => {
     // SEARCH FILTER
     // =================================================
 
-    if (
-      searchText.trim() !== ""
-    ) {
+    if (searchText.trim() !== "") {
       const keyword =
         searchText
           .toLowerCase()
@@ -285,9 +287,7 @@ const Shop = () => {
   // CATEGORY
   // =====================================================
 
-  const handleCategory = (
-    category
-  ) => {
+  const handleCategory = (category) => {
     setSelectedCategory(category);
 
     filterProducts(
@@ -317,15 +317,40 @@ const Shop = () => {
   // OPEN PRODUCT DETAILS
   // =====================================================
 
-  const openProduct = (product) => {
-    if (!product) return;
+  // =====================================================
+// OPEN PRODUCT DETAILS
+// =====================================================
 
-    navigate("/shop", {
+const openProduct = (product) => {
+  if (!product) return;
+
+  // Create URL-friendly product name
+  const productSlug =
+    createProductSlug(product.name);
+
+  console.log(
+    "Opening product:",
+    product.name
+  );
+
+  console.log(
+    "Product URL:",
+    `/shop/${productSlug}`
+  );
+
+  // =================================================
+  // OPEN PRODUCT DETAILS
+  // =================================================
+
+  navigate(
+    `/shop/${productSlug}`,
+    {
       state: {
         product: product,
       },
-    });
-  };
+    }
+  );
+};
 
   // =====================================================
   // RETURN
@@ -371,7 +396,6 @@ const Shop = () => {
 
         </section>
 
-
         {/* =================================================
             SHOP BODY
         ================================================= */}
@@ -398,9 +422,7 @@ const Shop = () => {
                   type="text"
                   placeholder="Search by product name, category..."
                   value={search}
-                  onChange={
-                    handleSearch
-                  }
+                  onChange={handleSearch}
                 />
 
               </div>
@@ -421,14 +443,15 @@ const Shop = () => {
 
             </div>
 
-
             {/* FEATURES */}
 
             <div className="search-right">
 
               <div className="feature-item">
 
-                <FiTruck className="feature-icon" />
+                <FiTruck
+                  className="feature-icon"
+                />
 
                 <div>
 
@@ -444,10 +467,11 @@ const Shop = () => {
 
               </div>
 
-
               <div className="feature-item">
 
-                <FiShield className="feature-icon" />
+                <FiShield
+                  className="feature-icon"
+                />
 
                 <div>
 
@@ -463,10 +487,11 @@ const Shop = () => {
 
               </div>
 
-
               <div className="feature-item">
 
-                <FiHeadphones className="feature-icon" />
+                <FiHeadphones
+                  className="feature-icon"
+                />
 
                 <div>
 
@@ -485,7 +510,6 @@ const Shop = () => {
             </div>
 
           </div>
-
 
           {/* =================================================
               CATEGORIES
@@ -519,7 +543,6 @@ const Shop = () => {
 
           </div>
 
-
           {/* =================================================
               SORT
           ================================================= */}
@@ -547,7 +570,6 @@ const Shop = () => {
 
           </div>
 
-
           {/* =================================================
               LOADING
           ================================================= */}
@@ -555,13 +577,10 @@ const Shop = () => {
           {loading && (
 
             <div className="shop-loading">
-
               Loading Products...
-
             </div>
 
           )}
-
 
           {/* =================================================
               PRODUCT GRID
@@ -570,8 +589,7 @@ const Shop = () => {
           <div className="product-grid">
 
             {!loading &&
-            filteredProducts.length >
-              0 ? (
+            filteredProducts.length > 0 ? (
 
               filteredProducts.map(
                 (product, index) => (
@@ -584,9 +602,9 @@ const Shop = () => {
                     }
                   >
 
-                    {/* =====================================
+                    {/* =================================================
                         PRODUCT IMAGE
-                    ====================================== */}
+                    ================================================= */}
 
                     <div
                       className="product-image"
@@ -598,16 +616,18 @@ const Shop = () => {
                       role="button"
                       tabIndex={0}
                       onKeyDown={(e) => {
+
                         if (
-                          e.key ===
-                            "Enter" ||
-                          e.key ===
-                            " "
+                          e.key === "Enter" ||
+                          e.key === " "
                         ) {
+                          e.preventDefault();
+
                           openProduct(
                             product
                           );
                         }
+
                       }}
                     >
 
@@ -624,21 +644,21 @@ const Shop = () => {
 
                     </div>
 
-
-                    {/* =====================================
+                    {/* =================================================
                         PRODUCT INFORMATION
-                    ====================================== */}
+                    ================================================= */}
 
                     <div className="product-info">
 
                       {/* CATEGORY */}
 
                       {product.category && (
+
                         <span className="product-category">
                           {product.category}
                         </span>
-                      )}
 
+                      )}
 
                       {/* NAME */}
 
@@ -648,7 +668,6 @@ const Shop = () => {
                           "Product Name"}
 
                       </h3>
-
 
                       {/* BUTTON */}
 
