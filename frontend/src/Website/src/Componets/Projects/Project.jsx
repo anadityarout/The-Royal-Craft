@@ -30,15 +30,34 @@ const Project = () => {
     }
   };
 
+  // =====================================================
+  // OPEN EXACT PROJECT WITH PROJECT NAME IN URL
+  // =====================================================
+
+  const openProject = (project) => {
+    const projectSlug = String(project.projectName || "project")
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+
+    navigate(`/project/${projectSlug}`, {
+      state: {
+        selectedProject: project,
+      },
+    });
+  };
+
   return (
     <section className="rk-project-section">
       <div className="rk-project-container">
 
-        {/* ==========================
+        {/* =====================================================
             LEFT CONTENT
-        ========================== */}
+        ===================================================== */}
 
         <div className="rk-project-content">
+
           <span className="rk-project-tag">
             FEATURED PROJECTS
           </span>
@@ -64,36 +83,40 @@ const Project = () => {
           >
             VIEW ALL PROJECTS
           </button>
+
         </div>
 
-        {/* ==========================
+        {/* =====================================================
             RIGHT PROJECT GRID
-        ========================== */}
+        ===================================================== */}
 
         <div className="rk-project-grid-wrapper">
+
           <div className="rk-project-grid">
 
             {projects.map((item) => (
+
               <div
                 className="rk-project-card"
                 key={item.id}
               >
 
-                {/* ==========================
+                {/* =====================================================
                     PROJECT IMAGE
-                    NOT CLICKABLE
-                ========================== */}
+                ===================================================== */}
 
                 <div className="rk-project-image">
+
                   <img
                     src={item.mainImage}
                     alt={item.projectName || "Project"}
                   />
+
                 </div>
 
-                {/* ==========================
+                {/* =====================================================
                     PROJECT FOOTER
-                ========================== */}
+                ===================================================== */}
 
                 <div className="rk-project-footer">
 
@@ -105,35 +128,29 @@ const Project = () => {
                     {item.projectName}
                   </span>
 
-                  {/* ==========================
-                      ARROW ONLY IS CLICKABLE
-                  ========================== */}
+                  {/* =====================================================
+                      ONLY ARROW IS CLICKABLE
+                  ===================================================== */}
 
-                  <span
+                  <button
+                    type="button"
                     className="rk-project-arrow-btn"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      navigate("/project");
-                    }}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        navigate("/project");
-                      }
-                    }}
-                    aria-label={`View ${item.projectName} projects`}
+                    onClick={() => openProject(item)}
+                    aria-label={`View ${item.projectName}`}
                   >
                     →
-                  </span>
+                  </button>
 
                 </div>
+
               </div>
+
             ))}
 
           </div>
+
         </div>
+
       </div>
     </section>
   );

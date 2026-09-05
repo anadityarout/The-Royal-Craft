@@ -1,5 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
+
 /* =====================================================
    RESET
 ===================================================== */
@@ -24,17 +25,22 @@ body {
   max-width: 100%;
   margin: 0;
   padding: 0;
+
   font-family: "Inter", sans-serif;
+
   background: #ffffff;
+
   overflow-x: hidden;
 }
 
+
 /* =====================================================
-   NAVBAR
+   TOP NAVBAR
 ===================================================== */
 
 .navbar {
   position: fixed;
+
   top: 0;
   left: 0;
   right: 0;
@@ -52,8 +58,9 @@ body {
 
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
 
-  transition: all 0.35s ease;
+  transition: all 0.3s ease;
 }
+
 
 /* =====================================================
    NAVBAR CONTAINER
@@ -70,11 +77,12 @@ body {
   padding: 0 20px;
 
   display: flex;
-  align-items: center;
-  justify-content: space-between;
 
-  box-sizing: border-box;
+  align-items: center;
+
+  justify-content: space-between;
 }
+
 
 /* =====================================================
    LOGO
@@ -82,23 +90,29 @@ body {
 
 .logo {
   display: flex;
+
   align-items: center;
+
   flex-shrink: 0;
 }
 
 .logo a {
   display: flex;
+
   align-items: center;
+
   text-decoration: none;
 }
 
 .logo img {
   width: auto;
+
   height: 60px;
 
   max-width: 100%;
 
   display: block;
+
   object-fit: contain;
 
   transition: transform 0.3s ease;
@@ -108,42 +122,47 @@ body {
   transform: scale(1.05);
 }
 
+
 /* =====================================================
-   NAVIGATION
+   DESKTOP NAVIGATION
 ===================================================== */
 
-.nav-menu {
+.desktop-nav-menu {
   flex: 1;
 
   display: flex;
+
   align-items: center;
+
   justify-content: flex-end;
 
   gap: 32px;
 
-  padding-right: 0;
+  margin-left: auto;
 
   min-width: 0;
-
-  margin-left: auto;
 }
 
+
 /* =====================================================
-   NAV LINKS
+   DESKTOP NAV LINKS
 ===================================================== */
 
-.nav-menu a {
+.desktop-nav-menu a {
   position: relative;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   text-decoration: none;
 
-  color: #222;
+  color: #222222;
 
   font-size: 15px;
+
   font-weight: 500;
 
   letter-spacing: 0.3px;
@@ -155,68 +174,79 @@ body {
   transition: all 0.3s ease;
 }
 
+
 /* =====================================================
-   HOVER
+   DESKTOP LINK HOVER
 ===================================================== */
 
-.nav-menu a:hover {
-  color: #D807AE;
+.desktop-nav-menu a:hover {
+  color: #d807ae;
 }
 
+
 /* =====================================================
-   UNDERLINE
+   DESKTOP UNDERLINE
 ===================================================== */
 
-.nav-menu a::after {
+.desktop-nav-menu a::after {
   content: "";
 
   position: absolute;
 
   left: 50%;
+
   bottom: -6px;
 
   width: 0;
+
   height: 2px;
 
-  background: #D807AE;
+  background: #d807ae;
 
   border-radius: 10px;
 
   transform: translateX(-50%);
 
-  transition: width 0.35s ease;
+  transition: width 0.3s ease;
 }
 
-.nav-menu a:hover::after {
+.desktop-nav-menu a:hover::after {
   width: 100%;
 }
 
+
 /* =====================================================
-   ACTIVE PAGE
+   ACTIVE DESKTOP LINK
 ===================================================== */
 
-.nav-menu a.active-link {
-  color: #D807AE;
+.desktop-nav-menu a.active-link {
+  color: #d807ae;
+
   font-weight: 600;
 }
 
-.nav-menu a.active-link::after {
+.desktop-nav-menu a.active-link::after {
   width: 100%;
 }
 
+
 /* =====================================================
-   BOOK CONSULTATION CTA BUTTON
+   BOOK CONSULTATION BUTTON
 ===================================================== */
 
 .nav-cta-btn {
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
 
-  background: #D807AE;
+  background: #d807ae;
+
   color: #ffffff;
 
   border: none;
+
   outline: none;
 
   padding: 10px 22px;
@@ -224,7 +254,9 @@ body {
   border-radius: 8px;
 
   font-family: "Inter", sans-serif;
+
   font-size: 14px;
+
   font-weight: 600;
 
   letter-spacing: 0.3px;
@@ -242,25 +274,30 @@ body {
 
 .nav-cta-btn:hover {
   background: #071321;
+
   transform: translateY(-1px);
 }
 
+
 /* =====================================================
-   MOBILE MENU BUTTON
+   HAMBURGER BUTTON
 ===================================================== */
 
 .menu-btn {
   display: none;
 
   width: 46px;
+
   height: 46px;
 
   padding: 0;
 
   border: none;
+
   outline: none;
 
-  background: #D807AE;
+  background: #d807ae;
+
   color: #ffffff;
 
   border-radius: 10px;
@@ -268,6 +305,7 @@ body {
   cursor: pointer;
 
   align-items: center;
+
   justify-content: center;
 
   font-size: 22px;
@@ -279,6 +317,7 @@ body {
 
 .menu-btn:hover {
   background: #071321;
+
   transform: scale(1.05);
 }
 
@@ -286,29 +325,53 @@ body {
   pointer-events: none;
 }
 
+
 /* =====================================================
-   TABLET / MOBILE
+   MOBILE SIDE MENU
+   HIDDEN ON DESKTOP
+===================================================== */
+
+.mobile-side-menu {
+  display: none;
+}
+
+
+/* =====================================================
+   MOBILE BOTTOM NAVIGATION
+   HIDDEN ON DESKTOP
+===================================================== */
+
+.mobile-bottom-nav {
+  display: none;
+}
+
+
+/* =====================================================
+   TABLET + MOBILE
 ===================================================== */
 
 @media (max-width: 1100px) {
+
+  /* ===================================================
+     TOP NAVBAR
+  =================================================== */
 
   .navbar {
     height: 75px;
 
     width: 100%;
-    max-width: 100%;
 
     left: 0;
+
     right: 0;
   }
 
   .navbar-container {
     width: 100%;
+
     max-width: none;
 
     height: 75px;
-
-    margin: 0;
 
     padding: 0 20px;
   }
@@ -317,47 +380,58 @@ body {
     height: 52px;
   }
 
-  /* =================================================
+
+  /* ===================================================
+     HIDE DESKTOP MENU
+  =================================================== */
+
+  .desktop-nav-menu {
+    display: none;
+  }
+
+
+  /* ===================================================
      HAMBURGER
-  ================================================= */
+  =================================================== */
 
   .menu-btn {
     display: flex;
 
     position: relative;
 
-    z-index: 10001;
+    z-index: 10002;
   }
 
-  /* =================================================
-     MOBILE NAVIGATION
-  ================================================= */
 
-  .nav-menu {
+  /* ===================================================
+     MOBILE / TABLET SIDE MENU
+  =================================================== */
+
+  .mobile-side-menu {
     position: fixed;
 
     top: 75px;
+
     left: 0;
 
     width: 100%;
+
     max-width: 100%;
 
     height: calc(100vh - 75px);
 
-    margin: 0;
-    padding: 0;
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    justify-content: flex-start;
 
     background: #ffffff;
 
-    display: flex;
-    flex-direction: column;
-
-    justify-content: flex-start;
-    align-items: stretch;
-
-    gap: 0;
-
     overflow-x: hidden;
+
     overflow-y: auto;
 
     transform: translateX(-100%);
@@ -366,87 +440,349 @@ body {
 
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 
-    z-index: 10000;
+    z-index: 10001;
   }
 
-  /* =================================================
-     OPEN MENU
-  ================================================= */
 
-  .nav-menu.active {
+  /* ===================================================
+     OPEN MOBILE MENU
+  =================================================== */
+
+  .mobile-side-menu.active {
     transform: translateX(0);
   }
 
-  /* =================================================
-     MOBILE LINKS
-  ================================================= */
 
-  .nav-menu a {
+  /* ===================================================
+     MOBILE / TABLET LINKS
+  =================================================== */
+
+  .mobile-side-menu a {
+    position: relative;
+
     width: 100%;
-    max-width: 100%;
 
-    padding: 18px 30px;
+    min-height: 52px;
+
+    padding: 16px 30px;
+
+    display: flex;
+
+    align-items: center;
 
     justify-content: flex-start;
 
+    color: #222222;
+
+    background: #ffffff;
+
+    text-decoration: none;
+
+    font-family: "Inter", sans-serif;
+
     font-size: 16px;
 
-    color: #222;
+    font-weight: 500;
 
-    border-bottom: 1px solid #ececec;
+    letter-spacing: 0.2px;
 
-    white-space: normal;
+    border-bottom: 1px solid #e5e5e5;
+
+    transition:
+      color 0.25s ease,
+      background 0.25s ease,
+      padding-left 0.25s ease;
   }
 
-  /* Remove desktop underline */
 
-  .nav-menu a::after {
-    display: none;
+  /* ===================================================
+     MOBILE LINK HOVER
+  =================================================== */
+
+  .mobile-side-menu a:hover {
+    color: #d807ae;
+
+    background: #fafafa;
+
+    padding-left: 34px;
   }
 
-  /* =================================================
-     MOBILE HOVER
-  ================================================= */
 
-  .nav-menu a:hover {
-    background: #f8f8f8;
-    color: #D807AE;
-  }
-
-  /* =================================================
+  /* ===================================================
      MOBILE ACTIVE LINK
-  ================================================= */
+  =================================================== */
 
-  .nav-menu a.active-link {
+  .mobile-side-menu a.active-link {
+    color: #d807ae;
+
     background: #fff3ef;
-
-    color: #D807AE;
 
     font-weight: 600;
 
-    border-left: 4px solid #D807AE;
+    border-left: 4px solid #d807ae;
+
+    padding-left: 26px;
   }
 
-  /* =================================================
-     MOBILE CONSULTATION BUTTON
-  ================================================= */
 
-  .nav-cta-btn {
+  /* ===================================================
+     MOBILE CONSULTATION BUTTON
+  =================================================== */
+
+  .mobile-side-menu .nav-cta-btn {
     width: calc(100% - 60px);
 
     margin: 20px 30px;
 
-    padding: 14px 0;
+    padding: 14px 20px;
 
-    font-size: 15px;
+    min-height: 48px;
+
+    flex-shrink: 0;
+  }
+
+
+  /* ===================================================
+     MOBILE BOTTOM NAVIGATION
+  =================================================== */
+
+  .mobile-bottom-nav {
+    position: fixed;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    width: 100%;
+
+    height: 68px;
+
+    display: block;
+
+    background: #071321;
+
+    border-top: 1px solid #1f2935;
+
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.30);
+
+    z-index: 9998;
+
+    padding-bottom: env(safe-area-inset-bottom);
+
+    box-sizing: content-box;
+  }
+
+
+  /* ===================================================
+     BOTTOM NAV INNER
+  =================================================== */
+
+  .mobile-bottom-nav-inner {
+    width: 100%;
+
+    height: 68px;
+
+    display: flex;
+
+    align-items: stretch;
+
+    justify-content: space-around;
+  }
+
+
+  /* ===================================================
+     BOTTOM NAV ITEM
+  =================================================== */
+
+  .mobile-bottom-item {
+    position: relative;
+
+    flex: 1;
+
+    min-width: 0;
+
+    height: 68px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 4px;
+
+    text-decoration: none;
+
+    color: #aeb7c4;
+
+    background: #071321;
+
+    transition:
+      color 0.25s ease,
+      background 0.25s ease;
+  }
+
+
+  /* ===================================================
+     BOTTOM NAV ICON
+  =================================================== */
+
+  .mobile-bottom-icon {
+    width: 24px;
+
+    height: 24px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 19px;
+
+    line-height: 1;
+
+    color: #aeb7c4;
+
+    transition:
+      color 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .mobile-bottom-icon svg {
+    display: block;
+  }
+
+
+  /* ===================================================
+     BOTTOM NAV LABEL
+  =================================================== */
+
+  .mobile-bottom-label {
+    display: block;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    white-space: nowrap;
+
+    color: #aeb7c4;
+
+    transition: color 0.25s ease;
+  }
+
+
+  /* ===================================================
+     ACTIVE BOTTOM ITEM
+  =================================================== */
+
+  .mobile-bottom-item.bottom-active {
+    color: #d807ae;
+
+    background: #071321;
+  }
+
+
+  /* ===================================================
+     ACTIVE ICON
+  =================================================== */
+
+  .mobile-bottom-item.bottom-active
+    .mobile-bottom-icon {
+    color: #d807ae;
+
+    transform: translateY(-1px);
+  }
+
+
+  /* ===================================================
+     ACTIVE LABEL
+  =================================================== */
+
+  .mobile-bottom-item.bottom-active
+    .mobile-bottom-label {
+    color: #ffffff;
+
+    font-weight: 600;
+  }
+
+
+  /* ===================================================
+     ACTIVE PINK TOP INDICATOR
+  =================================================== */
+
+  .mobile-bottom-item.bottom-active::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+
+    left: 50%;
+
+    width: 32px;
+
+    height: 3px;
+
+    transform: translateX(-50%);
+
+    background: #d807ae;
+
+    border-radius: 0 0 4px 4px;
+  }
+
+
+  /* ===================================================
+     BOTTOM NAV HOVER
+  =================================================== */
+
+  .mobile-bottom-item:hover {
+    color: #ffffff;
+
+    background: #071321;
+
+    text-decoration: none;
+  }
+
+  .mobile-bottom-item:hover
+    .mobile-bottom-icon {
+    color: #d807ae;
+  }
+
+  .mobile-bottom-item:hover
+    .mobile-bottom-label {
+    color: #ffffff;
+  }
+
+
+  /* ===================================================
+     PAGE BOTTOM SPACE
+  =================================================== */
+
+  body {
+    padding-bottom: 68px;
   }
 }
+
 
 /* =====================================================
    TABLET
 ===================================================== */
 
 @media (max-width: 992px) {
+
+  /* ===================================================
+     TOP NAVBAR
+  =================================================== */
 
   .navbar {
     height: 72px;
@@ -464,17 +800,61 @@ body {
 
   .menu-btn {
     width: 44px;
+
     height: 44px;
 
     font-size: 20px;
   }
 
-  .nav-menu {
+
+  /* ===================================================
+     SIDE MENU
+  =================================================== */
+
+  .mobile-side-menu {
     top: 72px;
 
     height: calc(100vh - 72px);
   }
+
+
+  /* ===================================================
+     BOTTOM NAV
+  =================================================== */
+
+  .mobile-bottom-nav {
+    height: 70px;
+
+    background: #071321;
+  }
+
+  .mobile-bottom-nav-inner {
+    height: 70px;
+  }
+
+  .mobile-bottom-item {
+    height: 70px;
+
+    background: #071321;
+  }
+
+  .mobile-bottom-icon {
+    width: 25px;
+
+    height: 25px;
+
+    font-size: 20px;
+  }
+
+  .mobile-bottom-label {
+    font-size: 10px;
+  }
+
+  body {
+    padding-bottom: 70px;
+  }
 }
+
 
 /* =====================================================
    SMALL MOBILE
@@ -482,23 +862,16 @@ body {
 
 @media (max-width: 576px) {
 
+  /* ===================================================
+     TOP NAVBAR
+  =================================================== */
+
   .navbar {
-    width: 100%;
-    max-width: 100%;
-
     height: 70px;
-
-    left: 0;
-    right: 0;
   }
 
   .navbar-container {
-    width: 100%;
-    max-width: 100%;
-
     height: 70px;
-
-    margin: 0;
 
     padding: 0 12px;
   }
@@ -513,14 +886,14 @@ body {
     max-width: 160px;
   }
 
-  /* =================================================
-     MOBILE BUTTON
-  ================================================= */
+
+  /* ===================================================
+     HAMBURGER
+  =================================================== */
 
   .menu-btn {
-    display: flex;
-
     width: 40px;
+
     min-width: 40px;
 
     height: 40px;
@@ -530,34 +903,96 @@ body {
     border-radius: 9px;
   }
 
-  /* =================================================
-     MOBILE MENU
-  ================================================= */
 
-  .nav-menu {
+  /* ===================================================
+     MOBILE SIDE MENU
+  =================================================== */
+
+  .mobile-side-menu {
     top: 70px;
 
     width: 100%;
+
     max-width: 100%;
 
     height: calc(100vh - 70px);
   }
 
-  .nav-menu a {
-    width: 100%;
-    max-width: 100%;
+  .mobile-side-menu a {
+    min-height: 52px;
 
     padding: 16px 20px;
 
     font-size: 15px;
   }
 
-  .nav-cta-btn {
+  .mobile-side-menu a:hover {
+    padding-left: 24px;
+  }
+
+  .mobile-side-menu a.active-link {
+    padding-left: 16px;
+  }
+
+
+  /* ===================================================
+     CONSULTATION BUTTON
+  =================================================== */
+
+  .mobile-side-menu .nav-cta-btn {
     width: calc(100% - 40px);
 
     margin: 16px 20px;
+
+    padding: 14px 15px;
+  }
+
+
+  /* ===================================================
+     MOBILE BOTTOM NAV
+  =================================================== */
+
+  .mobile-bottom-nav {
+    height: 64px;
+
+    background: #071321;
+  }
+
+  .mobile-bottom-nav-inner {
+    height: 64px;
+  }
+
+  .mobile-bottom-item {
+    height: 64px;
+
+    gap: 3px;
+
+    background: #071321;
+  }
+
+  .mobile-bottom-icon {
+    width: 22px;
+
+    height: 22px;
+
+    font-size: 18px;
+  }
+
+  .mobile-bottom-label {
+    font-size: 9px;
+  }
+
+  .mobile-bottom-item.bottom-active::before {
+    width: 28px;
+
+    height: 3px;
+  }
+
+  body {
+    padding-bottom: 64px;
   }
 }
+
 
 /* =====================================================
    VERY SMALL MOBILE
@@ -577,13 +1012,29 @@ body {
 
   .menu-btn {
     width: 38px;
+
     min-width: 38px;
 
     height: 38px;
 
     font-size: 17px;
   }
+
+  .mobile-side-menu a {
+    padding: 15px 18px;
+
+    font-size: 14px;
+  }
+
+  .mobile-bottom-icon {
+    font-size: 17px;
+  }
+
+  .mobile-bottom-label {
+    font-size: 8.5px;
+  }
 }
+
 
 /* =====================================================
    LARGE DESKTOP
@@ -597,20 +1048,15 @@ body {
     padding: 0 20px;
   }
 
-  .nav-menu {
+  .desktop-nav-menu {
     gap: 38px;
-
-    justify-content: flex-end;
-
-    margin-left: auto;
-
-    padding-right: 0;
   }
 
-  .nav-menu a {
+  .desktop-nav-menu a {
     font-size: 16px;
   }
 }
+
 
 /* =====================================================
    EXTRA LARGE DESKTOP
@@ -624,16 +1070,11 @@ body {
     padding: 0 20px;
   }
 
-  .nav-menu {
+  .desktop-nav-menu {
     gap: 42px;
-
-    justify-content: flex-end;
-
-    margin-left: auto;
-
-    padding-right: 0;
   }
 }
+
 
 /* =====================================================
    DESKTOP
@@ -647,14 +1088,17 @@ body {
     padding: 0 20px;
   }
 
-  .menu-btn {
-    display: none;
-  }
+  /* ===================================================
+     DESKTOP NAV
+  =================================================== */
 
-  .nav-menu {
+  .desktop-nav-menu {
+    display: flex;
+
     position: static;
 
     width: auto;
+
     max-width: none;
 
     height: auto;
@@ -671,26 +1115,49 @@ body {
 
     margin-left: auto;
 
-    padding-right: 0;
-
     overflow: visible;
+  }
 
-    box-shadow: none;
 
-    transform: none;
+  /* ===================================================
+     HIDE MOBILE ELEMENTS
+  =================================================== */
 
-    display: flex;
+  .menu-btn {
+    display: none;
+  }
+
+  .mobile-side-menu {
+    display: none !important;
+  }
+
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+
+
+  /* ===================================================
+     DESKTOP BODY
+  =================================================== */
+
+  body {
+    padding-bottom: 0;
   }
 }
+
 
 /* =====================================================
    SMOOTH TRANSITIONS
 ===================================================== */
 
 .logo img,
-.nav-menu a,
+.desktop-nav-menu a,
+.mobile-side-menu a,
 .menu-btn,
 .navbar,
-.nav-cta-btn {
+.nav-cta-btn,
+.mobile-bottom-item,
+.mobile-bottom-icon,
+.mobile-bottom-label {
   transition: all 0.3s ease;
 }
