@@ -64,6 +64,7 @@ const Shop = () => {
     "Exterior",
     "Railings",
     "Selfie Point",
+   "Royal Fiber Lamp",
   ];
 
   // =====================================================

@@ -2,58 +2,58 @@
    SHOP PAGE
 ========================================== */
 
-.shop-page{
-    flex:1;
-    padding:30px;
-    background:#f5f7fb;
-    min-height:100vh;
-    box-sizing:border-box;
+.shop-page {
+    flex: 1;
+    padding: 30px;
+    background: #f5f7fb;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* ==========================================
    HEADER
 ========================================== */
 
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
 }
 
-.header h2{
-    margin:0;
-    font-size:28px;
-    font-weight:700;
-    color:#1f2937;
+.header h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
 }
 
-.header button{
-    padding:12px 24px;
-    background:#0d6efd;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-    transition:.3s;
+.header button {
+    padding: 12px 24px;
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
-.header button:hover{
-    background:#0b5ed7;
+.header button:hover {
+    background: #0b5ed7;
 }
 
 /* ==========================================
    UPLOAD BOX
 ========================================== */
 
-.upload-box{
-    background:#fff;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
-    margin-bottom:30px;
+.upload-box {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
 }
 
 /* ==========================================
@@ -62,345 +62,506 @@
 
 .upload-box select,
 .upload-box input[type="text"],
-.upload-box textarea{
-    width:100%;
-    padding:14px 16px;
-    margin-bottom:18px;
-    border:1px solid #d9d9d9;
-    border-radius:8px;
-    outline:none;
-    font-size:15px;
-    transition:.3s;
-    box-sizing:border-box;
+.upload-box textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #d9d9d9;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    transition: 0.3s;
+    box-sizing: border-box;
 }
 
-.upload-box textarea{
-    resize:vertical;
-    min-height:120px;
+.upload-box textarea {
+    resize: vertical;
+    min-height: 120px;
 }
 
 .upload-box select:focus,
 .upload-box input:focus,
-.upload-box textarea:focus{
-    border-color:#0d6efd;
+.upload-box textarea:focus {
+    border-color: #0d6efd;
 }
 
 /* ==========================================
    FILE INPUT
 ========================================== */
 
-.upload-box input[type="file"]{
-    width:100%;
-    padding:16px;
-    margin-bottom:18px;
-    border:2px dashed #d9d9d9;
-    border-radius:8px;
-    background:#fafafa;
-    cursor:pointer;
-    box-sizing:border-box;
+.upload-box input[type="file"] {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 18px;
+    border: 2px dashed #d9d9d9;
+    border-radius: 8px;
+    background: #fafafa;
+    cursor: pointer;
+    box-sizing: border-box;
 }
 
 /* ==========================================
    SECTION TITLES
 ========================================== */
 
-.upload-title{
-    display:block;
-    margin-bottom:10px;
-    font-size:16px;
-    font-weight:600;
-    color:#1f2937;
+.upload-title {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* ==========================================
+   PRIMARY IMAGE PREVIEW
+========================================== */
+
+.primary-preview {
+    margin-top: 5px;
+    margin-bottom: 20px;
 }
 
 /* ==========================================
    SECONDARY IMAGES
 ========================================== */
 
-.secondary-section{
-    margin-top:30px;
-    margin-bottom:30px;
+.secondary-section {
+    margin-top: 30px;
+    margin-bottom: 30px;
 }
 
-.secondary-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+.secondary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-.secondary-header h3{
-    margin:0;
-    font-size:18px;
-    color:#1f2937;
+.secondary-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #1f2937;
 }
 
-.secondary-header button{
-    background:#0d6efd;
-    color:#fff;
-    border:none;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
+.secondary-header button {
+    background: #0d6efd;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.secondary-item{
-    display:flex;
-    gap:15px;
-    align-items:center;
-    margin-bottom:15px;
+.secondary-header button:hover {
+    background: #0b5ed7;
 }
 
-.secondary-item input{
-    flex:1;
+.secondary-item {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-.remove-btn{
-    background:#dc3545;
-    color:#fff;
-    border:none;
-    padding:10px 18px;
-    border-radius:6px;
-    cursor:pointer;
-    white-space:nowrap;
+.secondary-item input {
+    flex: 1;
 }
 
-.remove-btn:hover{
-    background:#bb2d3b;
+.remove-btn {
+    background: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: 0.3s;
+}
+
+.remove-btn:hover {
+    background: #bb2d3b;
 }
 
 /* ==========================================
    SPECIFICATIONS
 ========================================== */
 
-.specification-section{
-    margin-top:30px;
+.specification-section {
+    margin-top: 30px;
 }
 
-.specification-header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:15px;
+.specification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
 }
 
-.specification-header h3{
-    margin:0;
-    font-size:18px;
-    color:#1f2937;
+.specification-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #1f2937;
 }
 
-.specification-header button{
-    background:#198754;
-    color:#fff;
-    border:none;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
+.specification-header button {
+    background: #198754;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
 }
 
-.specification-row{
-    display:flex;
-    gap:15px;
-    margin-bottom:15px;
-    align-items:center;
+.specification-header button:hover {
+    background: #157347;
 }
 
-.specification-row input{
-    flex:1;
+.specification-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    align-items: center;
+}
+
+.specification-row input {
+    flex: 1;
 }
 
 /* ==========================================
    SAVE / CANCEL BUTTONS
 ========================================== */
 
-.btns{
-    display:flex;
-    gap:15px;
-    margin-top:30px;
+.btns {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
 }
 
-.btns button{
-    padding:12px 30px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    color:#fff;
-    font-size:15px;
-    font-weight:600;
-    transition:.3s;
+.btns button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s;
 }
 
-.btns button:first-child{
-    background:#198754;
+.btns button:first-child {
+    background: #198754;
 }
 
-.btns button:first-child:hover{
-    background:#157347;
+.btns button:first-child:hover {
+    background: #157347;
 }
 
-.btns button:last-child{
-    background:#dc3545;
+.btns button:last-child {
+    background: #dc3545;
 }
 
-.btns button:last-child:hover{
-    background:#bb2d3b;
+.btns button:last-child:hover {
+    background: #bb2d3b;
+}
+
+.btns button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* ==========================================
    TABLE
 ========================================== */
 
-.table-container{
-    background:#fff;
-    border-radius:12px;
-    overflow-x:auto;
-    box-shadow:0 4px 15px rgba(0,0,0,.08);
+.table-container {
+    background: #fff;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-thead{
-    background:#0d6efd;
+thead {
+    background: #0d6efd;
 }
 
-thead th{
-    color:#fff;
-    padding:16px;
-    text-align:center;
-    font-size:15px;
+thead th {
+    color: #fff;
+    padding: 16px;
+    text-align: center;
+    font-size: 15px;
+    white-space: nowrap;
 }
 
-tbody td{
-    padding:16px;
-    text-align:center;
-    border-bottom:1px solid #ececec;
-    color:#444;
+tbody td {
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #ececec;
+    color: #444;
+    vertical-align: middle;
 }
 
-tbody tr:hover{
-    background:#f8fbff;
+tbody tr:hover {
+    background: #f8fbff;
 }
 
 /* ==========================================
    IMAGE
 ========================================== */
 
-.preview-image{
-    width:90px;
-    height:70px;
-    object-fit:cover;
-    border-radius:8px;
-    border:1px solid #ddd;
+.preview-image {
+    width: 90px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
 }
 
 /* ==========================================
    CATEGORY
 ========================================== */
 
-.category-badge{
-    background:#0d6efd;
-    color:#fff;
-    padding:6px 14px;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+.category-badge {
+    display: inline-block;
+    background: #0d6efd;
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
 }
 
 /* ==========================================
-   DELETE BUTTON
+   ACTION BUTTONS
 ========================================== */
 
-.delete-btn{
-    background:#dc3545;
-    color:#fff;
-    border:none;
-    padding:10px 18px;
-    border-radius:6px;
-    cursor:pointer;
-    transition:.3s;
+.action-buttons {
+    white-space: nowrap;
 }
 
-.delete-btn:hover{
-    background:#bb2d3b;
+.edit-btn,
+.delete-btn {
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 3px;
+}
+
+.edit-btn {
+    background: #0d6efd;
+    color: #fff;
+}
+
+.edit-btn:hover {
+    background: #0b5ed7;
+}
+
+.delete-btn {
+    background: #dc3545;
+    color: #fff;
+}
+
+.delete-btn:hover {
+    background: #bb2d3b;
+}
+
+.edit-btn:disabled,
+.delete-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   TABLE MESSAGE
+========================================== */
+
+.table-message {
+    text-align: center !important;
+    padding: 40px !important;
+    color: #777 !important;
+}
+
+.no-products {
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* ==========================================
+   PAGINATION
+========================================== */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 25px 20px 15px;
+    background: #fff;
+    flex-wrap: wrap;
+}
+
+.pagination-btn {
+    min-width: 42px;
+    height: 42px;
+    padding: 0 14px;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+    color: #333;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #f0f6ff;
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.pagination-btn.active {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+
+.pagination-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.pagination-btn.previous-next {
+    padding-left: 16px;
+    padding-right: 16px;
+}
+
+/* ==========================================
+   PAGINATION INFO
+========================================== */
+
+.pagination-info {
+    text-align: center;
+    padding: 0 20px 25px;
+    color: #777;
+    font-size: 14px;
+    background: #fff;
+}
+
+.pagination-info strong {
+    color: #333;
 }
 
 /* ==========================================
    SCROLLBAR
 ========================================== */
 
-.table-container::-webkit-scrollbar{
-    height:8px;
+.table-container::-webkit-scrollbar {
+    height: 8px;
 }
 
-.table-container::-webkit-scrollbar-thumb{
-    background:#c8c8c8;
-    border-radius:20px;
+.table-container::-webkit-scrollbar-thumb {
+    background: #c8c8c8;
+    border-radius: 20px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
 }
 
 /* ==========================================
    RESPONSIVE
 ========================================== */
 
-@media(max-width:768px){
+@media (max-width: 768px) {
 
-.shop-page{
-    padding:20px;
-}
+    .shop-page {
+        padding: 20px;
+    }
 
-.header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:15px;
-}
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
 
-.header button{
-    width:100%;
-}
+    .header button {
+        width: 100%;
+    }
 
-.upload-box{
-    padding:20px;
-}
+    .upload-box {
+        padding: 20px;
+    }
 
-.secondary-header,
-.specification-header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:10px;
-}
+    .secondary-header,
+    .specification-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 
-.secondary-header button,
-.specification-header button{
-    width:100%;
-}
+    .secondary-header button,
+    .specification-header button {
+        width: 100%;
+    }
 
-.secondary-item,
-.specification-row{
-    flex-direction:column;
-    align-items:stretch;
-}
+    .secondary-item,
+    .specification-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
 
-.remove-btn{
-    width:100%;
-}
+    .remove-btn {
+        width: 100%;
+    }
 
-.btns{
-    flex-direction:column;
-}
+    .btns {
+        flex-direction: column;
+    }
 
-.btns button{
-    width:100%;
-}
+    .btns button {
+        width: 100%;
+    }
 
-table{
-    min-width:1200px;
-}
+    table {
+        min-width: 1200px;
+    }
 
-.preview-image{
-    width:70px;
-    height:60px;
-}
+    .preview-image {
+        width: 70px;
+        height: 60px;
+    }
 
+    .pagination {
+        gap: 6px;
+        padding: 20px 10px 12px;
+    }
+
+    .pagination-btn {
+        min-width: 38px;
+        height: 38px;
+        padding: 0 10px;
+        font-size: 13px;
+    }
+
+    .pagination-btn.previous-next {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .pagination-info {
+        font-size: 13px;
+        padding-bottom: 20px;
+    }
 }
