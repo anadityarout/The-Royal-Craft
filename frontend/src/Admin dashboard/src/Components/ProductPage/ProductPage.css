@@ -2,301 +2,733 @@
    PRODUCT PAGE
 ========================================== */
 
-.productpage{
-    flex:1;
-    padding:30px;
-    background:#f5f7fa;
-    min-height:100vh;
-    box-sizing:border-box;
+.productpage {
+    flex: 1;
+    padding: 30px;
+    background: #f5f7fa;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
+
 
 /* ==========================================
    HEADER
 ========================================== */
 
-.header{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:30px;
+.product-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
 }
 
-.header h2{
-    font-size:28px;
-    color:#1f2937;
-    font-weight:600;
+.product-header h2 {
+    margin: 0;
+    font-size: 28px;
+    color: #1f2937;
+    font-weight: 600;
 }
 
-.header button{
-    padding:12px 24px;
-    background:#0d6efd;
-    color:#fff;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-    font-weight:600;
-    transition:.3s;
+.product-header button {
+    padding: 12px 24px;
+    background: #0d6efd;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s ease;
 }
 
-.header button:hover{
-    background:#0b5ed7;
+.product-header button:hover {
+    background: #0b5ed7;
 }
+
+.product-header button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 
 /* ==========================================
    UPLOAD BOX
 ========================================== */
 
-.upload-box{
-    background:#fff;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
-    margin-bottom:30px;
+.upload-box {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+    margin-bottom: 30px;
 }
+
 
 /* ==========================================
-   CATEGORY
+   CATEGORY SELECT
 ========================================== */
 
-.upload-box select{
-    width:100%;
-    padding:14px 16px;
-    margin-bottom:18px;
-    border:1px solid #dcdcdc;
-    border-radius:8px;
-    background:#fff;
-    font-size:15px;
-    outline:none;
-    transition:.3s;
-    box-sizing:border-box;
-    cursor:pointer;
+.upload-box select {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #374151;
+    font-size: 15px;
+    outline: none;
+    transition: 0.3s ease;
+    box-sizing: border-box;
+    cursor: pointer;
 }
 
-.upload-box select:focus{
-    border-color:#0d6efd;
+.upload-box select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.08);
 }
+
 
 /* ==========================================
    FILE INPUT
 ========================================== */
 
-.upload-box input[type="file"]{
-    width:100%;
-    padding:18px;
-    margin-bottom:18px;
-    border:2px dashed #d5d9df;
-    border-radius:8px;
-    background:#fafafa;
-    cursor:pointer;
-    box-sizing:border-box;
+.upload-box input[type="file"] {
+    width: 100%;
+    padding: 18px;
+    margin-bottom: 18px;
+    border: 2px dashed #d5d9df;
+    border-radius: 8px;
+    background: #fafafa;
+    color: #555;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: 0.3s ease;
 }
 
+.upload-box input[type="file"]:hover {
+    border-color: #0d6efd;
+    background: #f8fbff;
+}
+
+
 /* ==========================================
-   INPUTS
+   TEXT INPUT / DATE / TEXTAREA
 ========================================== */
 
 .upload-box input[type="text"],
 .upload-box input[type="date"],
-.upload-box textarea{
-    width:100%;
-    padding:14px 16px;
-    margin-bottom:18px;
-    border:1px solid #dcdcdc;
-    border-radius:8px;
-    outline:none;
-    font-size:15px;
-    box-sizing:border-box;
-    transition:.3s;
-    font-family:inherit;
+.upload-box textarea {
+    width: 100%;
+    padding: 14px 16px;
+    margin-bottom: 18px;
+    border: 1px solid #dcdcdc;
+    border-radius: 8px;
+    outline: none;
+    font-size: 15px;
+    color: #374151;
+    box-sizing: border-box;
+    transition: 0.3s ease;
+    font-family: inherit;
+    background: #ffffff;
 }
 
 .upload-box input[type="text"]:focus,
 .upload-box input[type="date"]:focus,
-.upload-box textarea:focus{
-    border-color:#0d6efd;
+.upload-box textarea:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.08);
 }
 
-.upload-box textarea{
-    resize:vertical;
-    min-height:120px;
+.upload-box textarea {
+    resize: vertical;
+    min-height: 120px;
 }
+
 
 /* ==========================================
-   BUTTONS
+   IMAGE PREVIEW
 ========================================== */
 
-.btns{
-    display:flex;
-    gap:15px;
-    margin-top:10px;
+.image-preview {
+    width: 100%;
+    margin-bottom: 18px;
 }
 
-.btns button{
-    padding:12px 30px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    color:#fff;
-    font-size:15px;
-    font-weight:600;
-    transition:.3s;
+.preview-image {
+    width: 90px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #dddddd;
+    display: block;
 }
 
-.btns button:first-child{
-    background:#198754;
+
+/* ==========================================
+   FORM BUTTONS
+========================================== */
+
+.btns {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
 }
 
-.btns button:first-child:hover{
-    background:#157347;
+.btns button {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    transition: 0.3s ease;
 }
 
-.btns button:last-child{
-    background:#dc3545;
+.btns button:first-child {
+    background: #198754;
 }
 
-.btns button:last-child:hover{
-    background:#bb2d3b;
+.btns button:first-child:hover {
+    background: #157347;
 }
+
+.btns button:last-child {
+    background: #dc3545;
+}
+
+.btns button:last-child:hover {
+    background: #bb2d3b;
+}
+
+.btns button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+
+/* ==========================================
+   LOADING
+========================================== */
+
+.loading {
+    text-align: center;
+    padding: 15px;
+    margin-bottom: 15px;
+    color: #0d6efd;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   TABLE CONTAINER
+========================================== */
+
+.table-container {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    overflow-x: auto;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+}
+
 
 /* ==========================================
    TABLE
 ========================================== */
 
-.table-container{
-    background:#fff;
-    border-radius:12px;
-    overflow-x:auto;
-    box-shadow:0 5px 18px rgba(0,0,0,.08);
+table {
+    width: 100%;
+    min-width: 1100px;
+    border-collapse: collapse;
 }
 
-table{
-    width:100%;
-    border-collapse:collapse;
-}
-
-thead{
-    background:#f8f9fb;
-}
-
-thead th{
-    padding:18px;
-    text-align:center;
-    font-size:15px;
-    font-weight:600;
-    color:#1f2937;
-    border-bottom:1px solid #e5e7eb;
-}
-
-tbody td{
-    padding:18px;
-    text-align:center;
-    border-bottom:1px solid #edf2f7;
-    vertical-align:middle;
-    color:#374151;
-    font-size:14px;
-}
-
-tbody tr:hover{
-    background:#f9fafb;
-}
 
 /* ==========================================
-   PREVIEW IMAGE
+   TABLE HEADER
 ========================================== */
 
-.preview-image{
-    width:90px;
-    height:70px;
-    object-fit:cover;
-    border-radius:8px;
-    border:1px solid #ddd;
+thead {
+    background: #0d6efd;
 }
+
+thead th {
+    padding: 18px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap;
+}
+
+
+/* ==========================================
+   TABLE BODY
+========================================== */
+
+tbody td {
+    padding: 16px 18px;
+    text-align: center;
+    border-bottom: 1px solid #edf2f7;
+    vertical-align: middle;
+    color: #374151;
+    font-size: 14px;
+}
+
+tbody tr {
+    transition: 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #f8fafc;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* ==========================================
+   TABLE PREVIEW IMAGE
+========================================== */
+
+tbody .preview-image {
+    width: 90px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #dddddd;
+    margin: auto;
+}
+
 
 /* ==========================================
    CATEGORY BADGE
 ========================================== */
 
-.category-badge{
-    display:inline-block;
-    padding:6px 14px;
-    background:#0d6efd;
-    color:#fff;
-    border-radius:20px;
-    font-size:13px;
-    font-weight:600;
+.category-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    background: #0d6efd;
+    color: #ffffff;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
 }
+
+
+/* ==========================================
+   ACTION BUTTONS
+========================================== */
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+
+/* ==========================================
+   EDIT BUTTON
+========================================== */
+
+.edit-btn {
+    padding: 9px 16px;
+    background: #ffad00;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.edit-btn:hover {
+    background: #e99b00;
+}
+
+.edit-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 
 /* ==========================================
    DELETE BUTTON
 ========================================== */
 
-.delete-btn{
-    padding:10px 18px;
-    background:#ef4444;
-    color:#fff;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    transition:.3s;
+.delete-btn {
+    padding: 9px 16px;
+    background: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.3s ease;
 }
 
-.delete-btn:hover{
-    background:#dc2626;
+.delete-btn:hover {
+    background: #dc2626;
 }
+
+.delete-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
 
 /* ==========================================
-   SCROLLBAR
+   PAGINATION
 ========================================== */
 
-.table-container::-webkit-scrollbar{
-    height:8px;
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 25px;
+    margin-bottom: 30px;
 }
 
-.table-container::-webkit-scrollbar-thumb{
-    background:#c7c7c7;
-    border-radius:20px;
-}
 
 /* ==========================================
-   RESPONSIVE
+   PAGE NUMBERS
 ========================================== */
 
-@media(max-width:768px){
-
-.productpage{
-    padding:20px;
+.page-numbers {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
 }
 
-.header{
-    flex-direction:column;
-    align-items:flex-start;
-    gap:15px;
+
+/* ==========================================
+   PAGE BUTTON
+========================================== */
+
+.page-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 12px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #d9dee7;
+    background: #ffffff;
+    color: #374151;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.2s ease;
 }
 
-.header button{
-    width:100%;
+
+/* ==========================================
+   PAGE BUTTON HOVER
+========================================== */
+
+.page-btn:hover:not(:disabled) {
+    background: #f0f4ff;
+    border-color: #0d6efd;
+    color: #0d6efd;
+    transform: translateY(-1px);
 }
 
-.upload-box{
-    padding:20px;
+
+/* ==========================================
+   ACTIVE PAGE
+========================================== */
+
+.page-btn.active {
+    background: #0d6efd;
+    border-color: #0d6efd;
+    color: #ffffff;
 }
 
-.btns{
-    flex-direction:column;
+
+/* ==========================================
+   ACTIVE PAGE HOVER
+========================================== */
+
+.page-btn.active:hover {
+    background: #0b5ed7;
+    border-color: #0b5ed7;
+    color: #ffffff;
 }
 
-.btns button{
-    width:100%;
+
+/* ==========================================
+   DISABLED PAGE BUTTON
+========================================== */
+
+.page-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
 }
 
-table{
-    min-width:1000px;
+
+/* ==========================================
+   PREVIOUS / NEXT
+========================================== */
+
+.prev-next {
+    padding-left: 16px;
+    padding-right: 16px;
+    min-width: auto;
 }
 
-.preview-image{
-    width:70px;
-    height:60px;
+
+/* ==========================================
+   NO PRODUCTS
+========================================== */
+
+.no-products {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
+    color: #777777;
+    font-size: 16px;
 }
+
+
+/* ==========================================
+   TABLE SCROLLBAR
+========================================== */
+
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 20px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: #c7c7c7;
+    border-radius: 20px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+    background: #aaaaaa;
+}
+
+
+/* ==========================================
+   RESPONSIVE - TABLET
+========================================== */
+
+@media (max-width: 1024px) {
+
+    .productpage {
+        padding: 25px;
+    }
+
+    .product-header h2 {
+        font-size: 26px;
+    }
+
+    .upload-box {
+        padding: 25px;
+    }
+
+    table {
+        min-width: 1050px;
+    }
+
+}
+
+
+/* ==========================================
+   RESPONSIVE - MOBILE
+========================================== */
+
+@media (max-width: 768px) {
+
+    .productpage {
+        padding: 20px;
+    }
+
+
+    /* --------------------------------------
+       HEADER
+    -------------------------------------- */
+
+    .product-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .product-header h2 {
+        font-size: 24px;
+    }
+
+    .product-header button {
+        width: 100%;
+    }
+
+
+    /* --------------------------------------
+       UPLOAD BOX
+    -------------------------------------- */
+
+    .upload-box {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+
+    /* --------------------------------------
+       FORM BUTTONS
+    -------------------------------------- */
+
+    .btns {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btns button {
+        width: 100%;
+    }
+
+
+    /* --------------------------------------
+       TABLE
+    -------------------------------------- */
+
+    .table-container {
+        border-radius: 10px;
+    }
+
+    table {
+        min-width: 1050px;
+    }
+
+    thead th {
+        padding: 15px;
+    }
+
+    tbody td {
+        padding: 15px;
+    }
+
+    tbody .preview-image {
+        width: 70px;
+        height: 60px;
+    }
+
+
+    /* --------------------------------------
+       ACTION BUTTONS
+    -------------------------------------- */
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .edit-btn,
+    .delete-btn {
+        width: 75px;
+    }
+
+
+    /* --------------------------------------
+       PAGINATION
+    -------------------------------------- */
+
+    .pagination {
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .page-numbers {
+        width: 100%;
+        order: 1;
+        gap: 6px;
+    }
+
+    .prev-next {
+        order: 2;
+    }
+
+    .page-btn {
+        min-width: 38px;
+        height: 38px;
+        padding: 0 10px;
+    }
+
+}
+
+
+/* ==========================================
+   VERY SMALL MOBILE
+========================================== */
+
+@media (max-width: 480px) {
+
+    .productpage {
+        padding: 15px;
+    }
+
+    .product-header h2 {
+        font-size: 22px;
+    }
+
+    .upload-box {
+        padding: 16px;
+    }
+
+    .upload-box select,
+    .upload-box input[type="file"],
+    .upload-box input[type="text"],
+    .upload-box input[type="date"],
+    .upload-box textarea {
+        font-size: 14px;
+    }
+
+    .pagination {
+        gap: 6px;
+    }
+
+    .page-numbers {
+        gap: 4px;
+    }
+
+    .page-btn {
+        min-width: 35px;
+        height: 35px;
+        font-size: 13px;
+        padding: 0 8px;
+    }
+
+    .prev-next {
+        font-size: 13px;
+        padding: 0 12px;
+    }
 
 }

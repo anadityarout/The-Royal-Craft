@@ -109,12 +109,7 @@ const ProductPage = () => {
         </div>
       </section>
 
-      {/* Product Count */}
-      {!loading && (
-        <div className="product-count">
-          <h3>{filteredProducts.length} Products</h3>
-        </div>
-      )}
+      
 
       {/* Products */}
       <section className="product-page-list">

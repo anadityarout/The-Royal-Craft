@@ -5,7 +5,6 @@ const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/product";
 
 const ProductPage = () => {
-
   const categories = [
     "Exterior",
     "Fiber Mandap",
@@ -19,57 +18,61 @@ const ProductPage = () => {
     "Statue",
   ];
 
-  const [showForm, setShowForm] = useState(false);
+  // =====================================
+  // STATES
+  // =====================================
 
+  const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
-  category: "",
-  image: null,
-  preview: "",
-  name: "",
-  description: "",
-  date: "",
-});
+    category: "",
+    image: null,
+    preview: "",
+    name: "",
+    description: "",
+    date: "",
+  });
 
   const [products, setProducts] = useState([]);
+
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
+
+  // =====================================
+  // PAGINATION
+  // =====================================
+
+  const PRODUCTS_PER_PAGE = 5;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(
+    products.length / PRODUCTS_PER_PAGE
+  );
+
+  const startIndex =
+    (currentPage - 1) * PRODUCTS_PER_PAGE;
+
+  const currentProducts = products.slice(
+    startIndex,
+    startIndex + PRODUCTS_PER_PAGE
+  );
+
+  // =====================================
+  // LOAD PRODUCTS
+  // =====================================
 
   useEffect(() => {
     loadProducts();
   }, []);
 
   // =====================================
-  // Convert Image To remove Base64
-  // =====================================
-
-  const handleImage = (e) => {
-
-  const file = e.target.files[0];
-
-  if (!file) return;
-
-  setForm((prev) => ({
-
-    ...prev,
-
-    image: file,
-
-    preview: URL.createObjectURL(file),
-
-  }));
-
-};
-
-  // =====================================
-  // Load Products
+  // LOAD PRODUCTS FROM API
   // =====================================
 
   const loadProducts = async () => {
-
     try {
-
       setLoading(true);
 
       const response = await fetch(API_URL);
@@ -83,163 +86,143 @@ const ProductPage = () => {
       setProducts(data);
 
     } catch (err) {
-
       console.error(err);
-
       alert("Unable to load Product data.");
 
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
+  // =====================================
+  // IMAGE HANDLER
+  // =====================================
+
+  const handleImage = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setForm((prev) => ({
+      ...prev,
+      image: file,
+      preview: URL.createObjectURL(file),
+    }));
+  };
+
+  // =====================================
+  // UPLOAD IMAGE
+  // =====================================
+
   const uploadImage = async (file) => {
+    const response = await fetch(
+      `${API_URL}?upload=true&fileName=${encodeURIComponent(
+        file.name
+      )}&fileType=${encodeURIComponent(file.type)}`
+    );
 
-  const response = await fetch(
+    if (!response.ok) {
+      throw new Error("Unable to generate upload URL.");
+    }
 
-    `${API_URL}?upload=true&fileName=${encodeURIComponent(
-      file.name
-    )}&fileType=${encodeURIComponent(file.type)}`
+    const uploadData = await response.json();
 
-  );
+    const uploadResponse = await fetch(
+      uploadData.uploadUrl,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
+        body: file,
+      }
+    );
 
-  if (!response.ok) {
+    if (!uploadResponse.ok) {
+      throw new Error("Image upload failed.");
+    }
 
-    throw new Error("Unable to generate upload URL.");
+    return uploadData.fileUrl;
+  };
 
-  }
-
-  const uploadData = await response.json();
-
-  const uploadResponse = await fetch(uploadData.uploadUrl, {
-
-    method: "PUT",
-
-    headers: {
-
-      "Content-Type": file.type,
-
-    },
-
-    body: file,
-
-  });
-
-  if (!uploadResponse.ok) {
-
-    throw new Error("Image upload failed.");
-
-  }
-
-  return uploadData.fileUrl;
-
-};
-    // =====================================
-  // Save Product
+  // =====================================
+  // SAVE / UPDATE PRODUCT
   // =====================================
 
   const saveProduct = async () => {
-
-  if (
-
-    !form.category ||
-
-    !form.name.trim() ||
-
-    !form.date ||
-
-    (!isEditing && !form.image)
-
-  ) {
-
-    alert("Please fill all required fields.");
-
-    return;
-
-  }
-
-  try {
-
-    setLoading(true);
-
-    let imageUrl = form.preview;
-
-    if (form.image) {
-
-      imageUrl = await uploadImage(form.image);
-
+    if (
+      !form.category ||
+      !form.name.trim() ||
+      !form.date ||
+      (!isEditing && !form.image)
+    ) {
+      alert("Please fill all required fields.");
+      return;
     }
 
-    const response = await fetch(API_URL, {
+    try {
+      setLoading(true);
 
-      method: isEditing ? "PUT" : "POST",
+      let imageUrl = form.preview;
 
-      headers: {
+      if (form.image) {
+        imageUrl = await uploadImage(form.image);
+      }
 
-        "Content-Type": "application/json",
+      const response = await fetch(API_URL, {
+        method: isEditing ? "PUT" : "POST",
 
-      },
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-      body: JSON.stringify({
+        body: JSON.stringify({
+          id: editId,
+          category: form.category,
+          image: imageUrl,
+          name: form.name,
+          description: form.description,
+          date: form.date,
+        }),
+      });
 
-        id: editId,
+      const result = await response.json();
 
-        category: form.category,
+      if (!response.ok) {
+        throw new Error(
+          result.message || "Unable to save product."
+        );
+      }
 
-        image: imageUrl,
+      await loadProducts();
 
-        name: form.name,
+      resetForm();
 
-        description: form.description,
+      // New product will appear on the first page
+      if (!isEditing) {
+        setCurrentPage(1);
+      }
 
-        date: form.date,
+      alert(
+        isEditing
+          ? "Product updated successfully."
+          : "Product saved successfully."
+      );
 
-      }),
+    } catch (err) {
+      console.error(err);
+      alert(err.message);
 
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-
-      throw new Error(result.message);
-
+    } finally {
+      setLoading(false);
     }
+  };
 
-    await loadProducts();
-
-    resetForm();
-
-    alert(
-
-      isEditing
-
-        ? "Product updated successfully."
-
-        : "Product saved successfully."
-
-    );
-
-  } catch (err) {
-
-    alert(err.message);
-
-  } finally {
-
-    setLoading(false);
-
-  }
-
-};
   // =====================================
-  // Delete Product
+  // DELETE PRODUCT
   // =====================================
 
   const deleteProduct = async (id) => {
-
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this product?"
     );
@@ -247,14 +230,15 @@ const ProductPage = () => {
     if (!confirmDelete) return;
 
     try {
-
       setLoading(true);
 
       const response = await fetch(API_URL, {
         method: "DELETE",
+
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify({
           id,
         }),
@@ -263,99 +247,113 @@ const ProductPage = () => {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.message || "Delete failed");
+        throw new Error(
+          result.message || "Delete failed"
+        );
       }
 
       alert("Product deleted successfully.");
 
       await loadProducts();
 
+      // Prevent staying on an empty page
+      setCurrentPage((page) => {
+        const remainingProducts = products.length - 1;
+        const remainingPages = Math.ceil(
+          remainingProducts / PRODUCTS_PER_PAGE
+        );
+
+        return Math.min(
+          page,
+          Math.max(1, remainingPages)
+        );
+      });
+
     } catch (err) {
-
       console.error(err);
-
       alert(err.message);
 
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
   // =====================================
-  // Reset Form
+  // RESET FORM
   // =====================================
 
   const resetForm = () => {
+    setForm({
+      category: "",
+      image: null,
+      preview: "",
+      name: "",
+      description: "",
+      date: "",
+    });
 
-  setForm({
+    setIsEditing(false);
+    setEditId(null);
+    setShowForm(false);
+  };
 
-    category: "",
+  // =====================================
+  // EDIT PRODUCT
+  // =====================================
 
-    image: null,
+  const editProduct = (item) => {
+    setIsEditing(true);
 
-    preview: "",
+    setEditId(item.id);
 
-    name: "",
+    setForm({
+      category: item.category,
+      image: null,
+      preview: item.image,
+      name: item.name,
+      description: item.description,
+      date: item.date,
+    });
 
-    description: "",
+    setShowForm(true);
+  };
 
-    date: "",
+  // =====================================
+  // PAGE CHANGE
+  // =====================================
 
-  });
+  const goToPage = (page) => {
+    if (page < 1 || page > totalPages) return;
 
-  setIsEditing(false);
+    setCurrentPage(page);
 
-  setEditId(null);
+    // Scroll to top of product table
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
 
-  setShowForm(false);
+  // =====================================
+  // RETURN
+  // =====================================
 
-};
-
-const editProduct = (item) => {
-
-  setIsEditing(true);
-
-  setEditId(item.id);
-
-  setForm({
-
-    category: item.category,
-
-    image: null,
-
-    preview: item.image,
-
-    name: item.name,
-
-    description: item.description,
-
-    date: item.date,
-
-  });
-
-  setShowForm(true);
-
-};
-    return (
+  return (
     <div className="productpage">
 
-      {/* Header */}
+      {/* =====================================
+          HEADER
+      ===================================== */}
 
-      <div className="header">
+      <div className="product-header">
 
         <h2>Product Page</h2>
 
         <button
           onClick={() => {
-
-  resetForm();
-
-  setShowForm(true);
-
-}}
+            resetForm();
+            setShowForm(true);
+          }}
           disabled={loading}
         >
           + Add Image
@@ -363,10 +361,11 @@ const editProduct = (item) => {
 
       </div>
 
-      {/* Upload Form */}
+      {/* =====================================
+          UPLOAD FORM
+      ===================================== */}
 
       {showForm && (
-
         <div className="upload-box">
 
           <select
@@ -378,7 +377,9 @@ const editProduct = (item) => {
               })
             }
           >
-            <option value="">Select Category</option>
+            <option value="">
+              Select Category
+            </option>
 
             {categories.map((category) => (
               <option
@@ -388,7 +389,6 @@ const editProduct = (item) => {
                 {category}
               </option>
             ))}
-
           </select>
 
           <input
@@ -398,7 +398,6 @@ const editProduct = (item) => {
           />
 
           {form.preview && (
-
             <div className="image-preview">
 
               <img
@@ -408,7 +407,6 @@ const editProduct = (item) => {
               />
 
             </div>
-
           )}
 
           <input
@@ -453,12 +451,12 @@ const editProduct = (item) => {
               disabled={loading}
             >
               {loading
-  ? isEditing
-    ? "Updating..."
-    : "Saving..."
-  : isEditing
-    ? "Update"
-    : "Save"}
+                ? isEditing
+                  ? "Updating..."
+                  : "Saving..."
+                : isEditing
+                ? "Update"
+                : "Save"}
             </button>
 
             <button
@@ -471,23 +469,23 @@ const editProduct = (item) => {
           </div>
 
         </div>
-
       )}
 
-      {/* Loading */}
+      {/* =====================================
+          LOADING
+      ===================================== */}
 
       {loading && (
-
         <div className="loading">
           Loading...
         </div>
-
       )}
 
-      {/* Product Table */}
+      {/* =====================================
+          PRODUCT TABLE
+      ===================================== */}
 
       {products.length > 0 && (
-
         <div className="table-container">
 
           <table>
@@ -495,7 +493,6 @@ const editProduct = (item) => {
             <thead>
 
               <tr>
-
                 <th>No</th>
                 <th>Preview</th>
                 <th>Category</th>
@@ -504,53 +501,77 @@ const editProduct = (item) => {
                 <th>Description</th>
                 <th>Date</th>
                 <th>Action</th>
-
               </tr>
 
             </thead>
 
             <tbody>
-                            {products.map((item, index) => (
+
+              {currentProducts.map((item, index) => (
 
                 <tr key={item.id}>
 
-                  <td>{index + 1}</td>
+                  {/* Overall product number */}
+                  <td>
+                    {startIndex + index + 1}
+                  </td>
 
                   <td>
                     <img
-                      src={item.image || item.preview}
+                      src={
+                        item.image ||
+                        item.preview
+                      }
                       alt={item.name}
                       className="preview-image"
                     />
                   </td>
 
-                  <td>{item.category}</td>
+                  <td>
+                    <span className="category-badge">
+                      {item.category}
+                    </span>
+                  </td>
 
                   <td>Image</td>
 
-                  <td>{item.name}</td>
+                  <td>
+                    {item.name}
+                  </td>
 
-                  <td>{item.description}</td>
+                  <td>
+                    {item.description}
+                  </td>
 
-                  <td>{item.date}</td>
+                  <td>
+                    {item.date}
+                  </td>
 
                   <td>
 
-                    <button
-  className="edit-btn"
-  onClick={() => editProduct(item)}
-  disabled={loading}
->
-  Edit
-</button>
+                    <div className="action-buttons">
 
-<button
-  className="delete-btn"
-  onClick={() => deleteProduct(item.id)}
-  disabled={loading}
->
-  Delete
-</button>
+                      <button
+                        className="edit-btn"
+                        onClick={() =>
+                          editProduct(item)
+                        }
+                        disabled={loading}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() =>
+                          deleteProduct(item.id)
+                        }
+                        disabled={loading}
+                      >
+                        Delete
+                      </button>
+
+                    </div>
 
                   </td>
 
@@ -563,28 +584,78 @@ const editProduct = (item) => {
           </table>
 
         </div>
-
       )}
 
-      {!loading && products.length === 0 && (
+      {/* =====================================
+          PAGINATION
+      ===================================== */}
 
-        <div
-          style={{
-            textAlign: "center",
-            marginTop: "40px",
-            color: "#777",
-            fontSize: "16px",
-          }}
-        >
+      {products.length > PRODUCTS_PER_PAGE && (
+        <div className="pagination">
+
+          {/* Previous */}
+          <button
+            className="page-btn prev-next"
+            onClick={() =>
+              goToPage(currentPage - 1)
+            }
+            disabled={currentPage === 1}
+          >
+          </button>
+
+          {/* Page Numbers */}
+          <div className="page-numbers">
+
+            {Array.from(
+              { length: totalPages },
+              (_, index) => index + 1
+            ).map((page) => (
+
+              <button
+                key={page}
+                className={`page-btn ${
+                  currentPage === page
+                    ? "active"
+                    : ""
+                }`}
+                onClick={() =>
+                  goToPage(page)
+                }
+              >
+                {page}
+              </button>
+
+            ))}
+
+          </div>
+
+          {/* Next */}
+          <button
+            className="page-btn prev-next"
+            onClick={() =>
+              goToPage(currentPage + 1)
+            }
+            disabled={
+              currentPage === totalPages
+            }
+          >
+          </button>
+
+        </div>
+      )}
+
+      {/* =====================================
+          NO PRODUCTS
+      ===================================== */}
+
+      {!loading && products.length === 0 && (
+        <div className="no-products">
           No Products uploaded yet.
         </div>
-
       )}
 
     </div>
-
   );
-
 };
 
 export default ProductPage;

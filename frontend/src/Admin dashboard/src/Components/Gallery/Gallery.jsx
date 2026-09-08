@@ -7,7 +7,7 @@ const API_URL =
 const Gallery = () => {
 
   /* =====================================
-     States
+     Categories / States
   ===================================== */
 
   const [showForm, setShowForm] = useState(false);
@@ -21,18 +21,52 @@ const Gallery = () => {
   const [editId, setEditId] = useState(null);
 
   const [form, setForm] = useState({
-
     image: null,
-
     preview: "",
-
     primaryName: "",
-
     secondaryName: "",
-
     description: "",
-
   });
+
+
+  /* =====================================
+     PAGINATION
+  ===================================== */
+
+  const GALLERY_PER_PAGE = 5;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(
+    gallery.length / GALLERY_PER_PAGE
+  );
+
+  const startIndex =
+    (currentPage - 1) * GALLERY_PER_PAGE;
+
+  const currentGallery = gallery.slice(
+    startIndex,
+    startIndex + GALLERY_PER_PAGE
+  );
+
+
+  /* =====================================
+     Automatically Fix Page After Delete
+  ===================================== */
+
+  useEffect(() => {
+
+    const pages = Math.max(
+      1,
+      Math.ceil(gallery.length / GALLERY_PER_PAGE)
+    );
+
+    setCurrentPage((page) =>
+      Math.min(page, pages)
+    );
+
+  }, [gallery.length]);
+
 
   /* =====================================
      Load Gallery
@@ -44,6 +78,7 @@ const Gallery = () => {
 
   }, []);
 
+
   const loadGallery = async () => {
 
     try {
@@ -54,13 +89,19 @@ const Gallery = () => {
 
       if (!response.ok) {
 
-        throw new Error("Failed to load gallery.");
+        throw new Error(
+          "Failed to load gallery."
+        );
 
       }
 
       const data = await response.json();
 
-      setGallery(Array.isArray(data) ? data : []);
+      setGallery(
+        Array.isArray(data)
+          ? data
+          : []
+      );
 
     } catch (err) {
 
@@ -76,6 +117,7 @@ const Gallery = () => {
 
   };
 
+
   /* =====================================
      Upload Image To S3
   ===================================== */
@@ -83,38 +125,49 @@ const Gallery = () => {
   const uploadImage = async (file) => {
 
     const response = await fetch(
-
       `${API_URL}?upload=true&fileName=${encodeURIComponent(
         file.name
-      )}&fileType=${encodeURIComponent(file.type)}`
-
+      )}&fileType=${encodeURIComponent(
+        file.type
+      )}`
     );
 
     if (!response.ok) {
 
-      throw new Error("Unable to get upload URL.");
+      throw new Error(
+        "Unable to get upload URL."
+      );
 
     }
 
-    const uploadData = await response.json();
+    const uploadData =
+      await response.json();
 
-    await fetch(uploadData.uploadUrl, {
+    const uploadResponse = await fetch(
+      uploadData.uploadUrl,
+      {
+        method: "PUT",
 
-      method: "PUT",
+        headers: {
+          "Content-Type": file.type,
+        },
 
-      headers: {
+        body: file,
+      }
+    );
 
-        "Content-Type": file.type,
+    if (!uploadResponse.ok) {
 
-      },
+      throw new Error(
+        "Image upload failed."
+      );
 
-      body: file,
-
-    });
+    }
 
     return uploadData.fileUrl;
 
   };
+
 
   /* =====================================
      Select Image
@@ -122,21 +175,20 @@ const Gallery = () => {
 
   const handleImage = (e) => {
 
-    const file = e.target.files[0];
+    const file =
+      e.target.files[0];
 
     if (!file) return;
 
     setForm((prev) => ({
-
       ...prev,
-
       image: file,
-
-      preview: URL.createObjectURL(file),
-
+      preview:
+        URL.createObjectURL(file),
     }));
 
   };
+
 
   /* =====================================
      Reset Form
@@ -145,17 +197,11 @@ const Gallery = () => {
   const resetForm = () => {
 
     setForm({
-
       image: null,
-
       preview: "",
-
       primaryName: "",
-
       secondaryName: "",
-
       description: "",
-
     });
 
     setIsEditing(false);
@@ -165,7 +211,9 @@ const Gallery = () => {
     setShowForm(false);
 
   };
-    /* =====================================
+
+
+  /* =====================================
      Save Gallery
   ===================================== */
 
@@ -173,9 +221,14 @@ const Gallery = () => {
 
     try {
 
-      if (!isEditing && !form.image) {
+      if (
+        !isEditing &&
+        !form.image
+      ) {
 
-        alert("Please upload an image.");
+        alert(
+          "Please upload an image."
+        );
 
         return;
 
@@ -183,21 +236,26 @@ const Gallery = () => {
 
       setLoading(true);
 
-      // ==========================
-      // Upload Image
-      // ==========================
+
+      /* ==========================
+         Upload Image
+      ========================== */
 
       let imageUrl = form.preview;
 
       if (form.image) {
 
-        imageUrl = await uploadImage(form.image);
+        imageUrl =
+          await uploadImage(
+            form.image
+          );
 
       }
 
-      // ==========================
-      // Payload
-      // ==========================
+
+      /* ==========================
+         Payload
+      ========================== */
 
       const payload = {
 
@@ -205,63 +263,68 @@ const Gallery = () => {
 
         image: imageUrl,
 
-        primaryName: form.primaryName,
+        primaryName:
+          form.primaryName,
 
-        secondaryName: form.secondaryName,
+        secondaryName:
+          form.secondaryName,
 
-        description: form.description,
+        description:
+          form.description,
 
       };
 
-      // ==========================
-      // Save / Update
-      // ==========================
 
-      const response = await fetch(API_URL, {
+      /* ==========================
+         Save / Update
+      ========================== */
 
-        method: isEditing ? "PUT" : "POST",
+      const response = await fetch(
+        API_URL,
+        {
+          method: isEditing
+            ? "PUT"
+            : "POST",
 
-        headers: {
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-          "Content-Type": "application/json",
+          body:
+            JSON.stringify(payload),
 
-        },
+        }
+      );
 
-        body: JSON.stringify(payload),
 
-      });
+      const result =
+        await response.json();
 
-      const result = await response.json();
 
       if (!response.ok) {
 
         throw new Error(
-
           result.message ||
-
-          (isEditing
-
-            ? "Unable to update gallery."
-
-            : "Unable to save gallery.")
-
+            (isEditing
+              ? "Unable to update gallery."
+              : "Unable to save gallery.")
         );
 
       }
+
 
       await loadGallery();
 
       resetForm();
 
+
       alert(
-
         isEditing
-
           ? "Gallery updated successfully."
-
           : "Gallery added successfully."
-
       );
+
 
     } catch (err) {
 
@@ -276,7 +339,9 @@ const Gallery = () => {
     }
 
   };
-    /* =====================================
+
+
+  /* =====================================
      Edit Gallery
   ===================================== */
 
@@ -292,11 +357,14 @@ const Gallery = () => {
 
       preview: item.image,
 
-      primaryName: item.primaryName || "",
+      primaryName:
+        item.primaryName || "",
 
-      secondaryName: item.secondaryName || "",
+      secondaryName:
+        item.secondaryName || "",
 
-      description: item.description || "",
+      description:
+        item.description || "",
 
     });
 
@@ -304,57 +372,69 @@ const Gallery = () => {
 
   };
 
+
   /* =====================================
      Delete Gallery
   ===================================== */
 
   const deleteGallery = async (id) => {
 
-    if (!window.confirm("Delete this image?")) {
+    if (
+      !window.confirm(
+        "Delete this image?"
+      )
+    ) {
 
       return;
 
     }
 
+
     try {
 
       setLoading(true);
 
-      const response = await fetch(API_URL, {
 
-        method: "DELETE",
+      const response = await fetch(
+        API_URL,
+        {
+          method: "DELETE",
 
-        headers: {
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-          "Content-Type": "application/json",
+          body:
+            JSON.stringify({
+              id,
+            }),
 
-        },
+        }
+      );
 
-        body: JSON.stringify({
 
-          id,
+      const result =
+        await response.json();
 
-        }),
-
-      });
-
-      const result = await response.json();
 
       if (!response.ok) {
 
         throw new Error(
-
           result.message ||
-
-          "Delete failed."
-
+            "Delete failed."
         );
 
       }
 
+
       await loadGallery();
 
-      alert("Gallery deleted successfully.");
+
+      alert(
+        "Gallery deleted successfully."
+      );
+
 
     } catch (err) {
 
@@ -369,181 +449,222 @@ const Gallery = () => {
     }
 
   };
+
+
+  /* =====================================
+     PAGE CHANGE
+  ===================================== */
+
+  const goToPage = (page) => {
+
+    if (
+      page < 1 ||
+      page > totalPages
+    ) {
+
+      return;
+
+    }
+
+    setCurrentPage(page);
+
+
+    /* Scroll to top */
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+
+  };
+
+
+  /* =====================================
+     RETURN
+  ===================================== */
+
   return (
 
-<div className="gallery-page">
+    <div className="gallery-page">
 
-  {/* ===========================
-      Header
-  ============================ */}
 
-  <div className="header">
+      {/* =====================================
+          HEADER
+      ===================================== */}
 
-    <h2>Gallery Page</h2>
+      <div className="gallery-header">
 
-    <button
-      onClick={() => {
+        <h2>
+          Gallery Page
+        </h2>
 
-        resetForm();
 
-        setShowForm(true);
+        <button
+          onClick={() => {
 
-      }}
-      disabled={loading}
-    >
-      + Add Image
-    </button>
+            resetForm();
 
-  </div>
+            setShowForm(true);
 
-  {/* ===========================
-      Upload Form
-  ============================ */}
-
-  {showForm && (
-
-    <div className="upload-box">
-
-      <h3>
-
-        {isEditing
-          ? "Edit Gallery"
-          : "Add Gallery"}
-
-      </h3>
-
-      {/* Image */}
-
-      <input
-        type="file"
-        accept="image/*"
-        onChange={handleImage}
-      />
-
-      {form.preview && (
-
-        <div
-          style={{
-            marginTop: "15px",
           }}
-        >
 
-          <img
-            src={form.preview}
-            alt="Preview"
-            className="preview-image"
+          disabled={loading}
+        >
+          + Add Image
+        </button>
+
+      </div>
+
+
+      {/* =====================================
+          UPLOAD FORM
+      ===================================== */}
+
+      {showForm && (
+
+        <div className="upload-box">
+
+          <h3>
+
+            {isEditing
+              ? "Edit Gallery"
+              : "Add Gallery"}
+
+          </h3>
+
+
+          {/* Image */}
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImage}
           />
+
+
+          {/* Image Preview */}
+
+          {form.preview && (
+
+            <div className="gallery-image-preview">
+
+              <img
+                src={form.preview}
+                alt="Preview"
+                className="preview-image"
+              />
+
+            </div>
+
+          )}
+
+
+          {/* Primary Name */}
+
+          <input
+            type="text"
+            placeholder="Primary Name (Optional)"
+            value={
+              form.primaryName
+            }
+
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+
+                primaryName:
+                  e.target.value,
+
+              }))
+            }
+          />
+
+
+          {/* Secondary Name */}
+
+          <input
+            type="text"
+            placeholder="Secondary Name (Optional)"
+            value={
+              form.secondaryName
+            }
+
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+
+                secondaryName:
+                  e.target.value,
+
+              }))
+            }
+          />
+
+
+          {/* Description */}
+
+          <textarea
+            rows="4"
+            placeholder="Description (Optional)"
+            value={
+              form.description
+            }
+
+            onChange={(e) =>
+              setForm((prev) => ({
+                ...prev,
+
+                description:
+                  e.target.value,
+
+              }))
+            }
+          />
+
+
+          {/* Buttons */}
+
+          <div className="btns">
+
+            <button
+              onClick={saveGallery}
+              disabled={loading}
+            >
+
+              {loading
+                ? isEditing
+                  ? "Updating..."
+                  : "Saving..."
+                : isEditing
+                ? "Update Gallery"
+                : "Save Gallery"}
+
+            </button>
+
+
+            <button
+              onClick={resetForm}
+              disabled={loading}
+            >
+              Cancel
+            </button>
+
+          </div>
 
         </div>
 
       )}
 
-      {/* Primary Name */}
 
-      <input
-        type="text"
-        placeholder="Primary Name (Optional)"
-        value={form.primaryName}
-        onChange={(e) =>
-          setForm((prev) => ({
-
-            ...prev,
-
-            primaryName:
-              e.target.value,
-
-          }))
-        }
-      />
-
-      {/* Secondary Name */}
-
-      <input
-        type="text"
-        placeholder="Secondary Name (Optional)"
-        value={form.secondaryName}
-        onChange={(e) =>
-          setForm((prev) => ({
-
-            ...prev,
-
-            secondaryName:
-              e.target.value,
-
-          }))
-        }
-      />
-
-      {/* Description */}
-
-      <textarea
-        rows="4"
-        placeholder="Description (Optional)"
-        value={form.description}
-        onChange={(e) =>
-          setForm((prev) => ({
-
-            ...prev,
-
-            description:
-              e.target.value,
-
-          }))
-        }
-      />
-
-      {/* Buttons */}
-
-      <div className="btns">
-
-        <button
-          onClick={saveGallery}
-          disabled={loading}
-        >
-
-          {loading
-
-            ? isEditing
-
-              ? "Updating..."
-
-              : "Saving..."
-
-            : isEditing
-
-              ? "Update Gallery"
-
-              : "Save Gallery"}
-
-        </button>
-
-        <button
-          onClick={resetForm}
-          disabled={loading}
-        >
-          Cancel
-        </button>
-
-      </div>
-
-    </div>
-
-  )}
-        {/* ===========================
-          Gallery Table
-      ============================ */}
+      {/* =====================================
+          GALLERY TABLE
+      ===================================== */}
 
       <div className="table-container">
 
         {loading ? (
 
-          <div
-            style={{
-              textAlign: "center",
-              padding: "40px",
-              fontSize: "18px",
-            }}
-          >
+          <div className="gallery-loading">
             Loading gallery...
           </div>
 
@@ -555,89 +676,151 @@ const Gallery = () => {
 
               <tr>
 
-                <th>No</th>
+                <th>
+                  No
+                </th>
 
-                <th>Preview</th>
+                <th>
+                  Preview
+                </th>
 
-                <th>Primary Name</th>
+                <th>
+                  Primary Name
+                </th>
 
-                <th>Secondary Name</th>
+                <th>
+                  Secondary Name
+                </th>
 
-                <th>Description</th>
+                <th>
+                  Description
+                </th>
 
-                <th>Type</th>
+                <th>
+                  Type
+                </th>
 
-                <th>Action</th>
+                <th>
+                  Action
+                </th>
 
               </tr>
 
             </thead>
 
+
             <tbody>
 
-              {gallery.length > 0 ? (
+              {currentGallery.length > 0 ? (
 
-                gallery.map((item, index) => (
+                currentGallery.map(
+                  (item, index) => (
 
-                  <tr key={item.id}>
+                    <tr
+                      key={item.id}
+                    >
 
-                    <td>{index + 1}</td>
+                      {/* Number */}
 
-                    <td>
+                      <td>
+                        {startIndex +
+                          index +
+                          1}
+                      </td>
 
-                      <img
-                        src={item.image}
-                        alt={item.primaryName || "Gallery"}
-                        className="preview-image"
-                      />
 
-                    </td>
+                      {/* Preview */}
 
-                    <td>
+                      <td>
 
-                      {item.primaryName || "-"}
+                        <img
+                          src={item.image}
+                          alt={
+                            item.primaryName ||
+                            "Gallery"
+                          }
+                          className="preview-image"
+                        />
 
-                    </td>
+                      </td>
 
-                    <td>
 
-                      {item.secondaryName || "-"}
+                      {/* Primary Name */}
 
-                    </td>
+                      <td>
 
-                    <td>
+                        {item.primaryName ||
+                          "-"}
 
-                      {item.description || "-"}
+                      </td>
 
-                    </td>
 
-                    <td>Image</td>
+                      {/* Secondary Name */}
 
-                    <td>
+                      <td>
 
-                      <button
-                        className="edit-btn"
-                        onClick={() => editGallery(item)}
-                        disabled={loading}
-                      >
-                        Edit
-                      </button>
+                        {item.secondaryName ||
+                          "-"}
 
-                      <button
-                        className="delete-btn"
-                        onClick={() =>
-                          deleteGallery(item.id)
-                        }
-                        disabled={loading}
-                      >
-                        Delete
-                      </button>
+                      </td>
 
-                    </td>
 
-                  </tr>
+                      {/* Description */}
 
-                ))
+                      <td>
+
+                        {item.description ||
+                          "-"}
+
+                      </td>
+
+
+                      {/* Type */}
+
+                      <td>
+                        Image
+                      </td>
+
+
+                      {/* Actions */}
+
+                      <td>
+
+                        <div className="action-buttons">
+
+                          <button
+                            className="edit-btn"
+                            onClick={() =>
+                              editGallery(
+                                item
+                              )
+                            }
+                            disabled={loading}
+                          >
+                            Edit
+                          </button>
+
+
+                          <button
+                            className="delete-btn"
+                            onClick={() =>
+                              deleteGallery(
+                                item.id
+                              )
+                            }
+                            disabled={loading}
+                          >
+                            Delete
+                          </button>
+
+                        </div>
+
+                      </td>
+
+                    </tr>
+
+                  )
+                )
 
               ) : (
 
@@ -645,18 +828,20 @@ const Gallery = () => {
 
                   <td
                     colSpan="7"
-                    style={{
-                      textAlign: "center",
-                      padding: "40px",
-                      color: "#777",
-                    }}
+                    className="empty-gallery"
                   >
 
-                    No gallery images found.
+                    No gallery images
+                    found.
 
                     <br />
 
-                    Click <strong>+ Add Image</strong> to upload your first image.
+                    Click{" "}
+                    <strong>
+                      + Add Image
+                    </strong>{" "}
+                    to upload your
+                    first image.
 
                   </td>
 
@@ -671,6 +856,91 @@ const Gallery = () => {
         )}
 
       </div>
+
+
+      {/* =====================================
+          PAGINATION
+      ===================================== */}
+
+      {gallery.length >
+        GALLERY_PER_PAGE && (
+
+        <div className="pagination">
+
+
+          {/* Previous */}
+
+          <button
+            className="page-btn prev-next"
+            onClick={() =>
+              goToPage(
+                currentPage - 1
+              )
+            }
+
+            disabled={
+              currentPage === 1
+            }
+          >
+            
+          </button>
+
+
+          {/* Page Numbers */}
+
+          <div className="page-numbers">
+
+            {Array.from(
+              {
+                length: totalPages,
+              },
+              (_, index) =>
+                index + 1
+            ).map((page) => (
+
+              <button
+                key={page}
+
+                className={`page-btn ${
+                  currentPage === page
+                    ? "active"
+                    : ""
+                }`}
+
+                onClick={() =>
+                  goToPage(page)
+                }
+              >
+                {page}
+              </button>
+
+            ))}
+
+          </div>
+
+
+          {/* Next */}
+
+          <button
+            className="page-btn prev-next"
+            onClick={() =>
+              goToPage(
+                currentPage + 1
+              )
+            }
+
+            disabled={
+              currentPage ===
+              totalPages
+            }
+          >
+            
+          </button>
+
+
+        </div>
+
+      )}
 
     </div>
 

@@ -1149,7 +1149,7 @@ const Shop = () => {
                 currentPage === 1
               }
             >
-              ← Previous
+            
             </button>
 
             {/* PAGE NUMBERS */}
@@ -1196,7 +1196,7 @@ const Shop = () => {
                 totalPages
               }
             >
-              Next →
+              
             </button>
 
           </div>

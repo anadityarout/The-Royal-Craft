@@ -4,7 +4,13 @@ import "./ServicePage.css";
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/service";
 
+const ITEMS_PER_PAGE = 5;
+
 const ServicePage = () => {
+  /* =========================================================
+     SERVICE CATEGORIES
+  ========================================================= */
+
   const categories = [
     "Air Conditioning",
     "Architectural Layout",
@@ -14,12 +20,26 @@ const ServicePage = () => {
     "STP (Sewage Treatment Plants)",
   ];
 
-  // ==========================================
-  // FORM STATE
-  // ==========================================
+  /* =========================================================
+     DROPDOWN
+  ========================================================= */
 
-  const [showServiceForm, setShowServiceForm] = useState(false);
-  const [showLogoForm, setShowLogoForm] = useState(false);
+  const [showAddDropdown, setShowAddDropdown] =
+    useState(false);
+
+  /* =========================================================
+     FORM VISIBILITY
+  ========================================================= */
+
+  const [showServiceForm, setShowServiceForm] =
+    useState(false);
+
+  const [showLogoForm, setShowLogoForm] =
+    useState(false);
+
+  /* =========================================================
+     SERVICE FORM
+  ========================================================= */
 
   const [form, setForm] = useState({
     category: "",
@@ -30,6 +50,10 @@ const ServicePage = () => {
     date: "",
   });
 
+  /* =========================================================
+     LOGO FORM
+  ========================================================= */
+
   const [logoForm, setLogoForm] = useState({
     image: null,
     preview: "",
@@ -38,97 +62,197 @@ const ServicePage = () => {
     url: "",
   });
 
-  // ==========================================
-  // DATA
-  // ==========================================
+  /* =========================================================
+     DATA
+  ========================================================= */
 
   const [services, setServices] = useState([]);
   const [logos, setLogos] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
-  const [isEditingService, setIsEditingService] = useState(false);
-  const [isEditingLogo, setIsEditingLogo] = useState(false);
+  /* =========================================================
+     EDIT STATES
+  ========================================================= */
 
-  const [editServiceId, setEditServiceId] = useState(null);
-  const [editLogoId, setEditLogoId] = useState(null);
+  const [isEditingService, setIsEditingService] =
+    useState(false);
 
-  // ==========================================
-  // LOAD DATA
-  // ==========================================
+  const [isEditingLogo, setIsEditingLogo] =
+    useState(false);
+
+  const [editServiceId, setEditServiceId] =
+    useState(null);
+
+  const [editLogoId, setEditLogoId] =
+    useState(null);
+
+  /* =========================================================
+     PAGINATION
+  ========================================================= */
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  /* =========================================================
+     LOAD DATA
+  ========================================================= */
 
   useEffect(() => {
     loadServices();
     loadLogos();
   }, []);
 
-  // ==========================================
-  // LOAD SERVICES
-  // ==========================================
+  /* =========================================================
+     LOAD SERVICES
+  ========================================================= */
 
   const loadServices = async () => {
     try {
-      const response = await fetch(`${API_URL}?type=service`);
+      const response = await fetch(
+        `${API_URL}?type=service`
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to load services");
+        throw new Error(
+          "Failed to load services"
+        );
       }
 
       const data = await response.json();
 
-      setServices(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.log("Service loading error:", err);
+      setServices(
+        Array.isArray(data) ? data : []
+      );
+    } catch (error) {
+      console.log(
+        "Service loading error:",
+        error
+      );
     }
   };
 
-  // ==========================================
-  // LOAD LOGOS
-  // ==========================================
+  /* =========================================================
+     LOAD LOGOS
+  ========================================================= */
 
   const loadLogos = async () => {
     try {
-      const response = await fetch(`${API_URL}?type=logo`);
+      const response = await fetch(
+        `${API_URL}?type=logo`
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to load logos");
+        throw new Error(
+          "Failed to load logos"
+        );
       }
 
       const data = await response.json();
 
-      setLogos(Array.isArray(data) ? data : []);
-    } catch (err) {
-      console.log("Logo loading error:", err);
+      setLogos(
+        Array.isArray(data) ? data : []
+      );
+    } catch (error) {
+      console.log(
+        "Logo loading error:",
+        error
+      );
     }
   };
 
-  // ==========================================
-  // UPLOAD IMAGE TO S3
-  // ==========================================
+  /* =========================================================
+     COMBINE SERVICES + LOGOS
+  ========================================================= */
 
-  const uploadImage = async (file, type) => {
+  const allItems = [
+    ...services.map((item) => ({
+      ...item,
+      recordType: "service",
+    })),
+
+    ...logos.map((item) => ({
+      ...item,
+      recordType: "logo",
+    })),
+  ];
+
+  /* =========================================================
+     PAGINATION CALCULATION
+  ========================================================= */
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(
+      allItems.length / ITEMS_PER_PAGE
+    )
+  );
+
+  const startIndex =
+    (currentPage - 1) * ITEMS_PER_PAGE;
+
+  const currentItems = allItems.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+
+  /* =========================================================
+     KEEP CURRENT PAGE VALID
+  ========================================================= */
+
+  useEffect(() => {
+    const pages = Math.max(
+      1,
+      Math.ceil(
+        allItems.length / ITEMS_PER_PAGE
+      )
+    );
+
+    setCurrentPage((page) =>
+      Math.min(page, pages)
+    );
+  }, [services.length, logos.length]);
+
+  /* =========================================================
+     UPLOAD IMAGE
+  ========================================================= */
+
+  const uploadImage = async (
+    file,
+    type
+  ) => {
     const response = await fetch(
       `${API_URL}?upload=true&type=${type}&fileName=${encodeURIComponent(
         file.name
-      )}&fileType=${encodeURIComponent(file.type)}`
+      )}&fileType=${encodeURIComponent(
+        file.type
+      )}`
     );
 
     if (!response.ok) {
-      throw new Error("Unable to get upload URL.");
+      throw new Error(
+        "Unable to get upload URL."
+      );
     }
 
-    const uploadData = await response.json();
+    const uploadData =
+      await response.json();
 
-    const uploadResponse = await fetch(uploadData.uploadUrl, {
-      method: "PUT",
-      headers: {
-        "Content-Type": file.type,
-      },
-      body: file,
-    });
+    const uploadResponse =
+      await fetch(
+        uploadData.uploadUrl,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": file.type,
+          },
+          body: file,
+        }
+      );
 
     if (!uploadResponse.ok) {
-      throw new Error("Image upload failed.");
+      throw new Error(
+        "Image upload failed."
+      );
     }
 
     return {
@@ -137,9 +261,9 @@ const ServicePage = () => {
     };
   };
 
-  // ==========================================
-  // SERVICE IMAGE
-  // ==========================================
+  /* =========================================================
+     SERVICE IMAGE CHANGE
+  ========================================================= */
 
   const handleServiceImage = (e) => {
     const file = e.target.files[0];
@@ -149,13 +273,14 @@ const ServicePage = () => {
     setForm((prev) => ({
       ...prev,
       image: file,
-      preview: URL.createObjectURL(file),
+      preview:
+        URL.createObjectURL(file),
     }));
   };
 
-  // ==========================================
-  // LOGO IMAGE
-  // ==========================================
+  /* =========================================================
+     LOGO IMAGE CHANGE
+  ========================================================= */
 
   const handleLogoImage = (e) => {
     const file = e.target.files[0];
@@ -165,13 +290,14 @@ const ServicePage = () => {
     setLogoForm((prev) => ({
       ...prev,
       image: file,
-      preview: URL.createObjectURL(file),
+      preview:
+        URL.createObjectURL(file),
     }));
   };
 
-  // ==========================================
-  // RESET SERVICE FORM
-  // ==========================================
+  /* =========================================================
+     RESET SERVICE FORM
+  ========================================================= */
 
   const resetServiceForm = () => {
     setForm({
@@ -188,9 +314,9 @@ const ServicePage = () => {
     setShowServiceForm(false);
   };
 
-  // ==========================================
-  // RESET LOGO FORM
-  // ==========================================
+  /* =========================================================
+     RESET LOGO FORM
+  ========================================================= */
 
   const resetLogoForm = () => {
     setLogoForm({
@@ -206,9 +332,33 @@ const ServicePage = () => {
     setShowLogoForm(false);
   };
 
-  // ==========================================
-  // SAVE SERVICE
-  // ==========================================
+  /* =========================================================
+     OPEN ADD SERVICE
+  ========================================================= */
+
+  const openAddService = () => {
+    resetServiceForm();
+
+    setShowServiceForm(true);
+    setShowLogoForm(false);
+    setShowAddDropdown(false);
+  };
+
+  /* =========================================================
+     OPEN ADD LOGO
+  ========================================================= */
+
+  const openAddLogo = () => {
+    resetLogoForm();
+
+    setShowLogoForm(true);
+    setShowServiceForm(false);
+    setShowAddDropdown(false);
+  };
+
+  /* =========================================================
+     SAVE SERVICE
+  ========================================================= */
 
   const saveService = async () => {
     if (
@@ -217,7 +367,9 @@ const ServicePage = () => {
       !form.description.trim() ||
       !form.date
     ) {
-      alert("Please fill all service fields.");
+      alert(
+        "Please fill all service fields."
+      );
       return;
     }
 
@@ -227,43 +379,58 @@ const ServicePage = () => {
       let imageUrl = form.preview;
       let imageKey = "";
 
-      // Upload new image
       if (form.image) {
-        const uploadData = await uploadImage(form.image, "service");
+        const uploadData =
+          await uploadImage(
+            form.image,
+            "service"
+          );
 
-        imageUrl = uploadData.fileUrl;
-        imageKey = uploadData.key;
+        imageUrl =
+          uploadData.fileUrl;
+
+        imageKey =
+          uploadData.key;
       }
 
-      // Image required while adding
-      if (!isEditingService && !imageUrl) {
-        alert("Please select a service image.");
+      if (
+        !isEditingService &&
+        !imageUrl
+      ) {
+        alert(
+          "Please select a service image."
+        );
+
         setLoading(false);
         return;
       }
 
-      const response = await fetch(API_URL, {
-        method: isEditingService ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: editServiceId,
-          type: "service",
+      const response = await fetch(
+        API_URL,
+        {
+          method:
+            isEditingService
+              ? "PUT"
+              : "POST",
 
-          category: form.category,
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-          image: imageUrl,
-
-          imageKey: imageKey,
-
-          name: form.name.trim(),
-
-          description: form.description.trim(),
-
-          date: form.date,
-        }),
-      });
+          body: JSON.stringify({
+            id: editServiceId,
+            type: "service",
+            category: form.category,
+            image: imageUrl,
+            imageKey: imageKey,
+            name: form.name.trim(),
+            description:
+              form.description.trim(),
+            date: form.date,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(
@@ -277,22 +444,24 @@ const ServicePage = () => {
 
       resetServiceForm();
 
+      setCurrentPage(1);
+
       alert(
         isEditingService
           ? "Service updated successfully."
           : "Service added successfully."
       );
-    } catch (err) {
-      console.log(err);
-      alert(err.message);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // ==========================================
-  // SAVE LOGO
-  // ==========================================
+  /* =========================================================
+     SAVE LOGO
+  ========================================================= */
 
   const saveLogo = async () => {
     if (
@@ -300,51 +469,71 @@ const ServicePage = () => {
       !logoForm.description.trim() ||
       !logoForm.url.trim()
     ) {
-      alert("Please fill all logo fields.");
+      alert(
+        "Please fill all logo fields."
+      );
       return;
     }
 
     try {
       setLoading(true);
 
-      let imageUrl = logoForm.preview;
+      let imageUrl =
+        logoForm.preview;
+
       let imageKey = "";
 
-      // Upload logo image
       if (logoForm.image) {
-        const uploadData = await uploadImage(logoForm.image, "logo");
+        const uploadData =
+          await uploadImage(
+            logoForm.image,
+            "logo"
+          );
 
-        imageUrl = uploadData.fileUrl;
-        imageKey = uploadData.key;
+        imageUrl =
+          uploadData.fileUrl;
+
+        imageKey =
+          uploadData.key;
       }
 
-      // Logo image required while adding
-      if (!isEditingLogo && !imageUrl) {
-        alert("Please select a logo image.");
+      if (
+        !isEditingLogo &&
+        !imageUrl
+      ) {
+        alert(
+          "Please select a logo image."
+        );
+
         setLoading(false);
         return;
       }
 
-      const response = await fetch(API_URL, {
-        method: isEditingLogo ? "PUT" : "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id: editLogoId,
-          type: "logo",
+      const response = await fetch(
+        API_URL,
+        {
+          method:
+            isEditingLogo
+              ? "PUT"
+              : "POST",
 
-          image: imageUrl,
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-          imageKey: imageKey,
-
-          name: logoForm.name.trim(),
-
-          description: logoForm.description.trim(),
-
-          url: logoForm.url.trim(),
-        }),
-      });
+          body: JSON.stringify({
+            id: editLogoId,
+            type: "logo",
+            image: imageUrl,
+            imageKey: imageKey,
+            name: logoForm.name.trim(),
+            description:
+              logoForm.description.trim(),
+            url: logoForm.url.trim(),
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(
@@ -358,189 +547,294 @@ const ServicePage = () => {
 
       resetLogoForm();
 
+      setCurrentPage(1);
+
       alert(
         isEditingLogo
           ? "Logo updated successfully."
           : "Logo added successfully."
       );
-    } catch (err) {
-      console.log(err);
-      alert(err.message);
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  // ==========================================
-  // DELETE SERVICE
-  // ==========================================
+  /* =========================================================
+     DELETE ITEM
+  ========================================================= */
 
-  const deleteService = async (id) => {
-    if (!window.confirm("Delete this service?")) return;
+  const deleteItem = async (item) => {
+    const message =
+      item.recordType === "logo"
+        ? "Delete this company logo?"
+        : "Delete this service?";
+
+    if (!window.confirm(message)) {
+      return;
+    }
 
     try {
       setLoading(true);
 
-      const response = await fetch(API_URL, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          type: "service",
-        }),
-      });
+      const response = await fetch(
+        API_URL,
+        {
+          method: "DELETE",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            id: item.id,
+            type: item.recordType,
+          }),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Delete failed");
+        throw new Error(
+          "Delete failed"
+        );
       }
 
-      await loadServices();
+      if (
+        item.recordType ===
+        "service"
+      ) {
+        await loadServices();
+      } else {
+        await loadLogos();
+      }
 
-      alert("Service deleted successfully.");
-    } catch (err) {
-      console.log(err);
+      alert(
+        item.recordType ===
+          "logo"
+          ? "Logo deleted successfully."
+          : "Service deleted successfully."
+      );
+    } catch (error) {
+      console.log(error);
       alert("Delete failed.");
     } finally {
       setLoading(false);
     }
   };
 
-  // ==========================================
-  // DELETE LOGO
-  // ==========================================
+  /* =========================================================
+     EDIT SERVICE
+  ========================================================= */
 
-  const deleteLogo = async (id) => {
-    if (!window.confirm("Delete this company logo?")) return;
-
-    try {
-      setLoading(true);
-
-      const response = await fetch(API_URL, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          id,
-          type: "logo",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Delete failed");
-      }
-
-      await loadLogos();
-
-      alert("Logo deleted successfully.");
-    } catch (err) {
-      console.log(err);
-      alert("Delete failed.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ==========================================
-  // EDIT SERVICE
-  // ==========================================
-
-  const editService = (service) => {
+  const editService = (item) => {
     setIsEditingService(true);
-
-    setEditServiceId(service.id);
+    setEditServiceId(item.id);
 
     setForm({
-      category: service.category || "",
-
+      category:
+        item.category || "",
       image: null,
-
-      preview: service.image || "",
-
-      name: service.name || "",
-
-      description: service.description || "",
-
-      date: service.date || "",
+      preview:
+        item.image || "",
+      name:
+        item.name || "",
+      description:
+        item.description || "",
+      date:
+        item.date || "",
     });
 
     setShowServiceForm(true);
-
     setShowLogoForm(false);
+    setShowAddDropdown(false);
   };
 
-  // ==========================================
-  // EDIT LOGO
-  // ==========================================
+  /* =========================================================
+     EDIT LOGO
+  ========================================================= */
 
-  const editLogo = (logo) => {
+  const editLogo = (item) => {
     setIsEditingLogo(true);
-
-    setEditLogoId(logo.id);
+    setEditLogoId(item.id);
 
     setLogoForm({
       image: null,
-
-      preview: logo.image || "",
-
-      name: logo.name || "",
-
-      description: logo.description || "",
-
-      url: logo.url || "",
+      preview:
+        item.image || "",
+      name:
+        item.name || "",
+      description:
+        item.description || "",
+      url:
+        item.url || "",
     });
 
     setShowLogoForm(true);
-
     setShowServiceForm(false);
+    setShowAddDropdown(false);
   };
+
+  /* =========================================================
+     EDIT ITEM
+  ========================================================= */
+
+  const editItem = (item) => {
+    if (
+      item.recordType ===
+      "logo"
+    ) {
+      editLogo(item);
+    } else {
+      editService(item);
+    }
+  };
+
+  /* =========================================================
+     GO TO PAGE
+  ========================================================= */
+
+  const goToPage = (page) => {
+    if (
+      page < 1 ||
+      page > totalPages
+    ) {
+      return;
+    }
+
+    setCurrentPage(page);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  /* =========================================================
+     FORMAT CREATED DATE
+  ========================================================= */
+
+  const getCreatedDate = (item) => {
+    const value =
+      item.recordType === "service"
+        ? item.date
+        : item.createdAt ||
+          item.created ||
+          item.date;
+
+    if (!value) {
+      return "-";
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString(
+      "en-GB"
+    );
+  };
+
+  /* =========================================================
+     GET CATEGORY
+  ========================================================= */
+
+  const getCategory = (item) => {
+    if (
+      item.recordType === "logo"
+    ) {
+      return "Logo";
+    }
+
+    return item.category || "Service";
+  };
+
+  /* =========================================================
+     GET TYPE
+  ========================================================= */
+
+  const getType = (item) => {
+    if (
+      item.recordType === "logo"
+    ) {
+      return "Logo";
+    }
+
+    return "Image";
+  };
+
+  /* =========================================================
+     RETURN
+  ========================================================= */
 
   return (
     <div className="service-page">
 
-      {/* ==========================================
+      {/* =====================================================
           HEADER
-      ========================================== */}
+      ===================================================== */}
 
-      <div className="header">
+      <div className="service-header">
+
         <h2>Service Page</h2>
 
-        <div className="header-buttons">
-
-          {/* ADD SERVICE */}
+        <div className="add-dropdown-wrapper">
 
           <button
+            className="add-main-btn"
             disabled={loading}
-            onClick={() => {
-              resetServiceForm();
-              setShowServiceForm(true);
-              setShowLogoForm(false);
-            }}
+            onClick={() =>
+              setShowAddDropdown(
+                (prev) => !prev
+              )
+            }
           >
             + Add Image
+
+            <span className="dropdown-arrow">
+              {showAddDropdown
+                ? "▲"
+                : "▼"}
+            </span>
           </button>
 
-          {/* ADD LOGO */}
+          {showAddDropdown && (
+            <div className="add-dropdown">
 
-          <button
-            disabled={loading}
-            onClick={() => {
-              resetLogoForm();
-              setShowLogoForm(true);
-              setShowServiceForm(false);
-            }}
-          >
-            + Add Logo
-          </button>
+              <button
+                type="button"
+                onClick={
+                  openAddService
+                }
+              >
+                <span>🖼️</span>
+                Add Image
+              </button>
+
+              <button
+                type="button"
+                onClick={
+                  openAddLogo
+                }
+              >
+                <span>🏢</span>
+                Add Logo
+              </button>
+
+            </div>
+          )}
 
         </div>
+
       </div>
 
-      {/* ==========================================
+      {/* =====================================================
           SERVICE FORM
-      ========================================== */}
+      ===================================================== */}
 
       {showServiceForm && (
         <div className="service-form">
@@ -551,50 +845,53 @@ const ServicePage = () => {
               : "Add Service"}
           </h3>
 
-          {/* CATEGORY */}
-
           <select
             value={form.category}
             onChange={(e) =>
               setForm({
                 ...form,
-                category: e.target.value,
+                category:
+                  e.target.value,
               })
             }
           >
+
             <option value="">
               Select Service Category
             </option>
 
-            {categories.map((category) => (
-              <option
-                key={category}
-                value={category}
-              >
-                {category}
-              </option>
-            ))}
+            {categories.map(
+              (category) => (
+                <option
+                  key={category}
+                  value={category}
+                >
+                  {category}
+                </option>
+              )
+            )}
+
           </select>
 
-          {/* IMAGE */}
-
-          <label>Service Image</label>
+          <label>
+            Service Image
+          </label>
 
           <input
             type="file"
             accept="image/*"
-            onChange={handleServiceImage}
+            onChange={
+              handleServiceImage
+            }
           />
 
           {form.preview && (
             <img
               src={form.preview}
               alt="Service Preview"
-              className="preview-image"
+              className="form-preview-image"
             />
           )}
-
-          {/* NAME */}
 
           <input
             type="text"
@@ -608,21 +905,20 @@ const ServicePage = () => {
             }
           />
 
-          {/* DESCRIPTION */}
-
           <textarea
             rows="4"
             placeholder="Service Description"
-            value={form.description}
+            value={
+              form.description
+            }
             onChange={(e) =>
               setForm({
                 ...form,
-                description: e.target.value,
+                description:
+                  e.target.value,
               })
             }
           />
-
-          {/* DATE */}
 
           <input
             type="date"
@@ -651,19 +947,22 @@ const ServicePage = () => {
             </button>
 
             <button
-              onClick={resetServiceForm}
+              onClick={
+                resetServiceForm
+              }
               disabled={loading}
             >
               Cancel
             </button>
 
           </div>
+
         </div>
       )}
 
-      {/* ==========================================
+      {/* =====================================================
           LOGO FORM
-      ========================================== */}
+      ===================================================== */}
 
       {showLogoForm && (
         <div className="service-form logo-form">
@@ -674,14 +973,16 @@ const ServicePage = () => {
               : "Add Company Logo"}
           </h3>
 
-          {/* LOGO IMAGE */}
-
-          <label>Company Logo</label>
+          <label>
+            Company Logo
+          </label>
 
           <input
             type="file"
             accept="image/*"
-            onChange={handleLogoImage}
+            onChange={
+              handleLogoImage
+            }
           />
 
           {logoForm.preview && (
@@ -691,8 +992,6 @@ const ServicePage = () => {
               className="logo-preview"
             />
           )}
-
-          {/* COMPANY NAME */}
 
           <input
             type="text"
@@ -706,21 +1005,20 @@ const ServicePage = () => {
             }
           />
 
-          {/* DESCRIPTION */}
-
           <textarea
             rows="4"
             placeholder="Company Description"
-            value={logoForm.description}
+            value={
+              logoForm.description
+            }
             onChange={(e) =>
               setLogoForm({
                 ...logoForm,
-                description: e.target.value,
+                description:
+                  e.target.value,
               })
             }
           />
-
-          {/* URL */}
 
           <input
             type="url"
@@ -750,110 +1048,186 @@ const ServicePage = () => {
             </button>
 
             <button
-              onClick={resetLogoForm}
+              onClick={
+                resetLogoForm
+              }
               disabled={loading}
             >
               Cancel
             </button>
 
           </div>
+
         </div>
       )}
 
-      {/* ==========================================
-          SERVICES TABLE
-      ========================================== */}
-
-      <div className="section-title">
-        <h3>Services</h3>
-      </div>
+      {/* =====================================================
+          TABLE
+      ===================================================== */}
 
       <div className="table-container">
 
         <table>
 
           <thead>
+
             <tr>
               <th>No</th>
               <th>Preview</th>
-              <th>Category</th>
+              <th>Type</th>
               <th>Name</th>
               <th>Description</th>
-              <th>Date</th>
+              <th>Category</th>
+              <th>Created</th>
               <th>Action</th>
             </tr>
+
           </thead>
 
           <tbody>
 
-            {services.length > 0 ? (
+            {currentItems.length > 0 ? (
 
-              services.map((item, index) => (
+              currentItems.map(
+                (item, index) => (
 
-                <tr key={item.id}>
+                  <tr
+                    key={`${item.recordType}-${item.id}`}
+                  >
 
-                  <td>{index + 1}</td>
+                    {/* NO */}
 
-                  <td>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="preview-image"
-                    />
-                  </td>
+                    <td>
+                      {startIndex +
+                        index +
+                        1}
+                    </td>
 
-                  <td>
-                    <span className="category-badge">
-                      {item.category}
-                    </span>
-                  </td>
+                    {/* PREVIEW */}
 
-                  <td>{item.name}</td>
+                    <td>
 
-                  <td>{item.description}</td>
+                      {item.image ? (
+                        <img
+                          src={
+                            item.image
+                          }
+                          alt={
+                            item.name ||
+                            "Preview"
+                          }
+                          className="table-preview"
+                        />
+                      ) : (
+                        <div className="no-image">
+                          No Image
+                        </div>
+                      )}
 
-                  <td>{item.date}</td>
+                    </td>
 
-                  <td>
+                    {/* TYPE */}
 
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        editService(item)
-                      }
-                      disabled={loading}
-                    >
-                      Edit
-                    </button>
+                    <td>
 
-                    <button
-                      className="delete-btn"
-                      onClick={() =>
-                        deleteService(item.id)
-                      }
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
+                      <span
+                        className={`type-badge ${
+                          item.recordType ===
+                          "logo"
+                            ? "logo-type"
+                            : "image-type"
+                        }`}
+                      >
+                        {getType(item)}
+                      </span>
 
-                  </td>
+                    </td>
 
-                </tr>
+                    {/* NAME */}
 
-              ))
+                    <td>
+                      {item.name ||
+                        "-"}
+                    </td>
+
+                    {/* DESCRIPTION */}
+
+                    <td>
+                      {item.description ||
+                        "-"}
+                    </td>
+
+                    {/* CATEGORY */}
+
+                    <td>
+
+                      <span
+                        className={`category-badge ${
+                          item.recordType ===
+                          "logo"
+                            ? "logo-category"
+                            : "service-category"
+                        }`}
+                      >
+                        {getCategory(
+                          item
+                        )}
+                      </span>
+
+                    </td>
+
+                    {/* CREATED */}
+
+                    <td>
+                      {getCreatedDate(
+                        item
+                      )}
+                    </td>
+
+                    {/* ACTION */}
+
+                    <td>
+
+                      <button
+                        className="edit-btn"
+                        onClick={() =>
+                          editItem(
+                            item
+                          )
+                        }
+                        disabled={loading}
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={() =>
+                          deleteItem(
+                            item
+                          )
+                        }
+                        disabled={loading}
+                      >
+                        Delete
+                      </button>
+
+                    </td>
+
+                  </tr>
+
+                )
+              )
 
             ) : (
 
               <tr>
 
                 <td
-                  colSpan="7"
-                  style={{
-                    textAlign: "center",
-                    padding: "40px",
-                  }}
+                  colSpan="8"
+                  className="empty-message"
                 >
-                  No services found.
+                  No services or logos found.
                 </td>
 
               </tr>
@@ -866,124 +1240,80 @@ const ServicePage = () => {
 
       </div>
 
-      {/* ==========================================
-          COMPANY LOGOS
-      ========================================== */}
+      {/* =====================================================
+          SINGLE PAGINATION
+      ===================================================== */}
 
-      <div className="section-title logo-section-title">
-        <h3>Company Logos</h3>
-      </div>
+      {totalPages > 1 && (
+        <div className="pagination">
 
-      <div className="table-container">
+          <button
+            className="page-btn prev-next"
+            onClick={() =>
+              goToPage(
+                currentPage - 1
+              )
+            }
+            disabled={
+              currentPage === 1
+            }
+          >
+            ← Previous
+          </button>
 
-        <table>
+          <div className="page-numbers">
 
-          <thead>
+            {Array.from(
+              {
+                length: totalPages,
+              },
+              (_, index) => {
 
-            <tr>
-              <th>No</th>
-              <th>Logo</th>
-              <th>Company Name</th>
-              <th>Description</th>
-              <th>URL</th>
-              <th>Action</th>
-            </tr>
+                const pageNumber =
+                  index + 1;
 
-          </thead>
-
-          <tbody>
-
-            {logos.length > 0 ? (
-
-              logos.map((item, index) => (
-
-                <tr key={item.id}>
-
-                  <td>{index + 1}</td>
-
-                  <td>
-
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="logo-table-image"
-                    />
-
-                  </td>
-
-                  <td>
-                    <strong>
-                      {item.name}
-                    </strong>
-                  </td>
-
-                  <td>
-                    {item.description}
-                  </td>
-
-                  <td>
-
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Visit Website
-                    </a>
-
-                  </td>
-
-                  <td>
-
-                    <button
-                      className="edit-btn"
-                      onClick={() =>
-                        editLogo(item)
-                      }
-                      disabled={loading}
-                    >
-                      Edit
-                    </button>
-
-                    <button
-                      className="delete-btn"
-                      onClick={() =>
-                        deleteLogo(item.id)
-                      }
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
-
-                  </td>
-
-                </tr>
-
-              ))
-
-            ) : (
-
-              <tr>
-
-                <td
-                  colSpan="6"
-                  style={{
-                    textAlign: "center",
-                    padding: "40px",
-                  }}
-                >
-                  No company logos found.
-                </td>
-
-              </tr>
-
+                return (
+                  <button
+                    key={
+                      pageNumber
+                    }
+                    className={`page-btn ${
+                      currentPage ===
+                      pageNumber
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      goToPage(
+                        pageNumber
+                      )
+                    }
+                  >
+                    {pageNumber}
+                  </button>
+                );
+              }
             )}
 
-          </tbody>
+          </div>
 
-        </table>
+          <button
+            className="page-btn prev-next"
+            onClick={() =>
+              goToPage(
+                currentPage + 1
+              )
+            }
+            disabled={
+              currentPage ===
+              totalPages
+            }
+          >
+            Next →
+          </button>
 
-      </div>
+        </div>
+      )}
 
     </div>
   );
