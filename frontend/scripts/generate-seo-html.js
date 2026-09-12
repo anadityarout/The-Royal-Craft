@@ -131,13 +131,13 @@ const TEMPLATE_PATH = path.join(
 const PAGE_ROUTE_MAP = {
   Home: "",
 
-  Project: "Project",
+  Project: "project",
 
-  Product: "Product",
+  Product: "product",
 
   Shop: "shop",
 
-  Service: "Service",
+  Service: "service",
 
   Blog: "blog",
 
