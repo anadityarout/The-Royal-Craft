@@ -33,8 +33,8 @@ const Leads = () => {
   // ACTIVE SECTION
   // =====================================================
 
-  const [activeSection, setActiveSection] =
-    useState("shop");
+   const [activeSection, setActiveSection] =
+  useState("all");
 
   // =====================================================
   // SHOP DATA
@@ -675,6 +675,45 @@ const Leads = () => {
   };
 
   // =====================================================
+  // SORT LEADS - NEWEST FIRST
+  // =====================================================
+
+  const sortByNewest = (data) => {
+    return [...data].sort((a, b) => {
+      const dateA = new Date(a.created).getTime();
+      const dateB = new Date(b.created).getTime();
+
+      return dateB - dateA;
+    });
+  };
+
+  // =====================================================
+  // COMBINE ALL LEADS - NEWEST FIRST
+  // =====================================================
+
+  const allLeads = [
+    ...shopData.map((item) => ({
+      ...item,
+      leadType: "Shop",
+    })),
+
+    ...customers.map((customer) => ({
+      ...customer,
+      leadType: "Customer",
+    })),
+
+    ...consultants.map((consultant) => ({
+      ...consultant,
+      leadType: "Consultant",
+    })),
+  ].sort((a, b) => {
+    const dateA = new Date(a.created).getTime();
+    const dateB = new Date(b.created).getTime();
+
+    return dateB - dateA;
+  });
+
+  // =====================================================
   // HEADER TITLE
   // =====================================================
 
@@ -988,347 +1027,153 @@ const Leads = () => {
 
               <tbody>
 
-                {/* SHOP DATA */}
+                {/* ALL LEADS DATA - NEWEST FIRST */}
 
-                {shopData.map(
-                  (item, index) => (
-                    <tr
-                      key={`shop-${
-                        item.id ||
-                        index
-                      }`}
+                {allLeads.map((lead, index) => (
+                  <tr
+                    key={`${lead.leadType}-${lead.id || index}`}
+                  >
+                    <td>
+                      {allLeads.length - index}
+                    </td>
+
+                    <td>
+                      <span className="status new">
+                        {lead.leadType}
+                      </span>
+                    </td>
+
+                    <td>
+                      {lead.fullName || "-"}
+                    </td>
+
+                    <td>
+                      {lead.email || "-"}
+                    </td>
+
+                    <td>
+                      {lead.phone || "-"}
+                    </td>
+
+                    <td>
+                      {lead.city || "-"}
+                    </td>
+
+                    <td>
+                      {lead.leadType === "Shop"
+                        ? lead.productName || "-"
+                        : lead.leadType === "Consultant"
+                        ? lead.service || "-"
+                        : "Customer Popup"}
+                    </td>
+
+                    <td>
+                      {lead.category || "-"}
+                    </td>
+
+                    <td
+                      className="requirements-cell"
+                      title={
+                        lead.requirements ||
+                        lead.details ||
+                        "No requirements provided"
+                      }
                     >
+                      {lead.leadType === "Shop"
+                        ? lead.requirements || "-"
+                        : lead.leadType === "Consultant"
+                        ? lead.details || "-"
+                        : "-"}
+                    </td>
 
-                      <td>
-                        {index + 1}
-                      </td>
+                    <td>
+                      {lead.leadType === "Consultant"
+                        ? lead.budget || "Not Provided"
+                        : "-"}
+                    </td>
 
-                      <td>
-                        <span className="status new">
-                          Shop
-                        </span>
-                      </td>
-
-                      <td>
-                        {item.fullName ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {item.email ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {item.phone ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {item.city ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {item.productName ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {item.category ||
-                          "-"}
-                      </td>
-
-                      <td
-                        className="requirements-cell"
-                        title={
-                          item.requirements ||
-                          "No requirements provided"
-                        }
+                    <td>
+                      <span
+                        className={`status ${
+                          (
+                            lead.status || "New"
+                          ).toLowerCase()
+                        }`}
                       >
-                        {item.requirements ||
-                          "-"}
-                      </td>
+                        {lead.status || "New"}
+                      </span>
+                    </td>
 
-                      <td>
-                        -
-                      </td>
+                    <td>
+                      {formatDate(lead.created)}
+                    </td>
 
-                      <td>
-                        <span
-                          className={`status ${
-                            (
-                              item.status ||
-                              "New"
-                            ).toLowerCase()
-                          }`}
-                        >
-                          {item.status ||
-                            "New"}
-                        </span>
-                      </td>
+                    <td>
+                      {lead.leadType === "Shop" && (
+                        <>
+                          <button
+                            className="view-btn"
+                            onClick={() => openShop(lead)}
+                          >
+                            View
+                          </button>
 
-                      <td>
-                        {formatDate(
-                          item.created
-                        )}
-                      </td>
+                          <button
+                            className="delete-btn"
+                            onClick={() => deleteShop(lead)}
+                            disabled={
+                              deletingShopId === lead.id
+                            }
+                          >
+                            {deletingShopId === lead.id
+                              ? "Deleting..."
+                              : "Delete"}
+                          </button>
+                        </>
+                      )}
 
-                      <td>
+                      {lead.leadType === "Customer" && (
+                        <>
+                          <button
+                            className="view-btn"
+                            onClick={() => openCustomer(lead)}
+                          >
+                            View
+                          </button>
 
-                        <button
-                          className="view-btn"
-                          onClick={() =>
-                            openShop(item)
-                          }
-                        >
-                          View
-                        </button>
+                          <button
+                            className="delete-btn"
+                            onClick={() => deleteCustomer(lead)}
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
 
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            deleteShop(item)
-                          }
-                          disabled={
-                            deletingShopId ===
-                            item.id
-                          }
-                        >
-                          {deletingShopId ===
-                          item.id
-                            ? "Deleting..."
-                            : "Delete"}
-                        </button>
+                      {lead.leadType === "Consultant" && (
+                        <>
+                          <button
+                            className="view-btn"
+                            onClick={() =>
+                              openConsultant(lead)
+                            }
+                          >
+                            View
+                          </button>
 
-                      </td>
-
-                    </tr>
-                  )
-                )}
-
-                {/* CUSTOMER DATA */}
-
-                {customers.map(
-                  (customer, index) => (
-                    <tr
-                      key={`customer-${
-                        customer.id ||
-                        index
-                      }`}
-                    >
-
-                      <td>
-                        {shopData.length +
-                          index +
-                          1}
-                      </td>
-
-                      <td>
-                        <span className="status new">
-                          Customer
-                        </span>
-                      </td>
-
-                      <td>
-                        {customer.fullName ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {customer.email ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {customer.phone ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        -
-                      </td>
-
-                      <td>
-                        Customer Popup
-                      </td>
-
-                      <td>
-                        -
-                      </td>
-
-                      <td>
-                        -
-                      </td>
-
-                      <td>
-                        -
-                      </td>
-
-                      <td>
-                        <span
-                          className={`status ${
-                            (
-                              customer.status ||
-                              "New"
-                            ).toLowerCase()
-                          }`}
-                        >
-                          {customer.status ||
-                            "New"}
-                        </span>
-                      </td>
-
-                      <td>
-                        {formatDate(
-                          customer.created
-                        )}
-                      </td>
-
-                      <td>
-
-                        <button
-                          className="view-btn"
-                          onClick={() =>
-                            openCustomer(
-                              customer
-                            )
-                          }
-                        >
-                          View
-                        </button>
-
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            deleteCustomer(
-                              customer
-                            )
-                          }
-                        >
-                          Delete
-                        </button>
-
-                      </td>
-
-                    </tr>
-                  )
-                )}
-
-                {/* CONSULTANT DATA */}
-
-                {consultants.map(
-                  (
-                    consultant,
-                    index
-                  ) => (
-                    <tr
-                      key={`consultant-${
-                        consultant.id ||
-                        index
-                      }`}
-                    >
-
-                      <td>
-                        {shopData.length +
-                          customers.length +
-                          index +
-                          1}
-                      </td>
-
-                      <td>
-                        <span className="status new">
-                          Consultant
-                        </span>
-                      </td>
-
-                      <td>
-                        {consultant.fullName ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {consultant.email ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {consultant.phone ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {consultant.city ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        {consultant.service ||
-                          "-"}
-                      </td>
-
-                      <td>
-                        -
-                      </td>
-
-                      <td>
-                        -
-                      </td>
-
-                      <td>
-                        {consultant.budget ||
-                          "Not Provided"}
-                      </td>
-
-                      <td>
-                        <span
-                          className={`status ${
-                            (
-                              consultant.status ||
-                              "New"
-                            ).toLowerCase()
-                          }`}
-                        >
-                          {consultant.status ||
-                            "New"}
-                        </span>
-                      </td>
-
-                      <td>
-                        {formatDate(
-                          consultant.created
-                        )}
-                      </td>
-
-                      <td>
-
-                        <button
-                          className="view-btn"
-                          onClick={() =>
-                            openConsultant(
-                              consultant
-                            )
-                          }
-                        >
-                          View
-                        </button>
-
-                        <button
-                          className="delete-btn"
-                          onClick={() =>
-                            deleteConsultant(
-                              consultant
-                            )
-                          }
-                        >
-                          Delete
-                        </button>
-
-                      </td>
-
-                    </tr>
-                  )
-                )}
+                          <button
+                            className="delete-btn"
+                            onClick={() =>
+                              deleteConsultant(lead)
+                            }
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
+                    </td>
+                  </tr>
+                ))}
 
                 {/* LOADING */}
 
@@ -1551,7 +1396,7 @@ const Leads = () => {
                 {!shopLoading &&
                   !shopError &&
                   shopData.length > 0 &&
-                  shopData.map(
+                  sortByNewest(shopData).map(
                     (
                       item,
                       index
@@ -1565,7 +1410,7 @@ const Leads = () => {
                       >
 
                         <td>
-                          {index + 1}
+                          {shopData.length - index}
                         </td>
 
                         <td>
@@ -1839,25 +1684,25 @@ const Leads = () => {
 
                 {/* DATA */}
 
-                {!customersLoading &&
-                  !customersError &&
-                  customers.length > 0 &&
-                  customers.map(
-                    (
-                      customer,
-                      index
-                    ) => (
-
-                      <tr
-                        key={
-                          customer.id ||
-                          index
-                        }
-                      >
-
-                        <td>
-                          {index + 1}
-                        </td>
+               {!customersLoading &&
+  !customersError &&
+  customers.length > 0 &&
+  [...customers]
+    .sort(
+      (a, b) =>
+        new Date(b.created) -
+        new Date(a.created)
+    )
+    .map((customer, index) => (
+      <tr
+        key={
+          customer.id ||
+          index
+        }
+      >
+        <td>
+          {customers.length - index}
+        </td>
 
                         <td>
                           {customer.fullName ||
@@ -2089,7 +1934,7 @@ const Leads = () => {
                 {!consultantsLoading &&
                   !consultantsError &&
                   consultants.length > 0 &&
-                  consultants.map(
+                  sortByNewest(consultants).map(
                     (
                       consultant,
                       index
@@ -2103,7 +1948,7 @@ const Leads = () => {
                       >
 
                         <td>
-                          {index + 1}
+                          {consultants.length - index}
                         </td>
 
                         <td>
