@@ -5,18 +5,22 @@ import "./Popup.css";
 // ==========================================
 // API GATEWAY
 // ==========================================
-// Replace this with your actual API Gateway URL.
-// Example:
+
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/customer";
 
 export default function Popup() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // ==========================================
+  // FORM DATA
+  // ==========================================
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
+    location: "",
   });
 
   const [submitting, setSubmitting] = useState(false);
@@ -95,14 +99,19 @@ export default function Popup() {
 
     try {
       // ----------------------------------------
-      // Basic validation
+      // Get form values
       // ----------------------------------------
 
       const fullName = formData.fullName.trim();
       const email = formData.email.trim();
       const phone = formData.phone.trim();
+      const location = formData.location.trim();
 
-      if (!fullName || !email || !phone) {
+      // ----------------------------------------
+      // Basic validation
+      // ----------------------------------------
+
+      if (!fullName || !email || !phone || !location) {
         throw new Error(
           "Please fill in all required fields."
         );
@@ -123,6 +132,7 @@ export default function Popup() {
           fullName,
           email,
           phone,
+          location,
         }),
       });
 
@@ -151,10 +161,12 @@ export default function Popup() {
 
       setSubmitted(true);
 
+      // Clear form
       setFormData({
         fullName: "",
         email: "",
         phone: "",
+        location: "",
       });
     } catch (err) {
       console.error(
@@ -217,7 +229,10 @@ export default function Popup() {
             <button
               type="button"
               className="rk-p-submit"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setSubmitted(false);
+                setIsOpen(false);
+              }}
             >
               Close
             </button>
@@ -310,6 +325,24 @@ export default function Popup() {
                 />
               </div>
 
+              {/* LOCATION */}
+
+              <div className="rk-p-field">
+                <label htmlFor="location">
+                  Location *
+                </label>
+
+                <input
+                  id="location"
+                  type="text"
+                  name="location"
+                  placeholder="City, State"
+                  value={formData.location}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
               {/* ==================================
                   BUTTONS
               ================================== */}
@@ -336,7 +369,9 @@ export default function Popup() {
               </div>
             </form>
 
-            {/* PRIVACY */}
+            {/* ==================================
+                PRIVACY
+            ================================== */}
 
             <p className="rk-p-privacy">
               We respect your privacy. Your

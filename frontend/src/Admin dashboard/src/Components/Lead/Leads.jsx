@@ -33,81 +33,58 @@ const Leads = () => {
   // ACTIVE SECTION
   // =====================================================
 
-   const [activeSection, setActiveSection] =
-  useState("all");
+  const [activeSection, setActiveSection] = useState("all");
 
   // =====================================================
   // SHOP DATA
   // =====================================================
 
   const [shopData, setShopData] = useState([]);
-  const [shopLoading, setShopLoading] =
-    useState(false);
-  const [shopError, setShopError] =
-    useState("");
+  const [shopLoading, setShopLoading] = useState(false);
+  const [shopError, setShopError] = useState("");
 
   // =====================================================
   // CUSTOMER DATA
   // =====================================================
 
-  const [customers, setCustomers] =
-    useState([]);
-
-  const [customersLoading, setCustomersLoading] =
-    useState(false);
-
-  const [customersError, setCustomersError] =
-    useState("");
+  const [customers, setCustomers] = useState([]);
+  const [customersLoading, setCustomersLoading] = useState(false);
+  const [customersError, setCustomersError] = useState("");
 
   // =====================================================
   // CUSTOMER POPUP
   // =====================================================
 
-  const [selectedCustomer, setSelectedCustomer] =
-    useState(null);
-
-  const [showCustomerPopup, setShowCustomerPopup] =
-    useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null);
+  const [showCustomerPopup, setShowCustomerPopup] = useState(false);
 
   // =====================================================
   // CONSULTANT DATA
   // =====================================================
 
-  const [consultants, setConsultants] =
-    useState([]);
-
-  const [consultantsLoading, setConsultantsLoading] =
-    useState(false);
-
-  const [consultantsError, setConsultantsError] =
-    useState("");
+  const [consultants, setConsultants] = useState([]);
+  const [consultantsLoading, setConsultantsLoading] = useState(false);
+  const [consultantsError, setConsultantsError] = useState("");
 
   // =====================================================
   // CONSULTANT POPUP
   // =====================================================
 
-  const [selectedConsultant, setSelectedConsultant] =
-    useState(null);
-
-  const [showConsultantPopup, setShowConsultantPopup] =
-    useState(false);
+  const [selectedConsultant, setSelectedConsultant] = useState(null);
+  const [showConsultantPopup, setShowConsultantPopup] = useState(false);
 
   // =====================================================
   // SHOP POPUP
   // =====================================================
 
-  const [selectedShop, setSelectedShop] =
-    useState(null);
-
-  const [showShopPopup, setShowShopPopup] =
-    useState(false);
+  const [selectedShop, setSelectedShop] = useState(null);
+  const [showShopPopup, setShowShopPopup] = useState(false);
 
   // =====================================================
   // DELETE SHOP LOADING
   // =====================================================
 
-  const [deletingShopId, setDeletingShopId] =
-    useState(null);
+  const [deletingShopId, setDeletingShopId] = useState(null);
 
   // =====================================================
   // LOAD SHOP ENQUIRIES
@@ -118,28 +95,17 @@ const Leads = () => {
     setShopError("");
 
     try {
-      const response = await fetch(
-        ENQUIRY_API_URL,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(ENQUIRY_API_URL, {
+        method: "GET",
+      });
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
-      console.log(
-        "Shop enquiry API response:",
-        result
-      );
+      console.log("Shop enquiry API response:", result);
 
-      if (
-        !response.ok ||
-        !result.success
-      ) {
+      if (!response.ok || !result.success) {
         throw new Error(
-          result.message ||
-            "Failed to load shop enquiries."
+          result.message || "Failed to load shop enquiries."
         );
       }
 
@@ -174,28 +140,17 @@ const Leads = () => {
     setCustomersError("");
 
     try {
-      const response = await fetch(
-        CUSTOMER_API_URL,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(CUSTOMER_API_URL, {
+        method: "GET",
+      });
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
-      console.log(
-        "Customer API response:",
-        result
-      );
+      console.log("Customer API response:", result);
 
-      if (
-        !response.ok ||
-        !result.success
-      ) {
+      if (!response.ok || !result.success) {
         throw new Error(
-          result.message ||
-            "Failed to load customers."
+          result.message || "Failed to load customers."
         );
       }
 
@@ -230,35 +185,25 @@ const Leads = () => {
     setConsultantsError("");
 
     try {
-      const response = await fetch(
-        CONSULTANT_API_URL,
-        {
-          method: "GET",
-        }
-      );
+      const response = await fetch(CONSULTANT_API_URL, {
+        method: "GET",
+      });
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
       console.log(
         "Consultant API response:",
         result
       );
 
-      if (
-        !response.ok ||
-        !result.success
-      ) {
+      if (!response.ok || !result.success) {
         throw new Error(
-          result.message ||
-            "Failed to load consultants."
+          result.message || "Failed to load consultants."
         );
       }
 
       setConsultants(
-        Array.isArray(
-          result.consultants
-        )
+        Array.isArray(result.consultants)
           ? result.consultants
           : []
       );
@@ -298,9 +243,7 @@ const Leads = () => {
       loadCustomers();
     }
 
-    if (
-      activeSection === "consultants"
-    ) {
+    if (activeSection === "consultants") {
       loadConsultants();
     }
   }, [activeSection]);
@@ -333,19 +276,15 @@ const Leads = () => {
 
   const deleteShop = async (shop) => {
     if (!shop?.id) {
-      alert(
-        "Enquiry ID not found."
-      );
+      alert("Enquiry ID not found.");
       return;
     }
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete the enquiry from ${
-          shop.fullName ||
-          "this customer"
-        }?`
-      );
+    const confirmed = window.confirm(
+      `Are you sure you want to delete the enquiry from ${
+        shop.fullName || "this customer"
+      }?`
+    );
 
     if (!confirmed) {
       return;
@@ -354,28 +293,25 @@ const Leads = () => {
     setDeletingShopId(shop.id);
 
     try {
-      const response =
-        await fetch(
-          ENQUIRY_API_URL,
-          {
-            method: "DELETE",
+      const response = await fetch(
+        ENQUIRY_API_URL,
+        {
+          method: "DELETE",
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify({
-              id: shop.id,
-            }),
-          }
-        );
+          body: JSON.stringify({
+            id: shop.id,
+          }),
+        }
+      );
 
       let result;
 
       try {
-        result =
-          await response.json();
+        result = await response.json();
       } catch (error) {
         throw new Error(
           "Invalid response from server."
@@ -387,10 +323,7 @@ const Leads = () => {
         result
       );
 
-      if (
-        !response.ok ||
-        !result.success
-      ) {
+      if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
             "Failed to delete shop enquiry."
@@ -401,21 +334,17 @@ const Leads = () => {
       // REMOVE FROM DASHBOARD
       // =================================================
 
-      setShopData(
-        (previous) =>
-          previous.filter(
-            (item) =>
-              item.id !== shop.id
-          )
+      setShopData((previous) =>
+        previous.filter(
+          (item) => item.id !== shop.id
+        )
       );
 
       // =================================================
       // CLOSE POPUP
       // =================================================
 
-      if (
-        selectedShop?.id === shop.id
-      ) {
+      if (selectedShop?.id === shop.id) {
         setSelectedShop(null);
         setShowShopPopup(false);
       }
@@ -460,13 +389,8 @@ const Leads = () => {
   // OPEN CONSULTANT
   // =====================================================
 
-  const openConsultant = (
-    consultant
-  ) => {
-    setSelectedConsultant(
-      consultant
-    );
-
+  const openConsultant = (consultant) => {
+    setSelectedConsultant(consultant);
     setShowConsultantPopup(true);
   };
 
@@ -483,67 +407,54 @@ const Leads = () => {
   // DELETE CUSTOMER
   // =====================================================
 
-  const deleteCustomer = async (
-    customer
-  ) => {
+  const deleteCustomer = async (customer) => {
     if (!customer?.id) {
       return;
     }
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete ${
-          customer.fullName ||
-          "this customer"
-        }?`
-      );
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${
+        customer.fullName || "this customer"
+      }?`
+    );
 
     if (!confirmed) {
       return;
     }
 
     try {
-      const response =
-        await fetch(
-          CUSTOMER_API_URL,
-          {
-            method: "DELETE",
+      const response = await fetch(
+        CUSTOMER_API_URL,
+        {
+          method: "DELETE",
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify({
-              id: customer.id,
-            }),
-          }
-        );
+          body: JSON.stringify({
+            id: customer.id,
+          }),
+        }
+      );
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
-      if (
-        !response.ok ||
-        !result.success
-      ) {
+      if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
             "Failed to delete customer."
         );
       }
 
-      setCustomers(
-        (prevCustomers) =>
-          prevCustomers.filter(
-            (item) =>
-              item.id !== customer.id
-          )
+      setCustomers((prevCustomers) =>
+        prevCustomers.filter(
+          (item) => item.id !== customer.id
+        )
       );
 
       if (
-        selectedCustomer?.id ===
-        customer.id
+        selectedCustomer?.id === customer.id
       ) {
         closeCustomerPopup();
       }
@@ -568,62 +479,50 @@ const Leads = () => {
   // DELETE CONSULTANT
   // =====================================================
 
-  const deleteConsultant = async (
-    consultant
-  ) => {
+  const deleteConsultant = async (consultant) => {
     if (!consultant?.id) {
       return;
     }
 
-    const confirmed =
-      window.confirm(
-        `Are you sure you want to delete ${
-          consultant.fullName ||
-          "this consultant"
-        }?`
-      );
+    const confirmed = window.confirm(
+      `Are you sure you want to delete ${
+        consultant.fullName || "this consultant"
+      }?`
+    );
 
     if (!confirmed) {
       return;
     }
 
     try {
-      const response =
-        await fetch(
-          CONSULTANT_API_URL,
-          {
-            method: "DELETE",
+      const response = await fetch(
+        CONSULTANT_API_URL,
+        {
+          method: "DELETE",
 
-            headers: {
-              "Content-Type":
-                "application/json",
-            },
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-            body: JSON.stringify({
-              id: consultant.id,
-            }),
-          }
-        );
+          body: JSON.stringify({
+            id: consultant.id,
+          }),
+        }
+      );
 
-      const result =
-        await response.json();
+      const result = await response.json();
 
-      if (
-        !response.ok ||
-        !result.success
-      ) {
+      if (!response.ok || !result.success) {
         throw new Error(
           result.message ||
             "Failed to delete consultant."
         );
       }
 
-      setConsultants(
-        (prevConsultants) =>
-          prevConsultants.filter(
-            (item) =>
-              item.id !== consultant.id
-          )
+      setConsultants((prevConsultants) =>
+        prevConsultants.filter(
+          (item) => item.id !== consultant.id
+        )
       );
 
       if (
@@ -653,21 +552,14 @@ const Leads = () => {
   // FORMAT DATE
   // =====================================================
 
-  const formatDate = (
-    dateValue
-  ) => {
+  const formatDate = (dateValue) => {
     if (!dateValue) {
       return "-";
     }
 
-    const date =
-      new Date(dateValue);
+    const date = new Date(dateValue);
 
-    if (
-      Number.isNaN(
-        date.getTime()
-      )
-    ) {
+    if (Number.isNaN(date.getTime())) {
       return dateValue;
     }
 
@@ -726,15 +618,11 @@ const Leads = () => {
       return "Shop";
     }
 
-    if (
-      activeSection === "customers"
-    ) {
+    if (activeSection === "customers") {
       return "Customers";
     }
 
-    if (
-      activeSection === "consultants"
-    ) {
+    if (activeSection === "consultants") {
       return "Consultants";
     }
 
@@ -777,9 +665,7 @@ const Leads = () => {
         <select
           value={activeSection}
           onChange={(e) =>
-            setActiveSection(
-              e.target.value
-            )
+            setActiveSection(e.target.value)
           }
           className="section-select"
         >
@@ -1011,10 +897,8 @@ const Leads = () => {
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone</th>
-                  <th>City</th>
-                  <th>
-                    Product / Service
-                  </th>
+                  <th>Location</th>
+                  <th>Product / Service</th>
                   <th>Category</th>
                   <th>Requirements</th>
                   <th>Budget</th>
@@ -1033,6 +917,7 @@ const Leads = () => {
                   <tr
                     key={`${lead.leadType}-${lead.id || index}`}
                   >
+
                     <td>
                       {allLeads.length - index}
                     </td>
@@ -1055,8 +940,12 @@ const Leads = () => {
                       {lead.phone || "-"}
                     </td>
 
+                    {/* LOCATION / CITY */}
+
                     <td>
-                      {lead.city || "-"}
+                      {lead.leadType === "Customer"
+                        ? lead.location || "-"
+                        : lead.city || "-"}
                     </td>
 
                     <td>
@@ -1109,23 +998,30 @@ const Leads = () => {
                     </td>
 
                     <td>
+
                       {lead.leadType === "Shop" && (
                         <>
                           <button
                             className="view-btn"
-                            onClick={() => openShop(lead)}
+                            onClick={() =>
+                              openShop(lead)
+                            }
                           >
                             View
                           </button>
 
                           <button
                             className="delete-btn"
-                            onClick={() => deleteShop(lead)}
+                            onClick={() =>
+                              deleteShop(lead)
+                            }
                             disabled={
-                              deletingShopId === lead.id
+                              deletingShopId ===
+                              lead.id
                             }
                           >
-                            {deletingShopId === lead.id
+                            {deletingShopId ===
+                            lead.id
                               ? "Deleting..."
                               : "Delete"}
                           </button>
@@ -1136,14 +1032,18 @@ const Leads = () => {
                         <>
                           <button
                             className="view-btn"
-                            onClick={() => openCustomer(lead)}
+                            onClick={() =>
+                              openCustomer(lead)
+                            }
                           >
                             View
                           </button>
 
                           <button
                             className="delete-btn"
-                            onClick={() => deleteCustomer(lead)}
+                            onClick={() =>
+                              deleteCustomer(lead)
+                            }
                           >
                             Delete
                           </button>
@@ -1171,7 +1071,9 @@ const Leads = () => {
                           </button>
                         </>
                       )}
+
                     </td>
+
                   </tr>
                 ))}
 
@@ -1188,12 +1090,9 @@ const Leads = () => {
                       <td
                         colSpan="13"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#777",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#777",
                         }}
                       >
                         Loading all data...
@@ -1215,19 +1114,14 @@ const Leads = () => {
                       <td
                         colSpan="13"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#777",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#777",
                         }}
                       >
-
                         <strong>
                           No data found.
                         </strong>
-
                       </td>
 
                     </tr>
@@ -1279,10 +1173,6 @@ const Leads = () => {
           <div className="shop-table-container">
 
             <table>
-
-              {/* =================================================
-                  SHOP TABLE HEADER
-              ================================================= */}
 
               <thead>
 
@@ -1336,9 +1226,7 @@ const Leads = () => {
 
               <tbody>
 
-                {/* =================================================
-                    LOADING
-                ================================================= */}
+                {/* LOADING */}
 
                 {shopLoading && (
                   <tr>
@@ -1346,12 +1234,9 @@ const Leads = () => {
                     <td
                       colSpan="11"
                       style={{
-                        textAlign:
-                          "center",
-                        padding:
-                          "50px",
-                        color:
-                          "#777",
+                        textAlign: "center",
+                        padding: "50px",
+                        color: "#777",
                       }}
                     >
                       Loading shop enquiries...
@@ -1360,9 +1245,7 @@ const Leads = () => {
                   </tr>
                 )}
 
-                {/* =================================================
-                    ERROR
-                ================================================= */}
+                {/* ERROR */}
 
                 {!shopLoading &&
                   shopError && (
@@ -1371,41 +1254,30 @@ const Leads = () => {
                       <td
                         colSpan="11"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#d9534f",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#d9534f",
                         }}
                       >
-
                         <strong>
                           {shopError}
                         </strong>
-
                       </td>
 
                     </tr>
                   )}
 
-                {/* =================================================
-                    SHOP DATA
-                ================================================= */}
+                {/* SHOP DATA */}
 
                 {!shopLoading &&
                   !shopError &&
                   shopData.length > 0 &&
                   sortByNewest(shopData).map(
-                    (
-                      item,
-                      index
-                    ) => (
+                    (item, index) => (
 
                       <tr
                         key={
-                          item.id ||
-                          index
+                          item.id || index
                         }
                       >
 
@@ -1414,38 +1286,28 @@ const Leads = () => {
                         </td>
 
                         <td>
-                          {item.fullName ||
-                            "-"}
+                          {item.fullName || "-"}
                         </td>
 
                         <td>
-                          {item.email ||
-                            "-"}
+                          {item.email || "-"}
                         </td>
 
                         <td>
-                          {item.phone ||
-                            "-"}
+                          {item.phone || "-"}
                         </td>
 
                         <td>
-                          {item.city ||
-                            "-"}
+                          {item.city || "-"}
                         </td>
 
                         <td>
-                          {item.productName ||
-                            "-"}
+                          {item.productName || "-"}
                         </td>
 
                         <td>
-                          {item.category ||
-                            "-"}
+                          {item.category || "-"}
                         </td>
-
-                        {/* =================================================
-                            REQUIREMENTS
-                        ================================================= */}
 
                         <td
                           className="requirements-cell"
@@ -1454,11 +1316,8 @@ const Leads = () => {
                             "No requirements provided"
                           }
                         >
-                          {item.requirements ||
-                            "-"}
+                          {item.requirements || "-"}
                         </td>
-
-                        {/* STATUS */}
 
                         <td>
 
@@ -1470,13 +1329,10 @@ const Leads = () => {
                               ).toLowerCase()
                             }`}
                           >
-                            {item.status ||
-                              "New"}
+                            {item.status || "New"}
                           </span>
 
                         </td>
-
-                        {/* DATE */}
 
                         <td>
                           {formatDate(
@@ -1484,16 +1340,12 @@ const Leads = () => {
                           )}
                         </td>
 
-                        {/* ACTION */}
-
                         <td>
 
                           <button
                             className="view-btn"
                             onClick={() =>
-                              openShop(
-                                item
-                              )
+                              openShop(item)
                             }
                           >
                             View
@@ -1502,9 +1354,7 @@ const Leads = () => {
                           <button
                             className="delete-btn"
                             onClick={() =>
-                              deleteShop(
-                                item
-                              )
+                              deleteShop(item)
                             }
                             disabled={
                               deletingShopId ===
@@ -1524,9 +1374,7 @@ const Leads = () => {
                     )
                   )}
 
-                {/* =================================================
-                    EMPTY
-                ================================================= */}
+                {/* EMPTY */}
 
                 {!shopLoading &&
                   !shopError &&
@@ -1536,12 +1384,9 @@ const Leads = () => {
                       <td
                         colSpan="11"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#777",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#777",
                         }}
                       >
 
@@ -1579,8 +1424,7 @@ const Leads = () => {
           CUSTOMERS SECTION
       ===================================================== */}
 
-      {activeSection ===
-        "customers" && (
+      {activeSection === "customers" && (
         <div className="customers-section">
 
           <div className="shop-header">
@@ -1600,9 +1444,7 @@ const Leads = () => {
             <button
               className="view-btn"
               onClick={loadCustomers}
-              disabled={
-                customersLoading
-              }
+              disabled={customersLoading}
             >
               {customersLoading
                 ? "Loading..."
@@ -1623,6 +1465,10 @@ const Leads = () => {
                   <th>Name</th>
                   <th>Email ID</th>
                   <th>Phone Number</th>
+
+                  {/* NEW LOCATION COLUMN */}
+                  <th>Location</th>
+
                   <th>Status</th>
                   <th>Date</th>
                   <th>Action</th>
@@ -1639,14 +1485,11 @@ const Leads = () => {
                   <tr>
 
                     <td
-                      colSpan="7"
+                      colSpan="8"
                       style={{
-                        textAlign:
-                          "center",
-                        padding:
-                          "50px",
-                        color:
-                          "#777",
+                        textAlign: "center",
+                        padding: "50px",
+                        color: "#777",
                       }}
                     >
                       Loading customers...
@@ -1662,21 +1505,16 @@ const Leads = () => {
                     <tr>
 
                       <td
-                        colSpan="7"
+                        colSpan="8"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#d9534f",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#d9534f",
                         }}
                       >
-
                         <strong>
                           {customersError}
                         </strong>
-
                       </td>
 
                     </tr>
@@ -1684,93 +1522,103 @@ const Leads = () => {
 
                 {/* DATA */}
 
-               {!customersLoading &&
-  !customersError &&
-  customers.length > 0 &&
-  [...customers]
-    .sort(
-      (a, b) =>
-        new Date(b.created) -
-        new Date(a.created)
-    )
-    .map((customer, index) => (
-      <tr
-        key={
-          customer.id ||
-          index
-        }
-      >
-        <td>
-          {customers.length - index}
-        </td>
-
-                        <td>
-                          {customer.fullName ||
-                            "-"}
-                        </td>
-
-                        <td>
-                          {customer.email ||
-                            "-"}
-                        </td>
-
-                        <td>
-                          {customer.phone ||
-                            "-"}
-                        </td>
-
-                        <td>
-
-                          <span
-                            className={`status ${
-                              (
-                                customer.status ||
-                                "New"
-                              ).toLowerCase()
-                            }`}
-                          >
-                            {customer.status ||
-                              "New"}
-                          </span>
-
-                        </td>
-
-                        <td>
-                          {formatDate(
-                            customer.created
-                          )}
-                        </td>
-
-                        <td>
-
-                          <button
-                            className="view-btn"
-                            onClick={() =>
-                              openCustomer(
-                                customer
-                              )
-                            }
-                          >
-                            View
-                          </button>
-
-                          <button
-                            className="delete-btn"
-                            onClick={() =>
-                              deleteCustomer(
-                                customer
-                              )
-                            }
-                          >
-                            Delete
-                          </button>
-
-                        </td>
-
-                      </tr>
-
+                {!customersLoading &&
+                  !customersError &&
+                  customers.length > 0 &&
+                  [...customers]
+                    .sort(
+                      (a, b) =>
+                        new Date(b.created) -
+                        new Date(a.created)
                     )
-                  )}
+                    .map(
+                      (customer, index) => (
+
+                        <tr
+                          key={
+                            customer.id ||
+                            index
+                          }
+                        >
+
+                          <td>
+                            {customers.length - index}
+                          </td>
+
+                          <td>
+                            {customer.fullName ||
+                              "-"}
+                          </td>
+
+                          <td>
+                            {customer.email ||
+                              "-"}
+                          </td>
+
+                          <td>
+                            {customer.phone ||
+                              "-"}
+                          </td>
+
+                          {/* NEW LOCATION */}
+
+                          <td>
+                            {customer.location ||
+                              "-"}
+                          </td>
+
+                          <td>
+
+                            <span
+                              className={`status ${
+                                (
+                                  customer.status ||
+                                  "New"
+                                ).toLowerCase()
+                              }`}
+                            >
+                              {customer.status ||
+                                "New"}
+                            </span>
+
+                          </td>
+
+                          <td>
+                            {formatDate(
+                              customer.created
+                            )}
+                          </td>
+
+                          <td>
+
+                            <button
+                              className="view-btn"
+                              onClick={() =>
+                                openCustomer(
+                                  customer
+                                )
+                              }
+                            >
+                              View
+                            </button>
+
+                            <button
+                              className="delete-btn"
+                              onClick={() =>
+                                deleteCustomer(
+                                  customer
+                                )
+                              }
+                            >
+                              Delete
+                            </button>
+
+                          </td>
+
+                        </tr>
+
+                      )
+                    )}
 
                 {/* EMPTY */}
 
@@ -1780,14 +1628,11 @@ const Leads = () => {
                     <tr>
 
                       <td
-                        colSpan="7"
+                        colSpan="8"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#777",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#777",
                         }}
                       >
 
@@ -1820,8 +1665,7 @@ const Leads = () => {
           CONSULTANTS SECTION
       ===================================================== */}
 
-      {activeSection ===
-        "consultants" && (
+      {activeSection === "consultants" && (
         <div className="customers-section">
 
           <div className="shop-header">
@@ -1841,12 +1685,8 @@ const Leads = () => {
 
             <button
               className="view-btn"
-              onClick={
-                loadConsultants
-              }
-              disabled={
-                consultantsLoading
-              }
+              onClick={loadConsultants}
+              disabled={consultantsLoading}
             >
               {consultantsLoading
                 ? "Loading..."
@@ -1888,12 +1728,9 @@ const Leads = () => {
                     <td
                       colSpan="10"
                       style={{
-                        textAlign:
-                          "center",
-                        padding:
-                          "50px",
-                        color:
-                          "#777",
+                        textAlign: "center",
+                        padding: "50px",
+                        color: "#777",
                       }}
                     >
                       Loading consultants...
@@ -1911,12 +1748,9 @@ const Leads = () => {
                       <td
                         colSpan="10"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#d9534f",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#d9534f",
                         }}
                       >
 
@@ -1935,10 +1769,7 @@ const Leads = () => {
                   !consultantsError &&
                   consultants.length > 0 &&
                   sortByNewest(consultants).map(
-                    (
-                      consultant,
-                      index
-                    ) => (
+                    (consultant, index) => (
 
                       <tr
                         key={
@@ -2044,12 +1875,9 @@ const Leads = () => {
                       <td
                         colSpan="10"
                         style={{
-                          textAlign:
-                            "center",
-                          padding:
-                            "50px",
-                          color:
-                            "#777",
+                          textAlign: "center",
+                          padding: "50px",
+                          color: "#777",
                         }}
                       >
 
@@ -2111,8 +1939,7 @@ const Leads = () => {
                   </strong>
 
                   <span>
-                    {selectedShop.id ||
-                      "-"}
+                    {selectedShop.id || "-"}
                   </span>
 
                 </div>
@@ -2207,9 +2034,7 @@ const Leads = () => {
 
                 </div>
 
-                {/* =================================================
-                    REQUIREMENTS
-                ================================================= */}
+                {/* REQUIREMENTS */}
 
                 <div className="popup-row requirements-popup-row">
 
@@ -2264,9 +2089,7 @@ const Leads = () => {
 
               </div>
 
-              {/* =================================================
-                  SHOP POPUP BUTTONS
-              ================================================= */}
+              {/* SHOP POPUP BUTTONS */}
 
               <div className="popup-buttons">
 
@@ -2334,6 +2157,8 @@ const Leads = () => {
 
               <div className="popup-content">
 
+                {/* CUSTOMER ID */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2346,6 +2171,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* FULL NAME */}
 
                 <div className="popup-row">
 
@@ -2360,6 +2187,8 @@ const Leads = () => {
 
                 </div>
 
+                {/* EMAIL */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2373,6 +2202,8 @@ const Leads = () => {
 
                 </div>
 
+                {/* PHONE */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2385,6 +2216,23 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* LOCATION */}
+
+                <div className="popup-row">
+
+                  <strong>
+                    Location
+                  </strong>
+
+                  <span>
+                    {selectedCustomer.location ||
+                      "-"}
+                  </span>
+
+                </div>
+
+                {/* STATUS */}
 
                 <div className="popup-row">
 
@@ -2405,6 +2253,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* SUBMITTED */}
 
                 <div className="popup-row">
 
@@ -2477,6 +2327,8 @@ const Leads = () => {
 
               <div className="popup-content">
 
+                {/* CONSULTANT ID */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2489,6 +2341,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* FULL NAME */}
 
                 <div className="popup-row">
 
@@ -2503,6 +2357,8 @@ const Leads = () => {
 
                 </div>
 
+                {/* PHONE */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2515,6 +2371,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* EMAIL */}
 
                 <div className="popup-row">
 
@@ -2529,6 +2387,8 @@ const Leads = () => {
 
                 </div>
 
+                {/* CITY */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2541,6 +2401,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* SERVICE */}
 
                 <div className="popup-row">
 
@@ -2555,6 +2417,8 @@ const Leads = () => {
 
                 </div>
 
+                {/* BUDGET */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2568,6 +2432,8 @@ const Leads = () => {
 
                 </div>
 
+                {/* PROJECT DETAILS */}
+
                 <div className="popup-row">
 
                   <strong>
@@ -2580,6 +2446,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* STATUS */}
 
                 <div className="popup-row">
 
@@ -2600,6 +2468,8 @@ const Leads = () => {
                   </span>
 
                 </div>
+
+                {/* SUBMITTED */}
 
                 <div className="popup-row">
 
