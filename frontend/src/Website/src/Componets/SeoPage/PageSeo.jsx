@@ -21,10 +21,6 @@ const PageSeo = ({ page }) => {
   useEffect(() => {
     let cancelled = false;
 
-    // =================================================
-    // LOAD SEO DATA
-    // =================================================
-
     const loadSeo = async () => {
       try {
         const response = await fetch(
@@ -39,22 +35,14 @@ const PageSeo = ({ page }) => {
         );
 
         if (!response.ok) {
-          throw new Error(
-            `SEO API error: ${response.status}`
-          );
+          throw new Error(`SEO API error: ${response.status}`);
         }
 
         const data = await response.json();
 
         if (!Array.isArray(data)) {
-          throw new Error(
-            "SEO API did not return an array."
-          );
+          throw new Error("SEO API did not return an array.");
         }
-
-        // =================================================
-        // FIND CURRENT PAGE SEO
-        // =================================================
 
         const pageSeo = data.find(
           (item) =>
@@ -64,35 +52,24 @@ const PageSeo = ({ page }) => {
 
         if (cancelled) return;
 
-        // =================================================
-        // SEO FOUND
-        // =================================================
-
         if (pageSeo) {
           setSeo({
             metaTitle:
-              pageSeo.metaTitle ||
+              pageSeo.metaTitle?.trim() ||
               DEFAULT_SEO.metaTitle,
 
             metaDescription:
-              pageSeo.metaDescription ||
+              pageSeo.metaDescription?.trim() ||
               DEFAULT_SEO.metaDescription,
 
             metaKeywords:
-              pageSeo.metaKeywords ||
+              pageSeo.metaKeywords?.trim() ||
               DEFAULT_SEO.metaKeywords,
 
             canonicalUrl:
-              pageSeo.canonicalUrl ||
-              "",
+              pageSeo.canonicalUrl?.trim() || "",
           });
-        }
-
-        // =================================================
-        // SEO NOT FOUND
-        // =================================================
-
-        else {
+        } else {
           setSeo(DEFAULT_SEO);
         }
       } catch (error) {
@@ -104,16 +81,15 @@ const PageSeo = ({ page }) => {
       }
     };
 
-    // =================================================
-    // LOAD SEO WHEN PAGE OPENS
-    // =================================================
-
+    // Load immediately
     loadSeo();
 
-    // =================================================
-    // LOAD SEO WHEN USER RETURNS TO TAB
-    // =================================================
+    // Check for new SEO every 30 seconds
+    const interval = setInterval(() => {
+      loadSeo();
+    }, 30000);
 
+    // Reload when user comes back to the tab
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         loadSeo();
@@ -125,12 +101,10 @@ const PageSeo = ({ page }) => {
       handleVisibilityChange
     );
 
-    // =================================================
-    // CLEANUP
-    // =================================================
-
     return () => {
       cancelled = true;
+
+      clearInterval(interval);
 
       document.removeEventListener(
         "visibilitychange",
@@ -139,32 +113,17 @@ const PageSeo = ({ page }) => {
     };
   }, [page]);
 
-  // =====================================================
-  // CANONICAL URL
-  // =====================================================
-
   const canonicalUrl =
-    seo.canonicalUrl ||
-    getDefaultCanonical(page);
-
-  // =====================================================
-  // RETURN SEO
-  // =====================================================
+    seo.canonicalUrl || getDefaultCanonical(page);
 
   return (
     <Helmet>
-      {/* ================================================
-          TITLE
-      ================================================= */}
-
+      {/* TITLE */}
       <title>
-        {seo.metaTitle || "The Royal Kraft"}
+        {seo.metaTitle || DEFAULT_SEO.metaTitle}
       </title>
 
-      {/* ================================================
-          META DESCRIPTION
-      ================================================= */}
-
+      {/* DESCRIPTION */}
       <meta
         name="description"
         content={
@@ -173,10 +132,7 @@ const PageSeo = ({ page }) => {
         }
       />
 
-      {/* ================================================
-          META KEYWORDS
-      ================================================= */}
-
+      {/* KEYWORDS */}
       <meta
         name="keywords"
         content={
@@ -185,10 +141,7 @@ const PageSeo = ({ page }) => {
         }
       />
 
-      {/* ================================================
-          CANONICAL
-      ================================================= */}
-
+      {/* CANONICAL */}
       {canonicalUrl && (
         <link
           rel="canonical"
@@ -196,10 +149,7 @@ const PageSeo = ({ page }) => {
         />
       )}
 
-      {/* ================================================
-          OPEN GRAPH
-      ================================================= */}
-
+      {/* OPEN GRAPH */}
       <meta
         property="og:title"
         content={
@@ -236,10 +186,7 @@ const PageSeo = ({ page }) => {
         content={`${SITE_URL}/og-image.jpg`}
       />
 
-      {/* ================================================
-          TWITTER / X
-      ================================================= */}
-
+      {/* TWITTER / X */}
       <meta
         name="twitter:card"
         content="summary_large_image"
@@ -268,10 +215,6 @@ const PageSeo = ({ page }) => {
     </Helmet>
   );
 };
-
-// =====================================================
-// DEFAULT CANONICAL URL
-// =====================================================
 
 function getDefaultCanonical(page) {
   const routes = {
