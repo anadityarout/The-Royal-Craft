@@ -21,6 +21,10 @@ const PageSeo = ({ page }) => {
   useEffect(() => {
     let cancelled = false;
 
+    // =================================================
+    // LOAD SEO DATA
+    // =================================================
+
     const loadSeo = async () => {
       try {
         const response = await fetch(
@@ -35,14 +39,22 @@ const PageSeo = ({ page }) => {
         );
 
         if (!response.ok) {
-          throw new Error(`SEO API error: ${response.status}`);
+          throw new Error(
+            `SEO API error: ${response.status}`
+          );
         }
 
         const data = await response.json();
 
         if (!Array.isArray(data)) {
-          throw new Error("SEO API did not return an array.");
+          throw new Error(
+            "SEO API did not return an array."
+          );
         }
+
+        // =================================================
+        // FIND CURRENT PAGE SEO
+        // =================================================
 
         const pageSeo = data.find(
           (item) =>
@@ -52,24 +64,35 @@ const PageSeo = ({ page }) => {
 
         if (cancelled) return;
 
+        // =================================================
+        // SEO FOUND
+        // =================================================
+
         if (pageSeo) {
           setSeo({
             metaTitle:
-              pageSeo.metaTitle?.trim() ||
+              pageSeo.metaTitle ||
               DEFAULT_SEO.metaTitle,
 
             metaDescription:
-              pageSeo.metaDescription?.trim() ||
+              pageSeo.metaDescription ||
               DEFAULT_SEO.metaDescription,
 
             metaKeywords:
-              pageSeo.metaKeywords?.trim() ||
+              pageSeo.metaKeywords ||
               DEFAULT_SEO.metaKeywords,
 
             canonicalUrl:
-              pageSeo.canonicalUrl?.trim() || "",
+              pageSeo.canonicalUrl ||
+              "",
           });
-        } else {
+        }
+
+        // =================================================
+        // SEO NOT FOUND
+        // =================================================
+
+        else {
           setSeo(DEFAULT_SEO);
         }
       } catch (error) {
@@ -81,15 +104,16 @@ const PageSeo = ({ page }) => {
       }
     };
 
-    // Load immediately
+    // =================================================
+    // LOAD SEO WHEN PAGE OPENS
+    // =================================================
+
     loadSeo();
 
-    // Check for new SEO every 30 seconds
-    const interval = setInterval(() => {
-      loadSeo();
-    }, 30000);
+    // =================================================
+    // LOAD SEO WHEN USER RETURNS TO TAB
+    // =================================================
 
-    // Reload when user comes back to the tab
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         loadSeo();
@@ -101,10 +125,12 @@ const PageSeo = ({ page }) => {
       handleVisibilityChange
     );
 
+    // =================================================
+    // CLEANUP
+    // =================================================
+
     return () => {
       cancelled = true;
-
-      clearInterval(interval);
 
       document.removeEventListener(
         "visibilitychange",
@@ -113,17 +139,32 @@ const PageSeo = ({ page }) => {
     };
   }, [page]);
 
+  // =====================================================
+  // CANONICAL URL
+  // =====================================================
+
   const canonicalUrl =
-    seo.canonicalUrl || getDefaultCanonical(page);
+    seo.canonicalUrl ||
+    getDefaultCanonical(page);
+
+  // =====================================================
+  // RETURN SEO
+  // =====================================================
 
   return (
     <Helmet>
-      {/* TITLE */}
+      {/* ================================================
+          TITLE
+      ================================================= */}
+
       <title>
-        {seo.metaTitle || DEFAULT_SEO.metaTitle}
+        {seo.metaTitle || "The Royal Kraft"}
       </title>
 
-      {/* DESCRIPTION */}
+      {/* ================================================
+          META DESCRIPTION
+      ================================================= */}
+
       <meta
         name="description"
         content={
@@ -132,7 +173,10 @@ const PageSeo = ({ page }) => {
         }
       />
 
-      {/* KEYWORDS */}
+      {/* ================================================
+          META KEYWORDS
+      ================================================= */}
+
       <meta
         name="keywords"
         content={
@@ -141,7 +185,10 @@ const PageSeo = ({ page }) => {
         }
       />
 
-      {/* CANONICAL */}
+      {/* ================================================
+          CANONICAL
+      ================================================= */}
+
       {canonicalUrl && (
         <link
           rel="canonical"
@@ -149,7 +196,10 @@ const PageSeo = ({ page }) => {
         />
       )}
 
-      {/* OPEN GRAPH */}
+      {/* ================================================
+          OPEN GRAPH
+      ================================================= */}
+
       <meta
         property="og:title"
         content={
@@ -186,7 +236,10 @@ const PageSeo = ({ page }) => {
         content={`${SITE_URL}/og-image.jpg`}
       />
 
-      {/* TWITTER / X */}
+      {/* ================================================
+          TWITTER / X
+      ================================================= */}
+
       <meta
         name="twitter:card"
         content="summary_large_image"
@@ -215,6 +268,10 @@ const PageSeo = ({ page }) => {
     </Helmet>
   );
 };
+
+// =====================================================
+// DEFAULT CANONICAL URL
+// =====================================================
 
 function getDefaultCanonical(page) {
   const routes = {
