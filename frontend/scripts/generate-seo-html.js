@@ -5,45 +5,17 @@
  *
  * Run this AFTER `vite build`.
  *
- * This script:
+ * Generates separate index.html files for every SEO page.
  *
- * 1. Reads dist/index.html as the template.
- * 2. Fetches SEO data from your SEO API.
- * 3. Generates a separate index.html for every page.
- * 4. Adds:
+ * SEO generated:
  *
- *    - <title>
- *    - <meta name="description">
- *    - <meta name="keywords">
- *    - <link rel="canonical">
- *
- * 5. Automatically generates canonical URLs from the page route.
- *
- * IMPORTANT:
- *
- * The canonicalUrl stored in MongoDB/API is NOT trusted.
- * Canonical URLs are generated automatically from:
- *
- *    https://theroyalkraft.com
- *
- * This prevents incorrect values such as:
- *
- *    w
- *    e
- *    ssd
- *    https://yourdomain.com/gallery
- *
- * from being used as canonical URLs.
- *
- * ============================================================
- *
- * Usage:
- *
- * npm run build
- *
- * node scripts/generate-seo-html.js
- *
- * Then upload the complete dist/ folder to S3.
+ * 1. <title>
+ * 2. Meta description
+ * 3. Meta keywords
+ * 4. Canonical
+ * 5. Open Graph
+ * 6. Twitter / X
+ * 7. Page-specific Schema.org JSON-LD
  *
  * ============================================================
  */
@@ -71,14 +43,36 @@ const SEO_API =
    WEBSITE URL
 ============================================================ */
 
+const SITE_URL =
+  "https://theroyalkraft.com";
+
+/* ============================================================
+   WEBSITE NAME
+============================================================ */
+
+const SITE_NAME =
+  "The Royal Kraft";
+
+/* ============================================================
+   DEFAULT OG IMAGE
+============================================================ */
+
 /*
- * Your real live website.
+ * Put this file here:
  *
- * IMPORTANT:
- * Do NOT add a trailing slash here.
+ * public/og-image.jpg
+ *
+ * It will be copied to:
+ *
+ * dist/og-image.jpg
+ *
+ * Recommended size:
+ *
+ * 1200 x 630 px
  */
 
-const SITE_URL = "https://theroyalkraft.com";
+const DEFAULT_OG_IMAGE =
+  `${SITE_URL}/og-image.jpg`;
 
 /* ============================================================
    DIST DIRECTORY
@@ -103,41 +97,10 @@ const TEMPLATE_PATH = path.join(
    PAGE ROUTES
 ============================================================ */
 
-/*
- * The key must exactly match the "page"
- * value coming from your SEO API.
- *
- * Example:
- *
- * API:
- * {
- *   "page": "Home"
- * }
- *
- * becomes:
- *
- * https://theroyalkraft.com/
- *
- * API:
- * {
- *   "page": "Shop"
- * }
- *
- * becomes:
- *
- * https://theroyalkraft.com/shop
- */
-
 const PAGE_ROUTE_MAP = {
   Home: "",
 
-  Project: "project",
-
-  Product: "product",
-
   Shop: "shop",
-
-  Service: "service",
 
   Blog: "blog",
 
@@ -146,6 +109,12 @@ const PAGE_ROUTE_MAP = {
   About: "about",
 
   Contact: "contact",
+
+  Product: "product",
+
+  Project: "project",
+
+  Service: "service",
 };
 
 /* ============================================================
@@ -154,13 +123,23 @@ const PAGE_ROUTE_MAP = {
 
 async function main() {
   console.log("");
-  console.log("==============================================");
-  console.log("           SEO HTML GENERATOR");
-  console.log("==============================================");
+
+  console.log(
+    "=============================================="
+  );
+
+  console.log(
+    "           SEO HTML GENERATOR"
+  );
+
+  console.log(
+    "=============================================="
+  );
+
   console.log("");
 
   /* ==========================================================
-     STEP 1 — CHECK DIST
+     CHECK DIST
   ========================================================== */
 
   if (!fs.existsSync(TEMPLATE_PATH)) {
@@ -180,31 +159,40 @@ async function main() {
   }
 
   /* ==========================================================
-     STEP 2 — READ TEMPLATE
+     READ TEMPLATE
   ========================================================== */
 
-  const template = fs.readFileSync(
-    TEMPLATE_PATH,
-    "utf-8"
+  const template =
+    fs.readFileSync(
+      TEMPLATE_PATH,
+      "utf-8"
+    );
+
+  console.log(
+    "✅ Vite template found."
   );
 
-  console.log("✅ Vite template found.");
   console.log("");
 
   /* ==========================================================
-     STEP 3 — FETCH SEO DATA
+     FETCH SEO DATA
   ========================================================== */
 
-  console.log("Fetching SEO data from:");
+  console.log(
+    "Fetching SEO data from:"
+  );
 
-  console.log(SEO_API);
+  console.log(
+    SEO_API
+  );
 
   console.log("");
 
   let response;
 
   try {
-    response = await fetch(SEO_API);
+    response =
+      await fetch(SEO_API);
   } catch (error) {
     console.error(
       "❌ Could not connect to SEO API."
@@ -216,7 +204,7 @@ async function main() {
   }
 
   /* ==========================================================
-     CHECK API RESPONSE
+     CHECK RESPONSE
   ========================================================== */
 
   if (!response.ok) {
@@ -234,7 +222,8 @@ async function main() {
   let seoList;
 
   try {
-    seoList = await response.json();
+    seoList =
+      await response.json();
   } catch (error) {
     console.error(
       "❌ SEO API returned invalid JSON."
@@ -280,7 +269,7 @@ async function main() {
   }
 
   /* ==========================================================
-     STEP 4 — GENERATE HTML
+     GENERATE HTML
   ========================================================== */
 
   let generatedCount = 0;
@@ -342,30 +331,73 @@ async function main() {
     }
 
     /* ========================================================
-       GENERATE CANONICAL URL
+       CANONICAL
     ======================================================== */
-
-    /*
-     * IMPORTANT:
-     *
-     * We intentionally DO NOT use canonicalUrl
-     * from the API here.
-     *
-     * This prevents bad database values like:
-     *
-     *    "w"
-     *    "e"
-     *    "ssd"
-     *    "https://yourdomain.com/gallery"
-     *
-     * from being used.
-     */
 
     const finalCanonicalUrl =
       getCanonicalUrl(routePath);
 
     /* ========================================================
-       LOG INFORMATION
+       TITLE
+    ======================================================== */
+
+    const finalTitle =
+      metaTitle &&
+      String(metaTitle).trim()
+        ? String(metaTitle).trim()
+        : SITE_NAME;
+
+    /* ========================================================
+       DESCRIPTION
+    ======================================================== */
+
+    const finalDescription =
+      metaDescription &&
+      String(metaDescription).trim()
+        ? String(metaDescription).trim()
+        : `Discover ${SITE_NAME} and our architectural and decorative solutions.`;
+
+    /* ========================================================
+       OG
+    ======================================================== */
+
+    const ogTitle =
+      finalTitle;
+
+    const ogDescription =
+      finalDescription;
+
+    const ogImage =
+      DEFAULT_OG_IMAGE;
+
+    /* ========================================================
+       TWITTER
+    ======================================================== */
+
+    const twitterTitle =
+      finalTitle;
+
+    const twitterDescription =
+      finalDescription;
+
+    const twitterImage =
+      ogImage;
+
+    /* ========================================================
+       SCHEMA
+    ======================================================== */
+
+    const schema =
+      createSchema({
+        page,
+        title: finalTitle,
+        description: finalDescription,
+        url: finalCanonicalUrl,
+        image: ogImage,
+      });
+
+    /* ========================================================
+       LOG
     ======================================================== */
 
     console.log(
@@ -381,9 +413,7 @@ async function main() {
     );
 
     console.log(
-      `Meta Title: ${
-        metaTitle || "The Royal Craft"
-      }`
+      `Meta Title: ${finalTitle}`
     );
 
     console.log(
@@ -397,6 +427,14 @@ async function main() {
     );
 
     console.log(
+      `OG Image: ${ogImage}`
+    );
+
+    console.log(
+      `Schema: ${getSchemaName(page)}`
+    );
+
+    console.log(
       "----------------------------------------------"
     );
 
@@ -404,27 +442,40 @@ async function main() {
        INJECT SEO
     ======================================================== */
 
-    const html = injectSeoTags(
-      template,
-      {
-        metaTitle,
-        metaDescription,
-        metaKeywords,
-        canonicalUrl:
-          finalCanonicalUrl,
-      }
-    );
+    const html =
+      injectSeoTags(
+        template,
+        {
+          page,
+          metaTitle: finalTitle,
+          metaDescription: finalDescription,
+          metaKeywords,
+          canonicalUrl:
+            finalCanonicalUrl,
+
+          ogTitle,
+          ogDescription,
+          ogImage,
+
+          twitterTitle,
+          twitterDescription,
+          twitterImage,
+
+          schema,
+        }
+      );
 
     /* ========================================================
-       CREATE OUTPUT DIRECTORY
+       OUTPUT DIRECTORY
     ======================================================== */
 
-    const outDir = routePath
-      ? path.join(
-          DIST_DIR,
-          routePath
-        )
-      : DIST_DIR;
+    const outDir =
+      routePath
+        ? path.join(
+            DIST_DIR,
+            routePath
+          )
+        : DIST_DIR;
 
     fs.mkdirSync(
       outDir,
@@ -437,13 +488,14 @@ async function main() {
        OUTPUT FILE
     ======================================================== */
 
-    const outFile = path.join(
-      outDir,
-      "index.html"
-    );
+    const outFile =
+      path.join(
+        outDir,
+        "index.html"
+      );
 
     /* ========================================================
-       WRITE FILE
+       WRITE
     ======================================================== */
 
     fs.writeFileSync(
@@ -486,6 +538,44 @@ async function main() {
   console.log("");
 
   console.log(
+    "SEO tags generated:"
+  );
+
+  console.log(
+    "✅ Title"
+  );
+
+  console.log(
+    "✅ Meta Description"
+  );
+
+  console.log(
+    "✅ Meta Keywords"
+  );
+
+  console.log(
+    "✅ Canonical"
+  );
+
+  console.log(
+    "✅ Open Graph"
+  );
+
+  console.log(
+    "✅ Twitter/X"
+  );
+
+  console.log(
+    "✅ Page-specific Schema"
+  );
+
+  console.log(
+    "❌ FAQ Schema NOT included"
+  );
+
+  console.log("");
+
+  console.log(
     "Website:"
   );
 
@@ -506,29 +596,7 @@ async function main() {
    GET CANONICAL URL
 ============================================================ */
 
-/*
- * Automatically generates canonical URL.
- *
- * Examples:
- *
- * Home:
- * https://theroyalkraft.com/
- *
- * Shop:
- * https://theroyalkraft.com/shop
- *
- * Blog:
- * https://theroyalkraft.com/blog
- *
- * Gallery:
- * https://theroyalkraft.com/gallery
- */
-
 function getCanonicalUrl(routePath) {
-  /* ==========================================================
-     CLEAN WEBSITE URL
-  ========================================================== */
-
   const baseUrl =
     SITE_URL.replace(
       /\/+$/,
@@ -536,7 +604,7 @@ function getCanonicalUrl(routePath) {
     );
 
   /* ==========================================================
-     HOME PAGE
+     HOME
   ========================================================== */
 
   if (!routePath) {
@@ -553,11 +621,580 @@ function getCanonicalUrl(routePath) {
       ""
     );
 
+  return `${baseUrl}/${cleanRoute}`;
+}
+
+/* ============================================================
+   CREATE PAGE-SPECIFIC SCHEMA
+============================================================ */
+
+function createSchema({
+  page,
+  title,
+  description,
+  url,
+  image,
+}) {
   /* ==========================================================
-     RETURN URL
+     ORGANIZATION
   ========================================================== */
 
-  return `${baseUrl}/${cleanRoute}`;
+  const organization = {
+    "@type": "Organization",
+
+    "@id":
+      `${SITE_URL}/#organization`,
+
+    name:
+      SITE_NAME,
+
+    url:
+      SITE_URL,
+
+    logo: {
+      "@type":
+        "ImageObject",
+
+      url:
+        image,
+    },
+  };
+
+  /* ==========================================================
+     HOME
+     Organization + LocalBusiness
+  ========================================================== */
+
+  if (page === "Home") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@graph": [
+        {
+          ...organization,
+        },
+
+        {
+          "@type":
+            "LocalBusiness",
+
+          "@id":
+            `${SITE_URL}/#localbusiness`,
+
+          name:
+            SITE_NAME,
+
+          url:
+            SITE_URL,
+
+          image:
+            image,
+
+          telephone:
+            "+91-8130462200",
+
+          email:
+            "info@theroyalkraft.com",
+
+          address: {
+            "@type":
+              "PostalAddress",
+
+            streetAddress:
+              "108, First Floor, DLF Galleria Mall, Mayur Vihar Phase-1 Extension, Near Metro Mayur Vihar Extension",
+
+            addressLocality:
+              "New Delhi",
+
+            postalCode:
+              "110091",
+
+            addressCountry:
+              "IN",
+          },
+
+          parentOrganization: {
+            "@id":
+              `${SITE_URL}/#organization`,
+          },
+        },
+      ],
+    };
+  }
+
+  /* ==========================================================
+     ABOUT
+     AboutPage + Organization
+  ========================================================== */
+
+  if (page === "About") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@graph": [
+        {
+          "@type":
+            "AboutPage",
+
+          "@id":
+            `${url}#aboutpage`,
+
+          url:
+            url,
+
+          name:
+            title,
+
+          description:
+            description,
+
+          about: {
+            "@id":
+              `${SITE_URL}/#organization`,
+          },
+
+          primaryImageOfPage: {
+            "@type":
+              "ImageObject",
+
+            url:
+              image,
+          },
+        },
+
+        organization,
+      ],
+    };
+  }
+
+  /* ==========================================================
+     PRODUCT
+     CollectionPage + ItemList
+  ========================================================== */
+
+  if (page === "Product") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "CollectionPage",
+
+      "@id":
+        `${url}#product-category`,
+
+      url:
+        url,
+
+      name:
+        title,
+
+      description:
+        description,
+
+      about: {
+        "@type":
+          "Thing",
+
+        name:
+          "FRP Architectural and Decorative Products",
+      },
+
+      mainEntity: {
+        "@type":
+          "ItemList",
+
+        "@id":
+          `${url}#itemlist`,
+
+        name:
+          "The Royal Kraft Products",
+
+        itemListOrder:
+          "https://schema.org/ItemListOrderAscending",
+
+        numberOfItems:
+          0,
+      },
+
+      primaryImageOfPage: {
+        "@type":
+          "ImageObject",
+
+        url:
+          image,
+      },
+    };
+  }
+
+  /* ==========================================================
+     SHOP
+     CollectionPage + ItemList
+  ========================================================== */
+
+  /* ==========================================================
+   SHOP
+   CollectionPage + ItemList + BreadcrumbList
+========================================================== */
+
+if (page === "Shop") {
+  return {
+    "@context": "https://schema.org",
+
+    "@graph": [
+      /* ======================================================
+         SHOP PAGE
+      ====================================================== */
+
+      {
+        "@type": "CollectionPage",
+
+        "@id": `${url}#shop`,
+
+        url: url,
+
+        name: title,
+
+        description: description,
+
+        mainEntity: {
+          "@type": "ItemList",
+
+          "@id": `${url}#itemlist`,
+
+          name: "The Royal Kraft Shop",
+
+          itemListOrder:
+            "https://schema.org/ItemListOrderAscending",
+
+          numberOfItems: 0,
+        },
+
+        provider: {
+          "@id": `${SITE_URL}/#organization`,
+        },
+
+        primaryImageOfPage: {
+          "@type": "ImageObject",
+
+          url: image,
+        },
+      },
+
+      /* ======================================================
+         BREADCRUMB
+      ====================================================== */
+
+      {
+        "@type": "BreadcrumbList",
+
+        "@id": `${url}#breadcrumb`,
+
+        itemListElement: [
+          {
+            "@type": "ListItem",
+
+            position: 1,
+
+            name: "Home",
+
+            item: `${SITE_URL}/`,
+          },
+
+          {
+            "@type": "ListItem",
+
+            position: 2,
+
+            name: "Shop",
+
+            item: `${SITE_URL}/shop`,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+  /* ==========================================================
+     SERVICE
+     Service
+  ========================================================== */
+
+  if (page === "Service") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "Service",
+
+      "@id":
+        `${url}#service`,
+
+      name:
+        title,
+
+      description:
+        description,
+
+      url:
+        url,
+
+      image:
+        image,
+
+      provider: {
+        "@id":
+          `${SITE_URL}/#organization`,
+      },
+
+      areaServed: {
+        "@type":
+          "Country",
+
+        name:
+          "India",
+      },
+    };
+  }
+
+  /* ==========================================================
+     PROJECT
+     CollectionPage + ItemList
+  ========================================================== */
+
+  if (page === "Project") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "CollectionPage",
+
+      "@id":
+        `${url}#projects`,
+
+      url:
+        url,
+
+      name:
+        title,
+
+      description:
+        description,
+
+      about: {
+        "@type":
+          "Thing",
+
+        name:
+          "Architectural and Decorative Projects",
+      },
+
+      mainEntity: {
+        "@type":
+          "ItemList",
+
+        "@id":
+          `${url}#itemlist`,
+
+        name:
+          "The Royal Kraft Projects",
+
+        itemListOrder:
+          "https://schema.org/ItemListOrderAscending",
+
+        numberOfItems:
+          0,
+      },
+
+      provider: {
+        "@id":
+          `${SITE_URL}/#organization`,
+      },
+
+      primaryImageOfPage: {
+        "@type":
+          "ImageObject",
+
+        url:
+          image,
+      },
+    };
+  }
+
+  /* ==========================================================
+     BLOG
+     Blog
+  ========================================================== */
+
+  if (page === "Blog") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "Blog",
+
+      "@id":
+        `${url}#blog`,
+
+      url:
+        url,
+
+      name:
+        title,
+
+      description:
+        description,
+
+      publisher: {
+        "@id":
+          `${SITE_URL}/#organization`,
+      },
+
+      image:
+        image,
+    };
+  }
+
+  /* ==========================================================
+     GALLERY
+     ImageGallery
+  ========================================================== */
+
+  if (page === "Gallery") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "ImageGallery",
+
+      "@id":
+        `${url}#imagegallery`,
+
+      url:
+        url,
+
+      name:
+        title,
+
+      description:
+        description,
+
+      image:
+        image,
+
+      publisher: {
+        "@id":
+          `${SITE_URL}/#organization`,
+      },
+    };
+  }
+
+  /* ==========================================================
+     CONTACT
+     ContactPage
+  ========================================================== */
+
+  if (page === "Contact") {
+    return {
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "ContactPage",
+
+      "@id":
+        `${url}#contactpage`,
+
+      url:
+        url,
+
+      name:
+        title,
+
+      description:
+        description,
+
+      isPartOf: {
+        "@type":
+          "WebSite",
+
+        name:
+          SITE_NAME,
+
+        url:
+          SITE_URL,
+      },
+    };
+  }
+
+  /* ==========================================================
+     FALLBACK
+  ========================================================== */
+
+  return {
+    "@context":
+      "https://schema.org",
+
+    "@type":
+      "WebPage",
+
+    "@id":
+      `${url}#webpage`,
+
+    url:
+      url,
+
+    name:
+      title,
+
+    description:
+      description,
+  };
+}
+
+/* ============================================================
+   GET SCHEMA NAME FOR TERMINAL
+============================================================ */
+
+function getSchemaName(page) {
+  switch (page) {
+    case "Home":
+      return "Organization + LocalBusiness";
+
+    case "About":
+      return "AboutPage + Organization";
+
+    case "Product":
+      return "CollectionPage + ItemList";
+
+    case "Shop":
+      return "CollectionPage + ItemList";
+
+    case "Service":
+      return "Service";
+
+    case "Project":
+      return "CollectionPage + ItemList";
+
+    case "Blog":
+      return "Blog";
+
+    case "Gallery":
+      return "ImageGallery";
+
+    case "Contact":
+      return "ContactPage";
+
+    default:
+      return "WebPage";
+  }
 }
 
 /* ============================================================
@@ -571,58 +1208,102 @@ function injectSeoTags(
     metaDescription,
     metaKeywords,
     canonicalUrl,
+
+    ogTitle,
+    ogDescription,
+    ogImage,
+
+    twitterTitle,
+    twitterDescription,
+    twitterImage,
+
+    schema,
   }
 ) {
-  let output = html;
+  let output =
+    html;
 
   /* ==========================================================
      REMOVE EXISTING TITLE
   ========================================================== */
 
-  output = output.replace(
-    /<title>[\s\S]*?<\/title>/gi,
-    ""
-  );
+  output =
+    output.replace(
+      /<title>[\s\S]*?<\/title>/gi,
+      ""
+    );
 
   /* ==========================================================
-     REMOVE EXISTING DESCRIPTION
+     REMOVE DESCRIPTION
   ========================================================== */
 
-  output = output.replace(
-    /\s*<meta\s+name=["']description["'][^>]*>/gi,
-    ""
-  );
+  output =
+    output.replace(
+      /\s*<meta\s+name=["']description["'][^>]*>/gi,
+      ""
+    );
 
   /* ==========================================================
-     REMOVE EXISTING KEYWORDS
+     REMOVE KEYWORDS
   ========================================================== */
 
-  output = output.replace(
-    /\s*<meta\s+name=["']keywords["'][^>]*>/gi,
-    ""
-  );
+  output =
+    output.replace(
+      /\s*<meta\s+name=["']keywords["'][^>]*>/gi,
+      ""
+    );
 
   /* ==========================================================
-     REMOVE EXISTING CANONICAL
+     REMOVE CANONICAL
   ========================================================== */
 
-  output = output.replace(
-    /\s*<link\s+rel=["']canonical["'][^>]*>/gi,
-    ""
-  );
+  output =
+    output.replace(
+      /\s*<link\s+rel=["']canonical["'][^>]*>/gi,
+      ""
+    );
 
   /* ==========================================================
-     CREATE TITLE
+     REMOVE OG
+  ========================================================== */
+
+  output =
+    output.replace(
+      /\s*<meta\s+property=["']og:[^"']+["'][^>]*>/gi,
+      ""
+    );
+
+  /* ==========================================================
+     REMOVE TWITTER
+  ========================================================== */
+
+  output =
+    output.replace(
+      /\s*<meta\s+name=["']twitter:[^"']+["'][^>]*>/gi,
+      ""
+    );
+
+  /* ==========================================================
+     REMOVE OLD SCHEMA
+  ========================================================== */
+
+  output =
+    output.replace(
+      /\s*<script\s+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi,
+      ""
+    );
+
+  /* ==========================================================
+     TITLE
   ========================================================== */
 
   const titleTag =
     `<title>${escapeHtml(
-      metaTitle ||
-        "The Royal Craft"
+      metaTitle || SITE_NAME
     )}</title>`;
 
   /* ==========================================================
-     CREATE DESCRIPTION
+     DESCRIPTION
   ========================================================== */
 
   const descriptionTag =
@@ -634,7 +1315,7 @@ function injectSeoTags(
       : "";
 
   /* ==========================================================
-     CREATE KEYWORDS
+     KEYWORDS
   ========================================================== */
 
   const keywordsTag =
@@ -646,7 +1327,7 @@ function injectSeoTags(
       : "";
 
   /* ==========================================================
-     CREATE CANONICAL
+     CANONICAL
   ========================================================== */
 
   const canonicalTag =
@@ -657,7 +1338,66 @@ function injectSeoTags(
       : "";
 
   /* ==========================================================
-     COMBINE TAGS
+     OPEN GRAPH
+  ========================================================== */
+
+  const ogTags = [
+    `<meta property="og:title" content="${escapeHtml(
+      ogTitle
+    )}">`,
+
+    `<meta property="og:description" content="${escapeHtml(
+      ogDescription
+    )}">`,
+
+    `<meta property="og:type" content="website">`,
+
+    `<meta property="og:url" content="${escapeHtml(
+      canonicalUrl
+    )}">`,
+
+    `<meta property="og:site_name" content="${escapeHtml(
+      SITE_NAME
+    )}">`,
+
+    `<meta property="og:image" content="${escapeHtml(
+      ogImage
+    )}">`,
+  ].join("\n    ");
+
+  /* ==========================================================
+     TWITTER / X
+  ========================================================== */
+
+  const twitterTags = [
+    `<meta name="twitter:card" content="summary_large_image">`,
+
+    `<meta name="twitter:title" content="${escapeHtml(
+      twitterTitle
+    )}">`,
+
+    `<meta name="twitter:description" content="${escapeHtml(
+      twitterDescription
+    )}">`,
+
+    `<meta name="twitter:image" content="${escapeHtml(
+      twitterImage
+    )}">`,
+  ].join("\n    ");
+
+  /* ==========================================================
+     SCHEMA
+  ========================================================== */
+
+  const schemaTag =
+    `<script type="application/ld+json">\n${JSON.stringify(
+      schema,
+      null,
+      2
+    )}\n</script>`;
+
+  /* ==========================================================
+     COMBINE
   ========================================================== */
 
   const seoTags = [
@@ -665,28 +1405,28 @@ function injectSeoTags(
     descriptionTag,
     keywordsTag,
     canonicalTag,
+    ogTags,
+    twitterTags,
+    schemaTag,
   ]
     .filter(Boolean)
     .join("\n    ");
 
   /* ==========================================================
-     INSERT BEFORE </head>
+     INSERT BEFORE HEAD
   ========================================================== */
 
   if (/<\/head>/i.test(output)) {
-    output = output.replace(
-      /<\/head>/i,
-      `    ${seoTags}\n  </head>`
-    );
+    output =
+      output.replace(
+        /<\/head>/i,
+        `    ${seoTags}\n  </head>`
+      );
   } else {
     console.warn(
       "⚠️ </head> was not found in dist/index.html."
     );
   }
-
-  /* ==========================================================
-     RETURN HTML
-  ========================================================== */
 
   return output;
 }
@@ -716,21 +1456,23 @@ function escapeHtml(value) {
 }
 
 /* ============================================================
-   RUN SCRIPT
+   RUN
 ============================================================ */
 
-main().catch((error) => {
-  console.error("");
+main().catch(
+  (error) => {
+    console.error("");
 
-  console.error(
-    "❌ SEO generation failed:"
-  );
+    console.error(
+      "❌ SEO generation failed:"
+    );
 
-  console.error("");
+    console.error("");
 
-  console.error(error);
+    console.error(error);
 
-  console.error("");
+    console.error("");
 
-  process.exit(1);
-});
+    process.exit(1);
+  }
+);

@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import "./Seo.css";
 
+// =====================================================
+// SEO API
+// =====================================================
+
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/seo";
 
-/*
- * IMPORTANT:
- * Replace this with your REAL production website URL.
- *
- * Example:
- * https://www.yourwebsite.com
- *
- * Do NOT add "/" at the end.
- */
+// =====================================================
+// WEBSITE URL
+// =====================================================
+
 const SITE_URL = "https://theroyalkraft.com";
+
+// =====================================================
+// SEO PAGES
+// =====================================================
 
 const pages = [
   "Home",
@@ -27,20 +30,27 @@ const pages = [
   "Contact",
 ];
 
-/*
- * URL path for each page
- */
+// =====================================================
+// PAGE ROUTES
+// IMPORTANT:
+// These must match Appweb.jsx routes.
+// =====================================================
+
 const PAGE_ROUTES = {
   Home: "",
-  Product: "Product",
-  Project: "Project",
-  Service: "Service",
+  Product: "product",
+  Project: "project",
+  Service: "service",
   Shop: "shop",
   Blog: "blog",
   Gallery: "gallery",
   About: "about",
   Contact: "contact",
 };
+
+// =====================================================
+// EMPTY SEO FORM
+// =====================================================
 
 const emptySeo = {
   page: "",
@@ -51,7 +61,15 @@ const emptySeo = {
   altText: "",
 };
 
+// =====================================================
+// SEO COMPONENT
+// =====================================================
+
 const Seo = () => {
+  // ===================================================
+  // STATES
+  // ===================================================
+
   const [showForm, setShowForm] = useState(false);
 
   const [seoList, setSeoList] = useState([]);
@@ -64,24 +82,37 @@ const Seo = () => {
 
   const [seoData, setSeoData] = useState(emptySeo);
 
-  /*
-   * ============================================
-   * Load SEO
-   * ============================================
-   */
+  // ===================================================
+  // LOAD SEO WHEN PAGE OPENS
+  // ===================================================
 
   useEffect(() => {
     loadSeo();
   }, []);
 
+  // ===================================================
+  // LOAD SEO DATA
+  // ===================================================
+
   const loadSeo = async () => {
     try {
       setLoading(true);
 
-      const response = await fetch(API_URL);
+      const response = await fetch(
+        `${API_URL}?t=${Date.now()}`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            Accept: "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Failed to load SEO data.");
+        throw new Error(
+          `Failed to load SEO data: ${response.status}`
+        );
       }
 
       const data = await response.json();
@@ -92,7 +123,10 @@ const Seo = () => {
         setSeoList([]);
       }
     } catch (error) {
-      console.error("Error loading SEO:", error);
+      console.error(
+        "Error loading SEO:",
+        error
+      );
 
       setSeoList([]);
 
@@ -102,11 +136,9 @@ const Seo = () => {
     }
   };
 
-  /*
-   * ============================================
-   * Generate Canonical URL
-   * ============================================
-   */
+  // ===================================================
+  // GENERATE CANONICAL URL
+  // ===================================================
 
   const generateCanonicalUrl = (page) => {
     const route = PAGE_ROUTES[page];
@@ -115,20 +147,21 @@ const Seo = () => {
       return "";
     }
 
-    const baseUrl = SITE_URL.replace(/\/+$/, "");
+    const baseUrl =
+      SITE_URL.replace(/\/+$/, "");
 
+    // HOME
     if (!route) {
       return `${baseUrl}/`;
     }
 
+    // OTHER PAGES
     return `${baseUrl}/${route}`;
   };
 
-  /*
-   * ============================================
-   * Validate Canonical URL
-   * ============================================
-   */
+  // ===================================================
+  // VALIDATE CANONICAL URL
+  // ===================================================
 
   const isValidCanonicalUrl = (value) => {
     if (!value || !value.trim()) {
@@ -136,7 +169,9 @@ const Seo = () => {
     }
 
     try {
-      const url = new URL(value.trim());
+      const url = new URL(
+        value.trim()
+      );
 
       if (
         url.protocol !== "http:" &&
@@ -155,14 +190,15 @@ const Seo = () => {
     }
   };
 
-  /*
-   * ============================================
-   * Handle Input Change
-   * ============================================
-   */
+  // ===================================================
+  // HANDLE INPUT CHANGE
+  // ===================================================
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const {
+      name,
+      value,
+    } = e.target;
 
     setSeoData((prev) => ({
       ...prev,
@@ -170,48 +206,46 @@ const Seo = () => {
     }));
   };
 
-  /*
-   * ============================================
-   * Page Change
-   * ============================================
-   */
+  // ===================================================
+  // HANDLE PAGE CHANGE
+  // ===================================================
 
   const handlePageChange = (e) => {
     const page = e.target.value;
 
     setSeoData((prev) => ({
       ...prev,
+
       page,
+
       canonicalUrl: page
         ? generateCanonicalUrl(page)
         : "",
     }));
   };
 
-  /*
-   * ============================================
-   * Reset Form
-   * ============================================
-   */
+  // ===================================================
+  // RESET FORM
+  // ===================================================
 
   const resetForm = () => {
-    setSeoData(emptySeo);
+    setSeoData({
+      ...emptySeo,
+    });
 
     setEditIndex(null);
 
     setShowForm(false);
   };
 
-  /*
-   * ============================================
-   * Save SEO
-   * ============================================
-   */
+  // ===================================================
+  // SAVE / UPDATE SEO
+  // ===================================================
 
   const handleSave = async () => {
-    /*
-     * Required fields
-     */
+    // -----------------------------------------------
+    // VALIDATE REQUIRED FIELDS
+    // -----------------------------------------------
 
     if (
       !seoData.page ||
@@ -225,45 +259,52 @@ const Seo = () => {
       return;
     }
 
-    /*
-     * Create final canonical URL
-     */
+    // -----------------------------------------------
+    // CANONICAL URL
+    // -----------------------------------------------
 
     let finalCanonicalUrl =
       seoData.canonicalUrl.trim();
 
-    /*
-     * If empty, automatically generate it.
-     */
-
+    // Automatically generate if empty
     if (!finalCanonicalUrl) {
-      finalCanonicalUrl = generateCanonicalUrl(
-        seoData.page
-      );
+      finalCanonicalUrl =
+        generateCanonicalUrl(
+          seoData.page
+        );
     }
 
-    /*
-     * Validate canonical URL
-     */
+    // -----------------------------------------------
+    // VALIDATE CANONICAL URL
+    // -----------------------------------------------
 
-    if (!isValidCanonicalUrl(finalCanonicalUrl)) {
+    if (
+      !isValidCanonicalUrl(
+        finalCanonicalUrl
+      )
+    ) {
       alert(
-        "Please enter a valid Canonical URL.\n\nExample:\nhttps://www.yourdomain.com/about"
+        "Please enter a valid Canonical URL.\n\nExample:\nhttps://theroyalkraft.com/about"
       );
 
       return;
     }
 
-    /*
-     * Prepare data
-     */
+    // -----------------------------------------------
+    // CREATE PAYLOAD
+    // -----------------------------------------------
 
     const payload = {
-      ...(seoData.id ? { id: seoData.id } : {}),
+      ...(seoData.id
+        ? {
+            id: seoData.id,
+          }
+        : {}),
 
       page: seoData.page.trim(),
 
-      metaTitle: seoData.metaTitle.trim(),
+      metaTitle:
+        seoData.metaTitle.trim(),
 
       metaDescription:
         seoData.metaDescription.trim(),
@@ -271,9 +312,11 @@ const Seo = () => {
       metaKeywords:
         seoData.metaKeywords.trim(),
 
-      canonicalUrl: finalCanonicalUrl,
+      canonicalUrl:
+        finalCanonicalUrl,
 
-      altText: seoData.altText.trim(),
+      altText:
+        seoData.altText.trim(),
     };
 
     try {
@@ -281,39 +324,66 @@ const Seo = () => {
 
       let response;
 
-      /*
-       * UPDATE
-       */
+      // =================================================
+      // UPDATE
+      // =================================================
 
       if (editIndex !== null) {
-        response = await fetch(API_URL, {
-          method: "PUT",
+        response = await fetch(
+          API_URL,
+          {
+            method: "PUT",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+            headers: {
+              "Content-Type":
+                "application/json",
 
-          body: JSON.stringify(payload),
-        });
+              Accept:
+                "application/json",
+            },
+
+            body: JSON.stringify(
+              payload
+            ),
+          }
+        );
       }
 
-      /*
-       * CREATE
-       */
+      // =================================================
+      // CREATE
+      // =================================================
 
       else {
-        response = await fetch(API_URL, {
-          method: "POST",
+        response = await fetch(
+          API_URL,
+          {
+            method: "POST",
 
-          headers: {
-            "Content-Type": "application/json",
-          },
+            headers: {
+              "Content-Type":
+                "application/json",
 
-          body: JSON.stringify(payload),
-        });
+              Accept:
+                "application/json",
+            },
+
+            body: JSON.stringify(
+              payload
+            ),
+          }
+        );
       }
 
-      const result = await response.json();
+      // =================================================
+      // READ RESPONSE
+      // =================================================
+
+      const result =
+        await response.json();
+
+      // =================================================
+      // ERROR
+      // =================================================
 
       if (!response.ok) {
         alert(
@@ -324,13 +394,23 @@ const Seo = () => {
         return;
       }
 
+      // =================================================
+      // SUCCESS
+      // =================================================
+
       alert(
         result.message ||
-          "SEO saved successfully."
+          (
+            editIndex !== null
+              ? "SEO updated successfully."
+              : "SEO saved successfully."
+          )
       );
 
+      // Reload latest data
       await loadSeo();
 
+      // Reset form
       resetForm();
     } catch (error) {
       console.error(
@@ -338,38 +418,39 @@ const Seo = () => {
         error
       );
 
-      alert("Failed to save SEO.");
+      alert(
+        "Failed to save SEO."
+      );
     } finally {
       setSaving(false);
     }
   };
 
-  /*
-   * ============================================
-   * Edit SEO
-   * ============================================
-   */
+  // ===================================================
+  // EDIT SEO
+  // ===================================================
 
   const handleEdit = (item) => {
-    /*
-     * If old data contains invalid canonical URL,
-     * automatically replace it with the correct one.
-     */
-
     const savedCanonical =
-      item.canonicalUrl?.trim() || "";
+      item.canonicalUrl?.trim() ||
+      "";
 
     const canonicalUrl =
-      isValidCanonicalUrl(savedCanonical)
+      isValidCanonicalUrl(
+        savedCanonical
+      )
         ? savedCanonical
-        : generateCanonicalUrl(item.page);
+        : generateCanonicalUrl(
+            item.page
+          );
 
     setSeoData({
-      id: item.id,
+      id: item.id || "",
 
       page: item.page || "",
 
-      metaTitle: item.metaTitle || "",
+      metaTitle:
+        item.metaTitle || "",
 
       metaDescription:
         item.metaDescription || "",
@@ -379,43 +460,64 @@ const Seo = () => {
 
       canonicalUrl,
 
-      altText: item.altText || "",
+      altText:
+        item.altText || "",
     });
 
-    setEditIndex(item.id);
+    // IMPORTANT:
+    // Store ID in editIndex because
+    // PUT request needs the record ID.
+
+    setEditIndex(
+      item.id || null
+    );
 
     setShowForm(true);
   };
 
-  /*
-   * ============================================
-   * Delete SEO
-   * ============================================
-   */
+  // ===================================================
+  // DELETE SEO
+  // ===================================================
 
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this SEO record?"
-    );
+    const confirmDelete =
+      window.confirm(
+        "Are you sure you want to delete this SEO record?"
+      );
 
     if (!confirmDelete) {
       return;
     }
 
     try {
-      const response = await fetch(API_URL, {
-        method: "DELETE",
+      setSaving(true);
 
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const response =
+        await fetch(
+          API_URL,
+          {
+            method: "DELETE",
 
-        body: JSON.stringify({
-          id,
-        }),
-      });
+            headers: {
+              "Content-Type":
+                "application/json",
 
-      const result = await response.json();
+              Accept:
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              id,
+            }),
+          }
+        );
+
+      const result =
+        await response.json();
+
+      // =================================================
+      // ERROR
+      // =================================================
 
       if (!response.ok) {
         alert(
@@ -426,11 +528,16 @@ const Seo = () => {
         return;
       }
 
+      // =================================================
+      // SUCCESS
+      // =================================================
+
       alert(
         result.message ||
           "SEO deleted successfully."
       );
 
+      // Reload latest data
       await loadSeo();
     } catch (error) {
       console.error(
@@ -438,40 +545,44 @@ const Seo = () => {
         error
       );
 
-      alert("Failed to delete SEO.");
+      alert(
+        "Failed to delete SEO."
+      );
+    } finally {
+      setSaving(false);
     }
   };
 
-  /*
-   * ============================================
-   * Add SEO
-   * ============================================
-   */
+  // ===================================================
+  // ADD SEO
+  // ===================================================
 
   const handleAddSeo = () => {
-    setSeoData(emptySeo);
+    setSeoData({
+      ...emptySeo,
+    });
 
     setEditIndex(null);
 
     setShowForm(true);
   };
 
-  /*
-   * ============================================
-   * Render
-   * ============================================
-   */
+  // ===================================================
+  // RENDER
+  // ===================================================
 
   return (
     <div className="seo-container">
 
-      {/* =========================================
+      {/* =================================================
           HEADER
-      ========================================= */}
+      ================================================= */}
 
       <div className="seo-header">
 
-        <h2>SEO Management</h2>
+        <h2>
+          SEO Management
+        </h2>
 
         <button
           className="add-btn"
@@ -482,9 +593,9 @@ const Seo = () => {
 
       </div>
 
-      {/* =========================================
+      {/* =================================================
           FORM
-      ========================================= */}
+      ================================================= */}
 
       {showForm && (
         <div className="seo-form">
@@ -495,12 +606,17 @@ const Seo = () => {
               : "Add SEO"}
           </h3>
 
-          {/* PAGE */}
+          {/* =============================================
+              PAGE
+          ============================================== */}
 
           <select
             name="page"
             value={seoData.page}
             onChange={handlePageChange}
+            disabled={
+              editIndex !== null
+            }
           >
             <option value="">
               Select Page
@@ -516,67 +632,97 @@ const Seo = () => {
             ))}
           </select>
 
-          {/* META TITLE */}
+          {/* =============================================
+              META TITLE
+          ============================================== */}
 
           <input
             type="text"
             name="metaTitle"
             placeholder="Meta Title"
-            value={seoData.metaTitle}
+            value={
+              seoData.metaTitle
+            }
             onChange={handleChange}
           />
 
-          {/* DESCRIPTION */}
+          {/* =============================================
+              META DESCRIPTION
+          ============================================== */}
 
           <textarea
             name="metaDescription"
             placeholder="Meta Description"
-            value={seoData.metaDescription}
+            value={
+              seoData.metaDescription
+            }
             onChange={handleChange}
             rows="4"
           />
 
-          {/* KEYWORDS */}
+          {/* =============================================
+              META KEYWORDS
+          ============================================== */}
 
           <input
             type="text"
             name="metaKeywords"
             placeholder="Meta Keywords"
-            value={seoData.metaKeywords}
+            value={
+              seoData.metaKeywords
+            }
             onChange={handleChange}
           />
 
-          {/* CANONICAL URL */}
+          {/* =============================================
+              CANONICAL URL
+          ============================================== */}
 
           <input
             type="url"
             name="canonicalUrl"
             placeholder="Canonical URL"
-            value={seoData.canonicalUrl}
+            value={
+              seoData.canonicalUrl
+            }
             onChange={handleChange}
           />
 
+          {/* =============================================
+              CANONICAL HELP
+          ============================================== */}
+
           {seoData.page && (
             <small className="canonical-help">
+
               Recommended Canonical URL:
+
               {" "}
+
               {generateCanonicalUrl(
                 seoData.page
               )}
+
             </small>
           )}
 
-          {/* ALT TEXT */}
+          {/* =============================================
+              ALT TEXT
+          ============================================== */}
 
           <input
             type="text"
             name="altText"
             placeholder="Alternative Text"
-            value={seoData.altText}
+            value={
+              seoData.altText
+            }
             onChange={handleChange}
           />
 
-          {/* BUTTONS */}
+          {/* =============================================
+              BUTTONS
+          ============================================== */}
 
           <div className="btn-group">
 
@@ -605,9 +751,9 @@ const Seo = () => {
         </div>
       )}
 
-      {/* =========================================
+      {/* =================================================
           TABLE
-      ========================================= */}
+      ================================================= */}
 
       <table className="seo-table">
 
@@ -615,25 +761,43 @@ const Seo = () => {
 
           <tr>
 
-            <th>Page</th>
+            <th>
+              Page
+            </th>
 
-            <th>Meta Title</th>
+            <th>
+              Meta Title
+            </th>
 
-            <th>Description</th>
+            <th>
+              Description
+            </th>
 
-            <th>Keywords</th>
+            <th>
+              Keywords
+            </th>
 
-            <th>Canonical URL</th>
+            <th>
+              Canonical URL
+            </th>
 
-            <th>Alt Text</th>
+            <th>
+              Alt Text
+            </th>
 
-            <th>Action</th>
+            <th>
+              Action
+            </th>
 
           </tr>
 
         </thead>
 
         <tbody>
+
+          {/* =============================================
+              LOADING
+          ============================================== */}
 
           {loading ? (
             <tr>
@@ -646,7 +810,13 @@ const Seo = () => {
               </td>
 
             </tr>
-          ) : seoList.length === 0 ? (
+          )
+
+          /* =============================================
+             NO DATA
+          ============================================== */
+
+          : seoList.length === 0 ? (
             <tr>
 
               <td
@@ -657,60 +827,82 @@ const Seo = () => {
               </td>
 
             </tr>
-          ) : (
-            seoList.map((item) => (
+          )
 
-              <tr key={item.id}>
+          /* =============================================
+             DATA
+          ============================================== */
 
-                <td>
-                  {item.page}
-                </td>
+          : (
+            seoList.map(
+              (item) => (
 
-                <td>
-                  {item.metaTitle}
-                </td>
+                <tr
+                  key={item.id}
+                >
 
-                <td>
-                  {item.metaDescription}
-                </td>
+                  <td>
+                    {item.page}
+                  </td>
 
-                <td>
-                  {item.metaKeywords}
-                </td>
+                  <td>
+                    {item.metaTitle}
+                  </td>
 
-                <td>
-                  {item.canonicalUrl}
-                </td>
+                  <td>
+                    {item.metaDescription}
+                  </td>
 
-                <td>
-                  {item.altText}
-                </td>
+                  <td>
+                    {item.metaKeywords}
+                  </td>
 
-                <td>
+                  <td>
+                    {item.canonicalUrl}
+                  </td>
 
-                  <button
-                    className="edit-btn"
-                    onClick={() =>
-                      handleEdit(item)
-                    }
-                  >
-                    Edit
-                  </button>
+                  <td>
+                    {item.altText}
+                  </td>
 
-                  <button
-                    className="delete-btn"
-                    onClick={() =>
-                      handleDelete(item.id)
-                    }
-                  >
-                    Delete
-                  </button>
+                  <td>
 
-                </td>
+                    {/* =================================
+                        EDIT
+                    ================================== */}
 
-              </tr>
+                    <button
+                      className="edit-btn"
+                      onClick={() =>
+                        handleEdit(item)
+                      }
+                      disabled={saving}
+                    >
+                      Edit
+                    </button>
 
-            ))
+                    {/* =================================
+                        DELETE
+                    ================================== */}
+
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDelete(
+                          item.id
+                        )
+                      }
+                      disabled={saving}
+                    >
+                      Delete
+                    </button>
+
+                  </td>
+
+                </tr>
+
+              )
+            )
           )}
 
         </tbody>

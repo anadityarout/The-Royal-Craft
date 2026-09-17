@@ -107,8 +107,6 @@ function ScrollToTop() {
 function Home() {
   return (
     <>
-      <PageSeo page="Home" />
-
       <HomeSlider />
 
       <Counter />
@@ -326,11 +324,101 @@ function ShopProductRoute() {
 // =====================================================
 
 function WebsiteLayout() {
+  const location = useLocation();
+
+  // ===================================================
+  // GET SEO PAGE NAME FROM CURRENT URL
+  // ===================================================
+
+  const getSeoPage = () => {
+    const path = location.pathname.toLowerCase();
+
+    // HOME
+    if (path === "/") {
+      return "Home";
+    }
+
+    // PRODUCT
+    if (path === "/product") {
+      return "Product";
+    }
+
+    // PROJECT
+    if (path === "/project" || path.startsWith("/project/")) {
+      return "Project";
+    }
+
+    // SERVICE
+    if (path === "/service") {
+      return "Service";
+    }
+
+    // SHOP
+    if (path === "/shop" || path.startsWith("/shop/")) {
+      return "Shop";
+    }
+
+    // BLOG
+    if (path === "/blog") {
+      return "Blog";
+    }
+
+    // GALLERY
+    if (path === "/gallery") {
+      return "Gallery";
+    }
+
+    // ABOUT
+    if (path === "/about") {
+      return "About";
+    }
+
+    // CONTACT
+    if (path === "/contact") {
+      return "Contact";
+    }
+
+    // NO SEO PAGE
+    return "";
+  };
+
+  const seoPage = getSeoPage();
+
   return (
     <>
+      {/* =================================================
+          DYNAMIC SEO
+          
+          SEO data comes from AWS API.
+          
+          Admin Dashboard
+                ↓
+          AWS Lambda
+                ↓
+          S3 seo.json
+                ↓
+          PageSeo
+                ↓
+          Website <head>
+      ================================================= */}
+
+      {seoPage && <PageSeo page={seoPage} />}
+
+      {/* =================================================
+          NAVBAR
+      ================================================= */}
+
       <Navbar />
 
+      {/* =================================================
+          PAGE CONTENT
+      ================================================= */}
+
       <Outlet />
+
+      {/* =================================================
+          FOOTER
+      ================================================= */}
 
       <Footer />
     </>
@@ -447,19 +535,20 @@ function App() {
             element={<Home />}
           />
 
-         {/* =================================================
-    PROJECT
-================================================= */}
+          {/* =================================================
+              PROJECT
+          ================================================= */}
 
-<Route
-  path="/project"
-  element={<ProjectPage />}
-/>
+          <Route
+            path="/project"
+            element={<ProjectPage />}
+          />
 
-<Route
-  path="/project/:projectName"
-  element={<ProjectPage />}
-/>
+          <Route
+            path="/project/:projectName"
+            element={<ProjectPage />}
+          />
+
           {/* =================================================
               PRODUCT
           ================================================= */}
@@ -547,4 +636,3 @@ function App() {
 }
 
 export default App;
-
