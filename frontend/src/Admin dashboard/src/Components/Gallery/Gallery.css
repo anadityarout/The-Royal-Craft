@@ -4,6 +4,7 @@
 
 .gallery-page {
     flex: 1;
+    width: 100%;
     padding: 30px;
     background: #f5f7fb;
     min-height: 100vh;
@@ -29,7 +30,22 @@
     font-weight: 700;
 }
 
-.gallery-header button {
+
+/* ==========================================
+   ADD IMAGE WRAPPER
+========================================== */
+
+.add-image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+
+/* ==========================================
+   ADD IMAGE BUTTON
+========================================== */
+
+.add-image-btn {
     padding: 12px 24px;
     background: #0d6efd;
     color: #ffffff;
@@ -39,15 +55,99 @@
     font-size: 15px;
     font-weight: 600;
     transition: 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.gallery-header button:hover {
+.add-image-btn:hover {
     background: #0b5ed7;
 }
 
-.gallery-header button:disabled {
+.add-image-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+
+/* ==========================================
+   ADD IMAGE DROPDOWN
+========================================== */
+
+.add-image-dropdown {
+    position: absolute;
+
+    top: calc(100% + 8px);
+    right: 0;
+
+    width: 190px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e5eb;
+
+    border-radius: 10px;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.12);
+
+    padding: 6px;
+
+    z-index: 1000;
+}
+
+
+/* ==========================================
+   DROPDOWN BUTTON
+========================================== */
+
+.add-image-dropdown button {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    border: none;
+
+    background: transparent;
+
+    color: #1f2937;
+
+    text-align: left;
+
+    border-radius: 7px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    transition: 0.25s ease;
+}
+
+.add-image-dropdown button:hover {
+    background: #eef4ff;
+
+    color: #0d6efd;
+}
+
+
+/* ==========================================
+   BANNER DROPDOWN BUTTON
+========================================== */
+
+.add-image-dropdown .banner-option {
+    color: #0d6efd;
+}
+
+
+/* ==========================================
+   GALLERY PAGE DROPDOWN BUTTON
+========================================== */
+
+.add-image-dropdown .gallery-option {
+    color: #1f2937;
 }
 
 
@@ -56,19 +156,58 @@
 ========================================== */
 
 .upload-box {
+    width: 100%;
+
     background: #ffffff;
+
     padding: 30px;
+
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+
     margin-bottom: 30px;
+
+    box-sizing: border-box;
 }
 
 .upload-box h3 {
     margin-top: 0;
+
     margin-bottom: 22px;
+
     font-size: 21px;
+
     color: #1f2937;
+
     font-weight: 600;
+}
+
+
+/* ==========================================
+   BANNER FORM
+========================================== */
+
+.banner-form {
+    width: 100%;
+}
+
+
+/* ==========================================
+   BANNER LABEL
+========================================== */
+
+.banner-form label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #374151;
 }
 
 
@@ -78,19 +217,29 @@
 
 .upload-box input[type="file"] {
     width: 100%;
+
     padding: 18px;
+
     margin-bottom: 18px;
+
     border: 2px dashed #d9d9d9;
+
     border-radius: 8px;
+
     background: #fafafa;
+
     color: #555555;
+
     cursor: pointer;
+
     box-sizing: border-box;
+
     transition: 0.3s ease;
 }
 
 .upload-box input[type="file"]:hover {
     border-color: #0d6efd;
+
     background: #f8fbff;
 }
 
@@ -102,46 +251,95 @@
 .upload-box input[type="text"],
 .upload-box textarea {
     width: 100%;
+
     padding: 14px 16px;
+
     margin-bottom: 18px;
+
     border: 1px solid #d9d9d9;
+
     border-radius: 8px;
+
     outline: none;
+
     font-size: 15px;
+
     color: #374151;
+
     box-sizing: border-box;
+
     transition: 0.3s ease;
+
     font-family: inherit;
+
     background: #ffffff;
 }
 
 .upload-box input[type="text"]:focus,
 .upload-box textarea:focus {
     border-color: #0d6efd;
-    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.08);
+
+    box-shadow:
+        0 0 0 3px rgba(13, 110, 253, 0.08);
 }
 
 .upload-box textarea {
     resize: vertical;
+
     min-height: 120px;
 }
 
 
 /* ==========================================
-   IMAGE PREVIEW
+   BANNER IMAGE PREVIEW
+========================================== */
+
+.gallery-banner-preview {
+    width: 100%;
+
+    margin-bottom: 20px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    background: #f3f4f6;
+
+    border: 1px solid #e5e7eb;
+}
+
+.gallery-banner-preview img {
+    display: block;
+
+    width: 100%;
+
+    max-height: 350px;
+
+    object-fit: cover;
+}
+
+
+/* ==========================================
+   GALLERY IMAGE PREVIEW
 ========================================== */
 
 .gallery-image-preview {
     margin-top: 0;
+
     margin-bottom: 18px;
 }
 
 .preview-image {
     width: 90px;
+
     height: 70px;
+
     object-fit: cover;
+
     border-radius: 8px;
+
     border: 1px solid #dddddd;
+
     display: block;
 }
 
@@ -152,20 +350,34 @@
 
 .btns {
     display: flex;
+
     gap: 15px;
+
     margin-top: 10px;
 }
 
 .btns button {
     padding: 12px 30px;
+
     border: none;
+
     border-radius: 8px;
+
     cursor: pointer;
+
     color: #ffffff;
+
     font-size: 15px;
+
     font-weight: 600;
+
     transition: 0.3s ease;
 }
+
+
+/* ==========================================
+   SAVE BUTTON
+========================================== */
 
 .btns button:first-child {
     background: #198754;
@@ -174,6 +386,11 @@
 .btns button:first-child:hover {
     background: #157347;
 }
+
+
+/* ==========================================
+   CANCEL BUTTON
+========================================== */
 
 .btns button:last-child {
     background: #dc3545;
@@ -185,7 +402,23 @@
 
 .btns button:disabled {
     opacity: 0.6;
+
     cursor: not-allowed;
+}
+
+
+/* ==========================================
+   BANNER FORM TITLE
+========================================== */
+
+.banner-form-title {
+    margin: 0 0 20px;
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    color: #1f2937;
 }
 
 
@@ -195,8 +428,12 @@
 
 .table-container {
     background: #ffffff;
+
     border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.08);
+
     overflow-x: auto;
 }
 
@@ -207,7 +444,9 @@
 
 table {
     width: 100%;
+
     min-width: 1000px;
+
     border-collapse: collapse;
 }
 
@@ -222,10 +461,15 @@ thead {
 
 thead th {
     color: #ffffff;
+
     padding: 16px;
+
     text-align: center;
+
     font-size: 15px;
+
     font-weight: 600;
+
     white-space: nowrap;
 }
 
@@ -236,10 +480,15 @@ thead th {
 
 tbody td {
     padding: 16px;
+
     text-align: center;
+
     border-bottom: 1px solid #ececec;
+
     color: #444444;
+
     font-size: 14px;
+
     vertical-align: middle;
 }
 
@@ -257,15 +506,20 @@ tbody tr:last-child td {
 
 
 /* ==========================================
-   PREVIEW IMAGE IN TABLE
+   TABLE PREVIEW IMAGE
 ========================================== */
 
 tbody .preview-image {
     width: 90px;
+
     height: 70px;
+
     object-fit: cover;
+
     border-radius: 8px;
+
     border: 1px solid #dddddd;
+
     margin: auto;
 }
 
@@ -276,8 +530,11 @@ tbody .preview-image {
 
 .action-buttons {
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     gap: 10px;
 }
 
@@ -288,13 +545,21 @@ tbody .preview-image {
 
 .edit-btn {
     background: #ffad00;
+
     color: #ffffff;
+
     border: none;
+
     padding: 10px 18px;
+
     border-radius: 6px;
+
     cursor: pointer;
+
     font-size: 14px;
+
     font-weight: 600;
+
     transition: 0.3s ease;
 }
 
@@ -304,6 +569,7 @@ tbody .preview-image {
 
 .edit-btn:disabled {
     opacity: 0.6;
+
     cursor: not-allowed;
 }
 
@@ -314,13 +580,21 @@ tbody .preview-image {
 
 .delete-btn {
     background: #dc3545;
+
     color: #ffffff;
+
     border: none;
+
     padding: 10px 18px;
+
     border-radius: 6px;
+
     cursor: pointer;
+
     font-size: 14px;
+
     font-weight: 600;
+
     transition: 0.3s ease;
 }
 
@@ -330,7 +604,71 @@ tbody .preview-image {
 
 .delete-btn:disabled {
     opacity: 0.6;
+
     cursor: not-allowed;
+}
+
+
+/* ==========================================
+   BANNER TABLE ROW
+========================================== */
+
+.banner-row {
+    background: #f8fbff;
+}
+
+.banner-row:hover {
+    background: #eef5ff;
+}
+
+
+/* ==========================================
+   BANNER TYPE
+========================================== */
+
+.banner-type {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #e8f1ff;
+
+    color: #0d6efd;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* ==========================================
+   IMAGE TYPE
+========================================== */
+
+.gallery-type {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    background: #eaf8f0;
+
+    color: #198754;
+
+    font-size: 13px;
+
+    font-weight: 600;
 }
 
 
@@ -340,8 +678,11 @@ tbody .preview-image {
 
 .gallery-loading {
     text-align: center;
+
     padding: 40px;
+
     font-size: 18px;
+
     color: #555555;
 }
 
@@ -352,8 +693,11 @@ tbody .preview-image {
 
 .empty-gallery {
     text-align: center;
+
     padding: 40px !important;
+
     color: #777777 !important;
+
     line-height: 1.8;
 }
 
@@ -364,10 +708,15 @@ tbody .preview-image {
 
 .pagination {
     display: flex;
+
     justify-content: center;
+
     align-items: center;
+
     gap: 12px;
+
     margin-top: 25px;
+
     margin-bottom: 30px;
 }
 
@@ -378,8 +727,11 @@ tbody .preview-image {
 
 .page-numbers {
     display: flex;
+
     align-items: center;
+
     justify-content: center;
+
     gap: 7px;
 }
 
@@ -390,20 +742,27 @@ tbody .preview-image {
 
 .page-btn {
     min-width: 40px;
+
     height: 40px;
+
     padding: 0 12px;
 
     display: flex;
+
     align-items: center;
+
     justify-content: center;
 
     border: 1px solid #d9dee7;
+
     background: #ffffff;
+
     color: #374151;
 
     border-radius: 7px;
 
     font-size: 14px;
+
     font-weight: 600;
 
     cursor: pointer;
@@ -422,8 +781,11 @@ tbody .preview-image {
 
 .page-btn:hover:not(:disabled) {
     background: #f0f4ff;
+
     border-color: #0d6efd;
+
     color: #0d6efd;
+
     transform: translateY(-1px);
 }
 
@@ -434,7 +796,9 @@ tbody .preview-image {
 
 .page-btn.active {
     background: #0d6efd;
+
     border-color: #0d6efd;
+
     color: #ffffff;
 }
 
@@ -445,7 +809,9 @@ tbody .preview-image {
 
 .page-btn.active:hover {
     background: #0b5ed7;
+
     border-color: #0b5ed7;
+
     color: #ffffff;
 }
 
@@ -456,7 +822,9 @@ tbody .preview-image {
 
 .page-btn:disabled {
     opacity: 0.45;
+
     cursor: not-allowed;
+
     transform: none;
 }
 
@@ -467,7 +835,9 @@ tbody .preview-image {
 
 .prev-next {
     min-width: auto;
+
     padding-left: 16px;
+
     padding-right: 16px;
 }
 
@@ -482,11 +852,13 @@ tbody .preview-image {
 
 .table-container::-webkit-scrollbar-track {
     background: #f1f1f1;
+
     border-radius: 20px;
 }
 
 .table-container::-webkit-scrollbar-thumb {
     background: #c8c8c8;
+
     border-radius: 20px;
 }
 
@@ -516,6 +888,10 @@ tbody .preview-image {
     table {
         min-width: 1000px;
     }
+
+    .gallery-banner-preview img {
+        max-height: 300px;
+    }
 }
 
 
@@ -534,8 +910,11 @@ tbody .preview-image {
 
     .gallery-header {
         flex-direction: column;
+
         align-items: flex-start;
+
         gap: 15px;
+
         margin-bottom: 20px;
     }
 
@@ -543,7 +922,27 @@ tbody .preview-image {
         font-size: 24px;
     }
 
-    .gallery-header button {
+
+    /* Add Button */
+
+    .add-image-wrapper {
+        width: 100%;
+    }
+
+    .add-image-btn {
+        width: 100%;
+
+        justify-content: center;
+    }
+
+
+    /* Dropdown */
+
+    .add-image-dropdown {
+        left: 0;
+
+        right: auto;
+
         width: 100%;
     }
 
@@ -555,10 +954,18 @@ tbody .preview-image {
     }
 
 
+    /* Banner Preview */
+
+    .gallery-banner-preview img {
+        max-height: 250px;
+    }
+
+
     /* Form Buttons */
 
     .btns {
         flex-direction: column;
+
         gap: 10px;
     }
 
@@ -587,6 +994,7 @@ tbody .preview-image {
 
     tbody .preview-image {
         width: 70px;
+
         height: 60px;
     }
 
@@ -595,6 +1003,7 @@ tbody .preview-image {
 
     .action-buttons {
         flex-direction: column;
+
         gap: 6px;
     }
 
@@ -608,13 +1017,17 @@ tbody .preview-image {
 
     .pagination {
         flex-wrap: wrap;
+
         gap: 8px;
+
         margin-top: 20px;
     }
 
     .page-numbers {
         width: 100%;
+
         order: 1;
+
         gap: 6px;
     }
 
@@ -624,6 +1037,7 @@ tbody .preview-image {
 
     .page-btn {
         min-width: 38px;
+
         height: 38px;
     }
 }
@@ -652,6 +1066,10 @@ tbody .preview-image {
         font-size: 14px;
     }
 
+    .gallery-banner-preview img {
+        max-height: 200px;
+    }
+
     .pagination {
         gap: 6px;
     }
@@ -662,13 +1080,17 @@ tbody .preview-image {
 
     .page-btn {
         min-width: 35px;
+
         height: 35px;
+
         font-size: 13px;
+
         padding: 0 8px;
     }
 
     .prev-next {
         font-size: 13px;
+
         padding: 0 12px;
     }
 }

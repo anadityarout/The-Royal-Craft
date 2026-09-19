@@ -1,4 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+/* =========================================================
+   GOOGLE FONTS
+========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap");
+
 
 /* =========================================================
    GLOBAL
@@ -8,44 +13,82 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+
 /* =========================================================
-   HERO SECTION
-   Height is completely controlled by the image
+   HERO
 ========================================================= */
 
 .rk-hero-page {
-  position: relative;
   width: 100%;
+  position: relative;
   overflow: hidden;
-  background: #fdfaf5;
+  background: #000;
 }
 
-/* Background wrapper */
+
+/* =========================================================
+   HERO BACKGROUND
+========================================================= */
+
 .rk-hero-page-bg {
   position: relative;
   width: 100%;
   height: auto;
+  overflow: hidden;
   line-height: 0;
 }
 
-/* Image controls the height automatically */
+
+/* =========================================================
+   HERO IMAGE
+========================================================= */
+
 .rk-hero-page-img {
   display: block;
   width: 100%;
   height: auto;
-  object-fit: contain;
-  object-position: center;
+  object-fit: cover;
+  object-position: center center;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* Hero gradient */
-.rk-hero-page-gradient {
-  position: absolute;
-  inset: 0;
+
+/* =========================================================
+   HERO FALLBACK
+========================================================= */
+
+.rk-hero-page-fallback {
   width: 100%;
-  height: 100%;
-  
-  pointer-events: none;
+  min-height: 450px;
+  background: #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  line-height: normal;
 }
+
+.rk-hero-page-fallback h2 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+}
+
 
 /* =========================================================
    HERO CONTENT
@@ -54,98 +97,163 @@
 .rk-hero-page-content {
   position: absolute;
   inset: 0;
-  z-index: 2;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 10;
+
   display: flex;
   align-items: center;
-  width: 100%;
-  padding: 60px 5%;
-  box-sizing: border-box;
+
   pointer-events: none;
 }
 
+
+/* =========================================================
+   HERO INNER
+========================================================= */
+
 .rk-hero-page-inner {
+  position: relative;
+
+  left: 15%;
+
   width: 100%;
-  max-width: 520px;
-}
+  max-width: 560px;
 
-/* Hero tag */
-.rk-hero-page-tag {
-  display: inline-block;
-  color: #c9a15d;
+  color: #fff;
+
   font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  margin-bottom: 10px;
+
+  padding-top: 4%;
 }
 
-/* Hero title */
+
+/* =========================================================
+   CATEGORY / KICKER
+========================================================= */
+
+.rk-hero-page-kicker {
+  display: inline-block;
+
+  background: #0B2A4A;
+  color: #fff;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+
+  padding: 6px 14px;
+
+  border-radius: 3px;
+
+  margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   HERO TITLE
+========================================================= */
+
 .rk-hero-page-title {
   font-family: "Playfair Display", serif;
-  font-size: 58px;
+
+  font-size: 44px;
   font-weight: 700;
-  line-height: 1.05;
-  color: #1a1a1a;
-  margin: 0 0 20px;
+
+  line-height: 1.15;
+
+  color: #fff !important;
+
+  margin: 0 0 14px !important;
+  padding: 0 !important;
+
+  text-shadow:
+    0 4px 15px rgba(0, 0, 0, 0.35);
 }
 
-.rk-hero-page-gold {
-  color: #c9a15d;
-}
 
-/* Hero description */
+/* =========================================================
+   HERO DESCRIPTION
+========================================================= */
+
 .rk-hero-page-desc {
   font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #555;
-  line-height: 1.8;
-  max-width: 340px;
-  margin-bottom: 30px;
+
+  font-size: 15px;
+  font-weight: 400;
+
+  line-height: 1.6;
+
+  color: #f1f1f1 !important;
+
+  margin: 0 0 24px !important;
+  padding: 0 !important;
+
+  max-width: 460px;
+
+  text-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.35);
 }
 
-/* Hero buttons */
-.rk-hero-page-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
+
+/* =========================================================
+   HERO BUTTON
+========================================================= */
+
+.rk-hero-page-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  min-width: 190px;
+
+  padding: 14px 28px;
+
+  border: none;
+  border-radius: 0;
+
+  background: #D6A54A;
+  color: #fff;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    transform 0.3s ease;
+
   pointer-events: auto;
 }
 
-.rk-hero-page-btn-gold {
-  padding: 14px 26px;
-  border: none;
-  background: #c9a15d;
-  color: #fff;
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: 0.3s ease;
+.rk-hero-page-btn svg {
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
 
-.rk-hero-page-btn-gold:hover {
-  background: #b6852e;
+.rk-hero-page-btn:hover {
+  background: #BF8D34;
+  transform: translateY(-2px);
 }
 
-.rk-hero-page-btn-outline {
-  padding: 14px 26px;
-  border: 1px solid #333;
-  background: transparent;
-  color: #1a1a1a;
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: 0.3s ease;
+.rk-hero-page-btn:hover svg {
+  transform: translateX(5px);
 }
 
-.rk-hero-page-btn-outline:hover {
-  background: #1a1a1a;
-  color: #fff;
-}
 
 /* =========================================================
    FLOATING SOCIAL ICONS
@@ -153,33 +261,49 @@
 
 .rk-hero-page-social {
   position: absolute;
+
   right: 20px;
   top: 50%;
+
   transform: translateY(-50%);
+
   display: flex;
   flex-direction: column;
+
   gap: 10px;
-  z-index: 4;
+
+  z-index: 150;
 }
 
 .rk-hero-page-icon {
   width: 42px;
   height: 42px;
+
   background: #fff;
+
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   font-size: 16px;
+  color: #111;
+
   text-decoration: none;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+
+  box-shadow:
+    0 5px 15px rgba(0, 0, 0, 0.15);
+
   transition: 0.3s ease;
 }
 
 .rk-hero-page-icon:hover {
-  background: #c9a15d;
+  background: #D6A54A;
+  color: #fff;
   transform: translateY(-2px);
 }
+
 
 /* =========================================================
    PROJECT INTRO
@@ -187,18 +311,24 @@
 
 .rk-project-intro {
   width: 100%;
+
   padding: 45px 5%;
+
   background: #fdfaf5;
-  box-sizing: border-box;
 }
 
 .rk-project-intro-inner {
   max-width: 1500px;
+
   margin: 0 auto;
+
   display: flex;
+
   justify-content: space-between;
   align-items: flex-start;
+
   gap: 40px;
+
   flex-wrap: wrap;
 }
 
@@ -209,42 +339,58 @@
 
 .rk-project-intro-tag {
   display: block;
+
   color: #c9a15d;
+
   font-family: "Inter", sans-serif;
+
   font-size: 12px;
   font-weight: 700;
+
   letter-spacing: 1.5px;
+
   text-transform: uppercase;
+
   margin-bottom: 10px;
 }
 
 .rk-project-intro-title {
   font-family: "Playfair Display", serif;
+
   font-size: 26px;
   font-weight: 700;
+
   color: #1a1a1a;
+
   margin: 0 0 14px;
 }
 
 .rk-project-intro-line {
   width: 50px;
   height: 2px;
+
   background: #c9a15d;
 }
 
 .rk-project-intro-right {
   flex: 1;
+
   min-width: 260px;
   max-width: 420px;
 }
 
 .rk-project-intro-right p {
   font-family: "Inter", sans-serif;
+
   font-size: 14px;
+
   color: #555;
+
   line-height: 1.85;
+
   margin: 0;
 }
+
 
 /* =========================================================
    PROJECT GRID
@@ -252,23 +398,32 @@
 
 .rk-project-grid-section {
   width: 100%;
+
   padding: 20px 5% 70px;
+
   background: #fdfaf5;
-  box-sizing: border-box;
 }
 
 .rk-project-grid {
   max-width: 1500px;
+
   margin: 0 auto;
+
   display: grid;
+
   grid-template-columns: repeat(4, 1fr);
+
   gap: 20px;
 }
 
 .rk-project-grid-card {
   background: #fff;
+
   overflow: hidden;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.06);
+
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
@@ -276,43 +431,58 @@
 
 .rk-project-grid-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
+
+  box-shadow:
+    0 12px 25px rgba(0, 0, 0, 0.1);
 }
 
 .rk-project-grid-image {
   width: 100%;
   height: 220px;
+
   overflow: hidden;
 }
 
 .rk-project-grid-image img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
   display: block;
+
   transition: transform 0.4s ease;
 }
 
-.rk-project-grid-card:hover .rk-project-grid-image img {
+.rk-project-grid-card:hover
+.rk-project-grid-image img {
   transform: scale(1.06);
 }
 
 .rk-project-grid-name {
   padding: 16px 14px;
+
   text-align: center;
+
   font-family: "Inter", sans-serif;
+
   font-size: 13px;
   font-weight: 700;
+
   letter-spacing: 0.5px;
+
   text-transform: uppercase;
+
   color: #1a1a1a;
 }
 
 .rk-project-grid-name h3 {
   margin: 0;
+
   font-size: inherit;
   font-weight: inherit;
 }
+
 
 /* =========================================================
    BOTTOM CTA
@@ -320,16 +490,22 @@
 
 .rk-project-cta {
   position: relative;
+
   width: 100%;
+
   min-height: 220px;
+
   display: flex;
   align-items: center;
+
   overflow: hidden;
 }
 
 .rk-project-cta-bg {
   position: absolute;
+
   inset: 0;
+
   width: 100%;
   height: 100%;
 }
@@ -337,34 +513,43 @@
 .rk-project-cta-img {
   width: 100%;
   height: 100%;
+
   object-fit: cover;
+
   object-position: right center;
+
   display: block;
 }
 
 .rk-project-cta-gradient {
   position: absolute;
+
   inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(20, 18, 15, 0.95) 0%,
-    rgba(20, 18, 15, 0.9) 30%,
-    rgba(20, 18, 15, 0.55) 50%,
-    rgba(20, 18, 15, 0.15) 68%,
-    transparent 82%
-  );
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(20, 18, 15, 0.95) 0%,
+      rgba(20, 18, 15, 0.9) 30%,
+      rgba(20, 18, 15, 0.55) 50%,
+      rgba(20, 18, 15, 0.15) 68%,
+      transparent 82%
+    );
 }
 
 .rk-project-cta-content {
   position: relative;
+
   z-index: 2;
+
   padding: 50px 5%;
+
   width: 100%;
-  box-sizing: border-box;
 }
 
 .rk-project-cta-container {
   max-width: 1500px;
+
   margin: 0 auto;
 }
 
@@ -374,34 +559,52 @@
 
 .rk-project-cta-tag {
   display: inline-block;
+
   color: #c9a15d;
+
   font-family: "Inter", sans-serif;
+
   font-size: 12px;
   font-weight: 700;
+
   letter-spacing: 2px;
+
   text-transform: uppercase;
+
   margin-bottom: 12px;
 }
 
 .rk-project-cta-title {
   font-family: "Playfair Display", serif;
+
   font-size: 28px;
   font-weight: 700;
+
   line-height: 1.35;
+
   color: #fff;
+
   margin: 0 0 24px;
 }
 
 .rk-project-cta-btn {
   padding: 14px 30px;
+
   border: none;
+
   background: #c9a15d;
+
   color: #fff;
+
   font-family: "Inter", sans-serif;
+
   font-size: 13px;
   font-weight: 700;
+
   letter-spacing: 1px;
+
   cursor: pointer;
+
   transition: 0.3s ease;
 }
 
@@ -409,60 +612,83 @@
   background: #b6852e;
 }
 
+
 /* =========================================================
    PROJECT JOURNEY
 ========================================================= */
 
 .rk-journey-section {
   width: 100%;
+
   padding: 60px 5% 0;
+
   background: #fdfaf5;
-  box-sizing: border-box;
 }
 
 .rk-journey-header {
   max-width: 1500px;
+
   margin: 0 auto 40px;
+
   display: flex;
+
   justify-content: space-between;
   align-items: flex-start;
+
   gap: 40px;
+
   flex-wrap: wrap;
 }
 
 .rk-journey-tag {
   display: block;
+
   color: #c9a15d;
+
   font-family: "Inter", sans-serif;
+
   font-size: 12px;
   font-weight: 700;
+
   letter-spacing: 1.5px;
+
   text-transform: uppercase;
+
   margin-bottom: 10px;
 }
 
 .rk-journey-title {
   font-family: "Playfair Display", serif;
+
   font-size: 28px;
   font-weight: 700;
+
   color: #1a1a1a;
+
   margin: 0 0 14px;
 }
 
 .rk-journey-line {
   width: 50px;
   height: 2px;
+
   background: #c9a15d;
 }
 
 .rk-journey-desc {
   font-family: "Inter", sans-serif;
+
   font-size: 14px;
+
   color: #555;
+
   line-height: 1.8;
+
   max-width: 340px;
+
   margin: 0;
 }
+
 
 /* =========================================================
    JOURNEY STEPS
@@ -470,56 +696,80 @@
 
 .rk-journey-steps {
   max-width: 1500px;
+
   margin: 0 auto;
+
   display: flex;
+
   align-items: flex-start;
+
   gap: 14px;
 }
 
 .rk-journey-step {
   flex: 1;
+
   display: flex;
+
   gap: 12px;
+
   align-items: flex-start;
 }
 
 .rk-journey-step-icon {
   color: #c9a15d;
+
   flex-shrink: 0;
+
   margin-top: 4px;
 }
 
 .rk-journey-step-no {
   font-family: "Playfair Display", serif;
+
   font-size: 20px;
   font-weight: 700;
+
   color: #1a1a1a;
+
   margin-bottom: 4px;
 }
 
 .rk-journey-step-text h4 {
   font-family: "Inter", sans-serif;
+
   font-size: 13px;
   font-weight: 700;
+
   letter-spacing: 0.5px;
+
   color: #1a1a1a;
+
   margin: 0 0 6px;
 }
 
 .rk-journey-step-text p {
   font-family: "Inter", sans-serif;
+
   font-size: 12.5px;
+
   color: #777;
+
   line-height: 1.6;
+
   margin: 0;
 }
 
 .rk-journey-arrow {
   color: #c9a15d;
+
   font-size: 16px;
+
   margin-top: 34px;
+
   flex-shrink: 0;
 }
+
 
 /* =========================================================
    JOURNEY STATS
@@ -527,24 +777,35 @@
 
 .rk-journey-stats {
   max-width: 1500px;
+
   margin: 40px auto 0;
+
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   border-top: 1px solid #eee;
+
   padding: 28px 0;
+
   gap: 10px;
 }
 
 .rk-journey-stat {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   flex: 1;
 }
 
 .rk-journey-stat-icon {
   color: #c9a15d;
+
   flex-shrink: 0;
 }
 
@@ -555,35 +816,81 @@
 
 .rk-journey-stat strong {
   font-family: "Playfair Display", serif;
+
   font-size: 17px;
+
   color: #1a1a1a;
+
   white-space: nowrap;
 }
 
 .rk-journey-stat span {
   font-family: "Inter", sans-serif;
+
   font-size: 10px;
+
   color: #888;
+
   letter-spacing: 0.5px;
+
   text-transform: uppercase;
+
   white-space: nowrap;
 }
 
 .rk-journey-stat-divider {
   width: 1px;
   height: 40px;
+
   background: #eee;
+
   flex-shrink: 0;
 }
 
+
 /* =========================================================
-   TABLET
+   TABLET - 1200PX
 ========================================================= */
 
-@media (max-width: 1100px) {
+@media (max-width: 1200px) {
+
+  .rk-hero-page-title {
+    font-size: 38px;
+  }
+
+}
+
+
+/* =========================================================
+   TABLET - 992PX
+========================================================= */
+
+@media (max-width: 992px) {
+
+  /* HERO */
+
+  .rk-hero-page-inner {
+    left: 20%;
+    max-width: 460px;
+  }
+
+  .rk-hero-page-title {
+    font-size: 34px;
+  }
+
+  .rk-hero-page-desc {
+    font-size: 14px;
+  }
+
+
+  /* PROJECT GRID */
+
   .rk-project-grid {
     grid-template-columns: repeat(3, 1fr);
   }
+
+
+  /* JOURNEY */
 
   .rk-journey-steps {
     flex-wrap: wrap;
@@ -598,6 +905,9 @@
     display: none;
   }
 
+
+  /* STATS */
+
   .rk-journey-stats {
     flex-wrap: wrap;
   }
@@ -610,74 +920,324 @@
     display: none;
   }
 
-  .rk-hero-page-content {
-    padding: 50px 5%;
-  }
-
-  .rk-hero-page-title {
-    font-size: 48px;
-  }
 }
 
-/* =========================================================
-   TABLET / MOBILE
-========================================================= */
-
-@media (max-width: 992px) {
-  .rk-hero-page-title {
-    font-size: 44px;
-  }
-
-  .rk-hero-page-gradient {
-    background: linear-gradient(
-      to right,
-      rgba(253, 250, 245, 0.95) 0%,
-      rgba(253, 250, 245, 0.75) 30%,
-      rgba(253, 250, 245, 0.25) 55%,
-      transparent 80%
-    );
-  }
-}
 
 /* =========================================================
-   MOBILE
+   MOBILE - 768PX
+   FULL HERO + VISIBLE ROYAL KRAFT
 ========================================================= */
 
 @media (max-width: 768px) {
-  /* HERO */
-  .rk-hero-page-content {
-    padding: 35px 6%;
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .rk-hero-page {
+    position: relative;
+
+    width: 100%;
+
+    height: 390px !important;
+    min-height: 390px !important;
+
+    overflow: hidden;
+
+    background: #000;
   }
+
+
+  /* =======================================================
+     HERO BACKGROUND
+  ======================================================= */
+
+  .rk-hero-page-bg {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    overflow: hidden;
+
+    line-height: 0;
+  }
+
+
+  /* =======================================================
+     HERO IMAGE
+  ======================================================= */
+
+  .rk-hero-page-img {
+    display: block;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    min-height: 100% !important;
+
+    object-fit: cover !important;
+
+    object-position: center center !important;
+  }
+
+
+  /* =======================================================
+     HERO FALLBACK
+  ======================================================= */
+
+  .rk-hero-page-fallback {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #000;
+  }
+
+  .rk-hero-page-fallback h2 {
+    font-size: 20px;
+  }
+
+
+  /* =======================================================
+     MOBILE HERO OVERLAY
+  ======================================================= */
+
+  .rk-hero-page::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 2;
+
+    pointer-events: none;
+
+    background:
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.60) 0%,
+        rgba(0, 0, 0, 0.40) 42%,
+        rgba(0, 0, 0, 0.15) 75%,
+        rgba(0, 0, 0, 0) 100%
+      );
+  }
+
+
+  /* =======================================================
+     HERO CONTENT
+     IMPORTANT:
+     TOP PADDING KEEPS CONTENT BELOW MOBILE NAVBAR
+  ======================================================= */
+
+  .rk-hero-page-content {
+    position: absolute !important;
+
+    inset: 0 !important;
+
+    width: 100% !important;
+    height: 100% !important;
+
+    z-index: 20 !important;
+
+    display: flex !important;
+
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+
+    padding-top: 88px !important;
+
+    pointer-events: none;
+  }
+
+
+  /* =======================================================
+     HERO INNER
+  ======================================================= */
+
+  .rk-hero-page-inner {
+    position: relative !important;
+
+    left: 18px !important;
+    right: auto !important;
+
+    width: calc(100% - 36px) !important;
+
+    max-width: 500px !important;
+
+    padding: 0 !important;
+
+    margin: 0 !important;
+
+    text-align: left !important;
+  }
+
+
+  /* =======================================================
+     THE ROYAL KRAFT
+  ======================================================= */
+
+  .rk-hero-page-kicker {
+    display: inline-block !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    position: relative !important;
+
+    z-index: 30 !important;
+
+    background: #0B2A4A !important;
+
+    color: #fff !important;
+
+    font-family: "Inter", sans-serif !important;
+
+    font-size: 10px !important;
+    font-weight: 700 !important;
+
+    line-height: 1 !important;
+
+    letter-spacing: 0.3px !important;
+
+    text-transform: uppercase !important;
+
+    padding: 6px 10px !important;
+
+    margin: 0 0 10px 0 !important;
+
+    border-radius: 3px !important;
+  }
+
+
+  /* =======================================================
+     HERO TITLE
+  ======================================================= */
 
   .rk-hero-page-title {
-    font-size: 34px;
+    display: block !important;
+
+    max-width: 100% !important;
+
+    margin: 0 0 10px 0 !important;
+
+    padding: 0 !important;
+
+    font-family: "Playfair Display", serif !important;
+
+    font-size: 30px !important;
+
+    font-weight: 700 !important;
+
+    line-height: 1.08 !important;
+
+    letter-spacing: -0.3px !important;
+
+    color: #fff !important;
+
+    text-shadow:
+      0 3px 10px rgba(0, 0, 0, 0.5) !important;
   }
 
-  .rk-hero-page-tag {
-    font-size: 11px;
-    letter-spacing: 1.8px;
-  }
+
+  /* =======================================================
+     HERO DESCRIPTION
+  ======================================================= */
 
   .rk-hero-page-desc {
-    font-size: 13px;
-    max-width: 300px;
+    display: block !important;
+
+    max-width: 400px !important;
+
+    margin: 0 0 16px 0 !important;
+
+    padding: 0 !important;
+
+    font-family: "Inter", sans-serif !important;
+
+    font-size: 12px !important;
+
+    font-weight: 400 !important;
+
+    line-height: 1.45 !important;
+
+    color: #fff !important;
+
+    text-shadow:
+      0 2px 8px rgba(0, 0, 0, 0.5) !important;
   }
+
+
+  /* =======================================================
+     HERO BUTTON
+  ======================================================= */
+
+  .rk-hero-page-btn {
+    display: inline-flex !important;
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 8px !important;
+
+    width: auto !important;
+
+    min-width: 150px !important;
+
+    height: 40px !important;
+
+    padding: 0 16px !important;
+
+    border: none !important;
+
+    border-radius: 0 !important;
+
+    background: #D6A54A !important;
+
+    color: #fff !important;
+
+    font-family: "Inter", sans-serif !important;
+
+    font-size: 11px !important;
+
+    font-weight: 700 !important;
+
+    line-height: 1 !important;
+
+    cursor: pointer;
+
+    pointer-events: auto !important;
+  }
+
+  .rk-hero-page-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+
+    flex-shrink: 0;
+  }
+
+
+  /* =======================================================
+     SOCIAL
+  ======================================================= */
 
   .rk-hero-page-social {
-    display: none;
+    display: none !important;
   }
 
-  .rk-hero-page-gradient {
-    background: linear-gradient(
-      to bottom,
-      rgba(253, 250, 245, 0.95) 0%,
-      rgba(253, 250, 245, 0.75) 35%,
-      rgba(253, 250, 245, 0.25) 60%,
-      transparent 85%
-    );
-  }
 
-  /* INTRO */
+  /* =======================================================
+     PROJECT INTRO
+  ======================================================= */
+
   .rk-project-intro {
     padding: 35px 6%;
   }
@@ -695,7 +1255,11 @@
     max-width: 100%;
   }
 
-  /* PROJECT GRID */
+
+  /* =======================================================
+     PROJECT GRID
+  ======================================================= */
+
   .rk-project-grid-section {
     padding: 20px 6% 50px;
   }
@@ -714,23 +1278,17 @@
     font-size: 11px;
   }
 
-  /* CTA */
+
+  /* =======================================================
+     CTA
+  ======================================================= */
+
   .rk-project-cta {
     min-height: 260px;
   }
 
   .rk-project-cta-title {
     font-size: 22px;
-  }
-
-  .rk-project-cta-gradient {
-    background: linear-gradient(
-      to bottom,
-      rgba(20, 18, 15, 0.92) 0%,
-      rgba(20, 18, 15, 0.85) 40%,
-      rgba(20, 18, 15, 0.4) 65%,
-      transparent 90%
-    );
   }
 
   .rk-project-cta-content {
@@ -741,7 +1299,11 @@
     max-width: 100%;
   }
 
-  /* JOURNEY */
+
+  /* =======================================================
+     JOURNEY
+  ======================================================= */
+
   .rk-journey-section {
     padding: 50px 6% 0;
   }
@@ -761,7 +1323,9 @@
 
   .rk-journey-stats {
     flex-direction: column;
+
     align-items: flex-start;
+
     gap: 20px;
   }
 
@@ -769,40 +1333,703 @@
     width: 100%;
     flex: none;
   }
+
 }
 
+
 /* =========================================================
-   SMALL MOBILE
+   SMALL MOBILE - 576PX
+========================================================= */
+
+@media (max-width: 576px) {
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .rk-hero-page {
+    height: 370px !important;
+    min-height: 370px !important;
+  }
+
+  .rk-hero-page-img {
+    width: 100% !important;
+    height: 100% !important;
+
+    min-height: 100% !important;
+
+    object-fit: cover !important;
+    object-position: center center !important;
+  }
+
+  .rk-hero-page-content {
+    padding-top: 82px !important;
+  }
+
+  .rk-hero-page-inner {
+    left: 16px !important;
+
+    width: calc(100% - 32px) !important;
+
+    max-width: none !important;
+  }
+
+  .rk-hero-page-kicker {
+    margin-bottom: 9px !important;
+
+    padding: 6px 9px !important;
+
+    font-size: 9px !important;
+  }
+
+  .rk-hero-page-title {
+    font-size: 28px !important;
+
+    line-height: 1.08 !important;
+  }
+
+  .rk-hero-page-desc {
+    margin-bottom: 15px !important;
+
+    font-size: 11.5px !important;
+
+    line-height: 1.45 !important;
+
+    max-width: 360px !important;
+  }
+
+  .rk-hero-page-btn {
+    min-width: 145px !important;
+
+    height: 40px !important;
+
+    padding: 0 15px !important;
+
+    gap: 8px !important;
+
+    font-size: 10.5px !important;
+  }
+
+  .rk-hero-page-btn svg {
+    width: 15px !important;
+    height: 15px !important;
+  }
+
+
+  /* =======================================================
+     INTRO
+  ======================================================= */
+
+  .rk-project-intro {
+    padding: 40px 6%;
+  }
+
+  .rk-project-intro-tag {
+    font-size: 10px;
+
+    letter-spacing: 1.2px;
+  }
+
+  .rk-project-intro-title {
+    font-size: 22px;
+
+    line-height: 1.2;
+  }
+
+  .rk-project-intro-right p {
+    font-size: 14px;
+
+    line-height: 1.8;
+  }
+
+
+  /* =======================================================
+     PROJECT GRID
+  ======================================================= */
+
+  .rk-project-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+  }
+
+  .rk-project-grid-image {
+    height: 155px;
+  }
+
+  .rk-project-grid-name {
+    padding: 12px 8px;
+
+    font-size: 10px;
+  }
+
+
+  /* =======================================================
+     CTA
+  ======================================================= */
+
+  .rk-project-cta {
+    min-height: 280px;
+  }
+
+  .rk-project-cta-content {
+    padding: 40px 6%;
+  }
+
+  .rk-project-cta-tag {
+    font-size: 10px;
+
+    letter-spacing: 1.5px;
+  }
+
+  .rk-project-cta-title {
+    font-size: 21px;
+
+    line-height: 1.3;
+  }
+
+  .rk-project-cta-btn {
+    padding: 12px 22px;
+
+    font-size: 11px;
+  }
+
+
+  /* =======================================================
+     JOURNEY
+  ======================================================= */
+
+  .rk-journey-section {
+    padding: 45px 6% 0;
+  }
+
+  .rk-journey-tag {
+    font-size: 10px;
+
+    letter-spacing: 1.2px;
+  }
+
+  .rk-journey-title {
+    font-size: 24px;
+
+    line-height: 1.2;
+  }
+
+  .rk-journey-desc {
+    font-size: 13px;
+
+    line-height: 1.7;
+  }
+
+  .rk-journey-step {
+    gap: 10px;
+  }
+
+  .rk-journey-step-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .rk-journey-step-no {
+    font-size: 18px;
+  }
+
+  .rk-journey-step-text h4 {
+    font-size: 12px;
+  }
+
+  .rk-journey-step-text p {
+    font-size: 12px;
+
+    line-height: 1.55;
+  }
+
+  .rk-journey-stat strong {
+    font-size: 16px;
+  }
+
+  .rk-journey-stat span {
+    font-size: 9px;
+  }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE - 480PX
 ========================================================= */
 
 @media (max-width: 480px) {
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .rk-hero-page {
+    height: 360px !important;
+    min-height: 360px !important;
+  }
+
+  .rk-hero-page-img {
+    width: 100% !important;
+    height: 100% !important;
+
+    min-height: 100% !important;
+
+    object-fit: cover !important;
+
+    object-position: center center !important;
+  }
+
+  .rk-hero-page::after {
+    background:
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.62) 0%,
+        rgba(0, 0, 0, 0.42) 43%,
+        rgba(0, 0, 0, 0.12) 80%,
+        rgba(0, 0, 0, 0) 100%
+      );
+  }
+
+  .rk-hero-page-content {
+    padding-top: 80px !important;
+  }
+
+  .rk-hero-page-inner {
+    left: 14px !important;
+
+    width: calc(100% - 28px) !important;
+
+    max-width: none !important;
+  }
+
+  .rk-hero-page-kicker {
+    display: inline-block !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    margin-bottom: 8px !important;
+
+    padding: 5px 8px !important;
+
+    font-size: 8.5px !important;
+
+    letter-spacing: 0.2px !important;
+  }
+
+  .rk-hero-page-title {
+    font-size: 26px !important;
+
+    line-height: 1.08 !important;
+
+    margin-bottom: 9px !important;
+  }
+
+  .rk-hero-page-desc {
+    font-size: 10.5px !important;
+
+    line-height: 1.42 !important;
+
+    margin-bottom: 13px !important;
+
+    max-width: 330px !important;
+  }
+
+  .rk-hero-page-btn {
+    min-width: 140px !important;
+
+    height: 38px !important;
+
+    padding: 0 13px !important;
+
+    gap: 7px !important;
+
+    font-size: 10px !important;
+  }
+
+  .rk-hero-page-btn svg {
+    width: 14px !important;
+    height: 14px !important;
+  }
+
+
+  /* =======================================================
+     INTRO
+  ======================================================= */
+
+  .rk-project-intro {
+    padding: 38px 6%;
+  }
+
+  .rk-project-intro-tag {
+    font-size: 9px;
+
+    line-height: 1.5;
+
+    letter-spacing: 1.1px;
+  }
+
+  .rk-project-intro-title {
+    font-size: 21px;
+
+    line-height: 1.2;
+  }
+
+  .rk-project-intro-right p {
+    font-size: 13px;
+
+    line-height: 1.8;
+  }
+
+
+  /* =======================================================
+     PROJECT GRID
+  ======================================================= */
+
+  .rk-project-grid-section {
+    padding: 15px 5% 45px;
+  }
+
   .rk-project-grid {
     grid-template-columns: 1fr;
+
+    gap: 18px;
   }
 
   .rk-project-grid-image {
     height: 220px;
   }
 
-  .rk-hero-page-content {
-    padding: 25px 6%;
+  .rk-project-grid-name {
+    padding: 14px 10px;
+
+    font-size: 11px;
   }
 
-  .rk-hero-page-title {
-    font-size: 30px;
+
+  /* =======================================================
+     CTA
+  ======================================================= */
+
+  .rk-project-cta {
+    min-height: 300px;
   }
 
-  .rk-hero-page-desc {
-    font-size: 12px;
-    line-height: 1.7;
+  .rk-project-cta-content {
+    padding: 40px 7%;
+  }
+
+  .rk-project-cta-tag {
+    font-size: 9px;
+
+    letter-spacing: 1.4px;
   }
 
   .rk-project-cta-title {
     font-size: 20px;
+
+    line-height: 1.3;
   }
 
   .rk-project-cta-btn {
-    padding: 12px 22px;
+    padding: 12px 20px;
+
+    font-size: 10px;
+
+    letter-spacing: 0.7px;
+  }
+
+
+  /* =======================================================
+     JOURNEY
+  ======================================================= */
+
+  .rk-journey-section {
+    padding: 42px 6% 0;
+  }
+
+  .rk-journey-title {
+    font-size: 23px;
+  }
+
+  .rk-journey-desc {
+    font-size: 13px;
+  }
+
+  .rk-journey-steps {
+    gap: 25px;
+  }
+
+  .rk-journey-step {
+    width: 100%;
+
+    gap: 10px;
+  }
+
+  .rk-journey-step-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .rk-journey-step-no {
+    font-size: 17px;
+  }
+
+  .rk-journey-step-text h4 {
     font-size: 12px;
+  }
+
+  .rk-journey-step-text p {
+    font-size: 11.5px;
+  }
+
+  .rk-journey-stats {
+    margin-top: 30px;
+
+    padding: 24px 0;
+
+    gap: 18px;
+  }
+
+  .rk-journey-stat {
+    gap: 10px;
+  }
+
+  .rk-journey-stat-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  .rk-journey-stat strong {
+    font-size: 15px;
+  }
+
+  .rk-journey-stat span {
+    font-size: 8.5px;
+  }
+
+}
+
+
+/* =========================================================
+   EXTRA SMALL PHONES - 380PX
+========================================================= */
+
+@media (max-width: 380px) {
+
+  /* =======================================================
+     HERO
+  ======================================================= */
+
+  .rk-hero-page {
+    height: 350px !important;
+    min-height: 350px !important;
+  }
+
+  .rk-hero-page-content {
+    padding-top: 76px !important;
+  }
+
+  .rk-hero-page-inner {
+    left: 12px !important;
+
+    width: calc(100% - 24px) !important;
+
+    max-width: none !important;
+  }
+
+  .rk-hero-page-kicker {
+    display: inline-block !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    margin-bottom: 7px !important;
+
+    padding: 5px 7px !important;
+
+    font-size: 7.5px !important;
+  }
+
+  .rk-hero-page-title {
+    font-size: 23px !important;
+
+    line-height: 1.08 !important;
+  }
+
+  .rk-hero-page-desc {
+    font-size: 10px !important;
+
+    line-height: 1.4 !important;
+
+    margin-bottom: 12px !important;
+  }
+
+  .rk-hero-page-btn {
+    min-width: 135px !important;
+
+    height: 36px !important;
+
+    padding: 0 11px !important;
+
+    gap: 7px !important;
+
+    font-size: 9px !important;
+  }
+
+  .rk-hero-page-btn svg {
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+
+  /* =======================================================
+     INTRO
+  ======================================================= */
+
+  .rk-project-intro {
+    padding: 34px 6%;
+  }
+
+  .rk-project-intro-title {
+    font-size: 20px;
+  }
+
+  .rk-project-intro-right p {
+    font-size: 12.5px;
+
+    line-height: 1.75;
+  }
+
+
+  /* =======================================================
+     PROJECT GRID
+  ======================================================= */
+
+  .rk-project-grid-section {
+    padding: 12px 5% 40px;
+  }
+
+  .rk-project-grid-image {
+    height: 200px;
+  }
+
+  .rk-project-grid-name {
+    padding: 13px 8px;
+
+    font-size: 10px;
+  }
+
+
+  /* =======================================================
+     CTA
+  ======================================================= */
+
+  .rk-project-cta {
+    min-height: 280px;
+  }
+
+  .rk-project-cta-content {
+    padding: 35px 7%;
+  }
+
+  .rk-project-cta-title {
+    font-size: 18px;
+  }
+
+  .rk-project-cta-btn {
+    padding: 11px 18px;
+
+    font-size: 9px;
+  }
+
+
+  /* =======================================================
+     JOURNEY
+  ======================================================= */
+
+  .rk-journey-section {
+    padding: 38px 6% 0;
+  }
+
+  .rk-journey-title {
+    font-size: 21px;
+  }
+
+  .rk-journey-desc {
+    font-size: 12px;
+  }
+
+  .rk-journey-step {
+    gap: 9px;
+  }
+
+  .rk-journey-step-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .rk-journey-step-no {
+    font-size: 16px;
+  }
+
+  .rk-journey-step-text h4 {
+    font-size: 11px;
+  }
+
+  .rk-journey-step-text p {
+    font-size: 11px;
+
+    line-height: 1.5;
+  }
+
+  .rk-journey-stat-icon {
+    width: 23px;
+    height: 23px;
+  }
+
+  .rk-journey-stat strong {
+    font-size: 14px;
+  }
+
+  .rk-journey-stat span {
+    font-size: 8px;
+  }
+
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+  .rk-project-grid-card:hover {
+    transform: none;
+
+    box-shadow:
+      0 6px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .rk-project-grid-card:hover
+  .rk-project-grid-image img {
+    transform: none;
+  }
+
+  .rk-hero-page-btn:hover {
+    transform: none;
+
+    background: #D6A54A;
+  }
+
+  .rk-hero-page-btn:hover svg {
+    transform: none;
+  }
+
+  .rk-project-cta-btn:hover {
+    background: #c9a15d;
   }
 }

@@ -37,6 +37,9 @@ const ServicePage = () => {
   const [showLogoForm, setShowLogoForm] =
     useState(false);
 
+  const [showBannerForm, setShowBannerForm] =
+    useState(false);
+
   /* =========================================================
      SERVICE FORM
   ========================================================= */
@@ -63,11 +66,23 @@ const ServicePage = () => {
   });
 
   /* =========================================================
+     BANNER FORM
+  ========================================================= */
+
+  const [bannerForm, setBannerForm] = useState({
+    image: null,
+    preview: "",
+    name: "",
+    description: "",
+  });
+
+  /* =========================================================
      DATA
   ========================================================= */
 
   const [services, setServices] = useState([]);
   const [logos, setLogos] = useState([]);
+  const [banners, setBanners] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -81,10 +96,16 @@ const ServicePage = () => {
   const [isEditingLogo, setIsEditingLogo] =
     useState(false);
 
+  const [isEditingBanner, setIsEditingBanner] =
+    useState(false);
+
   const [editServiceId, setEditServiceId] =
     useState(null);
 
   const [editLogoId, setEditLogoId] =
+    useState(null);
+
+  const [editBannerId, setEditBannerId] =
     useState(null);
 
   /* =========================================================
@@ -100,6 +121,7 @@ const ServicePage = () => {
   useEffect(() => {
     loadServices();
     loadLogos();
+    loadBanners();
   }, []);
 
   /* =========================================================
@@ -161,7 +183,36 @@ const ServicePage = () => {
   };
 
   /* =========================================================
-     COMBINE SERVICES + LOGOS
+     LOAD BANNERS
+  ========================================================= */
+
+  const loadBanners = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}?type=banner`
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          "Failed to load banners"
+        );
+      }
+
+      const data = await response.json();
+
+      setBanners(
+        Array.isArray(data) ? data : []
+      );
+    } catch (error) {
+      console.log(
+        "Banner loading error:",
+        error
+      );
+    }
+  };
+
+  /* =========================================================
+     COMBINE SERVICES + LOGOS + BANNERS
   ========================================================= */
 
   const allItems = [
@@ -173,6 +224,11 @@ const ServicePage = () => {
     ...logos.map((item) => ({
       ...item,
       recordType: "logo",
+    })),
+
+    ...banners.map((item) => ({
+      ...item,
+      recordType: "banner",
     })),
   ];
 
@@ -210,7 +266,11 @@ const ServicePage = () => {
     setCurrentPage((page) =>
       Math.min(page, pages)
     );
-  }, [services.length, logos.length]);
+  }, [
+    services.length,
+    logos.length,
+    banners.length,
+  ]);
 
   /* =========================================================
      UPLOAD IMAGE
@@ -296,6 +356,23 @@ const ServicePage = () => {
   };
 
   /* =========================================================
+     BANNER IMAGE CHANGE
+  ========================================================= */
+
+  const handleBannerImage = (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+
+    setBannerForm((prev) => ({
+      ...prev,
+      image: file,
+      preview:
+        URL.createObjectURL(file),
+    }));
+  };
+
+  /* =========================================================
      RESET SERVICE FORM
   ========================================================= */
 
@@ -333,6 +410,23 @@ const ServicePage = () => {
   };
 
   /* =========================================================
+     RESET BANNER FORM
+  ========================================================= */
+
+  const resetBannerForm = () => {
+    setBannerForm({
+      image: null,
+      preview: "",
+      name: "",
+      description: "",
+    });
+
+    setIsEditingBanner(false);
+    setEditBannerId(null);
+    setShowBannerForm(false);
+  };
+
+  /* =========================================================
      OPEN ADD SERVICE
   ========================================================= */
 
@@ -341,6 +435,7 @@ const ServicePage = () => {
 
     setShowServiceForm(true);
     setShowLogoForm(false);
+    setShowBannerForm(false);
     setShowAddDropdown(false);
   };
 
@@ -353,6 +448,20 @@ const ServicePage = () => {
 
     setShowLogoForm(true);
     setShowServiceForm(false);
+    setShowBannerForm(false);
+    setShowAddDropdown(false);
+  };
+
+  /* =========================================================
+     OPEN ADD BANNER
+  ========================================================= */
+
+  const openAddBanner = () => {
+    resetBannerForm();
+
+    setShowBannerForm(true);
+    setShowServiceForm(false);
+    setShowLogoForm(false);
     setShowAddDropdown(false);
   };
 
@@ -563,6 +672,127 @@ const ServicePage = () => {
   };
 
   /* =========================================================
+     SAVE BANNER
+  ========================================================= */
+
+  const saveBanner = async () => {
+    if (
+      !bannerForm.name.trim() ||
+      !bannerForm.description.trim()
+    ) {
+      alert(
+        "Please enter Banner Name and Banner Description."
+      );
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      let imageUrl =
+        bannerForm.preview;
+
+      let imageKey = "";
+
+      /* =========================================
+         UPLOAD BANNER IMAGE
+      ========================================= */
+
+      if (bannerForm.image) {
+        const uploadData =
+          await uploadImage(
+            bannerForm.image,
+            "banner"
+          );
+
+        imageUrl =
+          uploadData.fileUrl;
+
+        imageKey =
+          uploadData.key;
+      }
+
+      /* =========================================
+         IMAGE REQUIRED FOR NEW BANNER
+      ========================================= */
+
+      if (
+        !isEditingBanner &&
+        !imageUrl
+      ) {
+        alert(
+          "Please select a banner image."
+        );
+
+        setLoading(false);
+        return;
+      }
+
+      /* =========================================
+         SAVE BANNER
+      ========================================= */
+
+      const response = await fetch(
+        API_URL,
+        {
+          method:
+            isEditingBanner
+              ? "PUT"
+              : "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+
+          body: JSON.stringify({
+            id: editBannerId,
+
+            type: "banner",
+
+            category: "banner",
+
+            image: imageUrl,
+
+            imageKey: imageKey,
+
+            name:
+              bannerForm.name.trim(),
+
+            description:
+              bannerForm.description.trim(),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          isEditingBanner
+            ? "Failed to update banner."
+            : "Failed to save banner."
+        );
+      }
+
+      await loadBanners();
+
+      resetBannerForm();
+
+      setCurrentPage(1);
+
+      alert(
+        isEditingBanner
+          ? "Banner updated successfully."
+          : "Banner saved successfully."
+      );
+    } catch (error) {
+      console.log(error);
+      alert(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =========================================================
      DELETE ITEM
   ========================================================= */
 
@@ -570,6 +800,8 @@ const ServicePage = () => {
     const message =
       item.recordType === "logo"
         ? "Delete this company logo?"
+        : item.recordType === "banner"
+        ? "Delete this banner?"
         : "Delete this service?";
 
     if (!window.confirm(message)) {
@@ -607,14 +839,25 @@ const ServicePage = () => {
         "service"
       ) {
         await loadServices();
-      } else {
+
+      } else if (
+        item.recordType ===
+        "logo"
+      ) {
         await loadLogos();
+
+      } else if (
+        item.recordType ===
+        "banner"
+      ) {
+        await loadBanners();
       }
 
       alert(
-        item.recordType ===
-          "logo"
+        item.recordType === "logo"
           ? "Logo deleted successfully."
+          : item.recordType === "banner"
+          ? "Banner deleted successfully."
           : "Service deleted successfully."
       );
     } catch (error) {
@@ -631,24 +874,31 @@ const ServicePage = () => {
 
   const editService = (item) => {
     setIsEditingService(true);
+
     setEditServiceId(item.id);
 
     setForm({
       category:
         item.category || "",
+
       image: null,
+
       preview:
         item.image || "",
+
       name:
         item.name || "",
+
       description:
         item.description || "",
+
       date:
         item.date || "",
     });
 
     setShowServiceForm(true);
     setShowLogoForm(false);
+    setShowBannerForm(false);
     setShowAddDropdown(false);
   };
 
@@ -658,22 +908,62 @@ const ServicePage = () => {
 
   const editLogo = (item) => {
     setIsEditingLogo(true);
+
     setEditLogoId(item.id);
 
     setLogoForm({
       image: null,
+
       preview:
         item.image || "",
+
       name:
         item.name || "",
+
       description:
         item.description || "",
+
       url:
         item.url || "",
     });
 
     setShowLogoForm(true);
     setShowServiceForm(false);
+    setShowBannerForm(false);
+    setShowAddDropdown(false);
+  };
+
+  /* =========================================================
+     EDIT BANNER
+  ========================================================= */
+
+  const editBanner = (item) => {
+    setIsEditingBanner(true);
+
+    setEditBannerId(item.id);
+
+    setBannerForm({
+      image: null,
+
+      preview:
+        item.image ||
+        item.bannerImage ||
+        "",
+
+      name:
+        item.name ||
+        item.bannerName ||
+        "",
+
+      description:
+        item.description ||
+        item.bannerDescription ||
+        "",
+    });
+
+    setShowBannerForm(true);
+    setShowServiceForm(false);
+    setShowLogoForm(false);
     setShowAddDropdown(false);
   };
 
@@ -687,6 +977,13 @@ const ServicePage = () => {
       "logo"
     ) {
       editLogo(item);
+
+    } else if (
+      item.recordType ===
+      "banner"
+    ) {
+      editBanner(item);
+
     } else {
       editService(item);
     }
@@ -730,7 +1027,11 @@ const ServicePage = () => {
 
     const date = new Date(value);
 
-    if (Number.isNaN(date.getTime())) {
+    if (
+      Number.isNaN(
+        date.getTime()
+      )
+    ) {
       return value;
     }
 
@@ -745,12 +1046,23 @@ const ServicePage = () => {
 
   const getCategory = (item) => {
     if (
-      item.recordType === "logo"
+      item.recordType ===
+      "logo"
     ) {
       return "Logo";
     }
 
-    return item.category || "Service";
+    if (
+      item.recordType ===
+      "banner"
+    ) {
+      return "Banner";
+    }
+
+    return (
+      item.category ||
+      "Service"
+    );
   };
 
   /* =========================================================
@@ -759,9 +1071,17 @@ const ServicePage = () => {
 
   const getType = (item) => {
     if (
-      item.recordType === "logo"
+      item.recordType ===
+      "logo"
     ) {
       return "Logo";
+    }
+
+    if (
+      item.recordType ===
+      "banner"
+    ) {
+      return "Banner";
     }
 
     return "Image";
@@ -780,7 +1100,9 @@ const ServicePage = () => {
 
       <div className="service-header">
 
-        <h2>Service Page</h2>
+        <h2>
+          Service Page
+        </h2>
 
         <div className="add-dropdown-wrapper">
 
@@ -802,8 +1124,14 @@ const ServicePage = () => {
             </span>
           </button>
 
+          {/* =================================================
+              ADD DROPDOWN
+          ================================================= */}
+
           {showAddDropdown && (
             <div className="add-dropdown">
+
+              {/* EXISTING ADD IMAGE */}
 
               <button
                 type="button"
@@ -811,9 +1139,14 @@ const ServicePage = () => {
                   openAddService
                 }
               >
-                <span>🖼️</span>
+                <span>
+                  🖼️
+                </span>
+
                 Add Image
               </button>
+
+              {/* EXISTING ADD LOGO */}
 
               <button
                 type="button"
@@ -821,8 +1154,26 @@ const ServicePage = () => {
                   openAddLogo
                 }
               >
-                <span>🏢</span>
+                <span>
+                  🏢
+                </span>
+
                 Add Logo
+              </button>
+
+              {/* NEW ADD BANNER */}
+
+              <button
+                type="button"
+                onClick={
+                  openAddBanner
+                }
+              >
+                <span>
+                  🖼️
+                </span>
+
+                Add Banner
               </button>
 
             </div>
@@ -855,7 +1206,6 @@ const ServicePage = () => {
               })
             }
           >
-
             <option value="">
               Select Service Category
             </option>
@@ -870,7 +1220,6 @@ const ServicePage = () => {
                 </option>
               )
             )}
-
           </select>
 
           <label>
@@ -900,7 +1249,8 @@ const ServicePage = () => {
             onChange={(e) =>
               setForm({
                 ...form,
-                name: e.target.value,
+                name:
+                  e.target.value,
               })
             }
           />
@@ -926,7 +1276,8 @@ const ServicePage = () => {
             onChange={(e) =>
               setForm({
                 ...form,
-                date: e.target.value,
+                date:
+                  e.target.value,
               })
             }
           />
@@ -949,6 +1300,110 @@ const ServicePage = () => {
             <button
               onClick={
                 resetServiceForm
+              }
+              disabled={loading}
+            >
+              Cancel
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* =====================================================
+          BANNER FORM
+      ===================================================== */}
+
+      {showBannerForm && (
+        <div className="service-form banner-form">
+
+          <h3>
+            {isEditingBanner
+              ? "Edit Banner"
+              : "Add Banner"}
+          </h3>
+
+          {/* BANNER IMAGE */}
+
+          <label>
+            Banner Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={
+              handleBannerImage
+            }
+          />
+
+          {/* BANNER PREVIEW */}
+
+          {bannerForm.preview && (
+            <img
+              src={
+                bannerForm.preview
+              }
+              alt="Banner Preview"
+              className="form-preview-image"
+            />
+          )}
+
+          {/* BANNER NAME */}
+
+          <input
+            type="text"
+            placeholder="Banner Name"
+            value={
+              bannerForm.name
+            }
+            onChange={(e) =>
+              setBannerForm({
+                ...bannerForm,
+                name:
+                  e.target.value,
+              })
+            }
+          />
+
+          {/* BANNER DESCRIPTION */}
+
+          <textarea
+            rows="5"
+            placeholder="Banner Description"
+            value={
+              bannerForm.description
+            }
+            onChange={(e) =>
+              setBannerForm({
+                ...bannerForm,
+                description:
+                  e.target.value,
+              })
+            }
+          />
+
+          {/* BANNER BUTTONS */}
+
+          <div className="btns">
+
+            <button
+              onClick={saveBanner}
+              disabled={loading}
+            >
+              {loading
+                ? isEditingBanner
+                  ? "Updating..."
+                  : "Saving..."
+                : isEditingBanner
+                ? "Update Banner"
+                : "Save Banner"}
+            </button>
+
+            <button
+              onClick={
+                resetBannerForm
               }
               disabled={loading}
             >
@@ -987,7 +1442,9 @@ const ServicePage = () => {
 
           {logoForm.preview && (
             <img
-              src={logoForm.preview}
+              src={
+                logoForm.preview
+              }
               alt="Logo Preview"
               className="logo-preview"
             />
@@ -996,11 +1453,14 @@ const ServicePage = () => {
           <input
             type="text"
             placeholder="Company Name"
-            value={logoForm.name}
+            value={
+              logoForm.name
+            }
             onChange={(e) =>
               setLogoForm({
                 ...logoForm,
-                name: e.target.value,
+                name:
+                  e.target.value,
               })
             }
           />
@@ -1023,11 +1483,14 @@ const ServicePage = () => {
           <input
             type="url"
             placeholder="Company Website URL"
-            value={logoForm.url}
+            value={
+              logoForm.url
+            }
             onChange={(e) =>
               setLogoForm({
                 ...logoForm,
-                url: e.target.value,
+                url:
+                  e.target.value,
               })
             }
           />
@@ -1072,21 +1535,47 @@ const ServicePage = () => {
           <thead>
 
             <tr>
-              <th>No</th>
-              <th>Preview</th>
-              <th>Type</th>
-              <th>Name</th>
-              <th>Description</th>
-              <th>Category</th>
-              <th>Created</th>
-              <th>Action</th>
+
+              <th>
+                No
+              </th>
+
+              <th>
+                Preview
+              </th>
+
+              <th>
+                Type
+              </th>
+
+              <th>
+                Name
+              </th>
+
+              <th>
+                Description
+              </th>
+
+              <th>
+                Category
+              </th>
+
+              <th>
+                Created
+              </th>
+
+              <th>
+                Action
+              </th>
+
             </tr>
 
           </thead>
 
           <tbody>
 
-            {currentItems.length > 0 ? (
+            {currentItems.length >
+            0 ? (
 
               currentItems.map(
                 (item, index) => (
@@ -1107,21 +1596,28 @@ const ServicePage = () => {
 
                     <td>
 
-                      {item.image ? (
+                      {item.image ||
+                      item.bannerImage ? (
+
                         <img
                           src={
-                            item.image
+                            item.image ||
+                            item.bannerImage
                           }
                           alt={
                             item.name ||
+                            item.bannerName ||
                             "Preview"
                           }
                           className="table-preview"
                         />
+
                       ) : (
+
                         <div className="no-image">
                           No Image
                         </div>
+
                       )}
 
                     </td>
@@ -1135,6 +1631,9 @@ const ServicePage = () => {
                           item.recordType ===
                           "logo"
                             ? "logo-type"
+                            : item.recordType ===
+                              "banner"
+                            ? "banner-type"
                             : "image-type"
                         }`}
                       >
@@ -1147,6 +1646,7 @@ const ServicePage = () => {
 
                     <td>
                       {item.name ||
+                        item.bannerName ||
                         "-"}
                     </td>
 
@@ -1154,6 +1654,7 @@ const ServicePage = () => {
 
                     <td>
                       {item.description ||
+                        item.bannerDescription ||
                         "-"}
                     </td>
 
@@ -1166,6 +1667,9 @@ const ServicePage = () => {
                           item.recordType ===
                           "logo"
                             ? "logo-category"
+                            : item.recordType ===
+                              "banner"
+                            ? "banner-category"
                             : "service-category"
                         }`}
                       >
@@ -1227,7 +1731,7 @@ const ServicePage = () => {
                   colSpan="8"
                   className="empty-message"
                 >
-                  No services or logos found.
+                  No services, logos or banners found.
                 </td>
 
               </tr>
@@ -1241,7 +1745,7 @@ const ServicePage = () => {
       </div>
 
       {/* =====================================================
-          SINGLE PAGINATION
+          PAGINATION
       ===================================================== */}
 
       {totalPages > 1 && (
@@ -1265,7 +1769,8 @@ const ServicePage = () => {
 
             {Array.from(
               {
-                length: totalPages,
+                length:
+                  totalPages,
               },
               (_, index) => {
 
@@ -1292,6 +1797,7 @@ const ServicePage = () => {
                     {pageNumber}
                   </button>
                 );
+
               }
             )}
 

@@ -1,280 +1,1526 @@
-/* ======================================================
+/* =========================================================
+   GOOGLE FONTS
+========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+
+/* =========================================================
    PRODUCT PAGE BANNER
-====================================================== */
+========================================================= */
 
 .product-page-banner {
     width: 100%;
+    position: relative;
     overflow: hidden;
-    background: #fff;
+    background: #000;
 }
+
+
+/* =========================================================
+   BANNER IMAGE
+========================================================= */
 
 .product-page-banner-image {
     width: 100%;
+    height: auto;
+
     display: block;
+
     object-fit: cover;
+
+    user-select: none;
+
+    -webkit-user-drag: none;
 }
 
-/* ======================================================
+
+/* =========================================================
+   BANNER OVERLAY
+========================================================= */
+
+.product-page-banner-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.04),
+            rgba(0, 0, 0, 0)
+        );
+}
+
+
+/* =========================================================
+   BANNER CONTENT
+========================================================= */
+
+.product-page-banner-content {
+    position: absolute;
+
+    left: 15%;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 560px;
+    max-width: 45%;
+
+    z-index: 10;
+
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    opacity: 1;
+}
+
+
+/* =========================================================
+   BRAND / KICKER
+========================================================= */
+
+.product-page-banner-kicker {
+    display: inline-block;
+
+    background: #0B2A4A;
+
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+
+    padding: 6px 14px;
+
+    border-radius: 3px;
+
+    margin-bottom: 16px;
+}
+
+
+/* =========================================================
+   BANNER TITLE
+========================================================= */
+
+.product-page-banner-content h1 {
+    font-family: "Playfair Display", serif;
+
+    font-size: 44px;
+
+    font-weight: 700;
+
+    line-height: 1.15;
+
+    margin: 0 0 14px;
+
+    color: #fff;
+
+    text-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   BANNER DESCRIPTION
+========================================================= */
+
+.product-page-banner-content p {
+    font-family: "Inter", sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 400;
+
+    line-height: 1.6;
+
+    margin: 0 0 24px;
+
+    color: #f1f1f1;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.35);
+
+    max-width: 460px;
+}
+
+
+/* =========================================================
+   CTA BUTTON
+========================================================= */
+
+.product-page-banner-cta {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    padding: 14px 28px;
+
+    border: none;
+
+    border-radius: 0;
+
+    background: #D6A54A;
+
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+.product-page-banner-cta:hover {
+    background: #BF8D34;
+
+    transform: translateY(-2px);
+}
+
+.product-page-banner-cta svg {
+    flex-shrink: 0;
+
+    transition: transform 0.3s ease;
+}
+
+.product-page-banner-cta:hover svg {
+    transform: translateX(4px);
+}
+
+
+/* =========================================================
    SEARCH SECTION
-====================================================== */
+========================================================= */
 
 .product-search-section {
     width: 100%;
+
     padding: 30px 20px 10px;
+
     background: #fff;
 }
+
 
 .product-search-wrapper {
     width: 100%;
+
     max-width: 550px;
-    margin: auto;
+
+    margin: 0 auto;
 }
+
 
 .product-search-input {
     width: 100%;
+
     height: 52px;
+
     padding: 0 20px;
+
     border: 1px solid #ddd;
+
     border-radius: 30px;
+
     outline: none;
+
     background: #fff;
+
     color: #222;
+
+    font-family: "Inter", sans-serif;
+
     font-size: 15px;
-    transition: .3s;
+
+    transition: 0.3s;
 }
+
 
 .product-search-input::placeholder {
     color: #999;
 }
 
+
 .product-search-input:focus {
     border-color: #CF4930;
-    box-shadow: 0 0 10px rgba(207,73,48,.2);
+
+    box-shadow:
+        0 0 10px rgba(207, 73, 48, 0.20);
 }
 
-/* ======================================================
+
+/* =========================================================
    CATEGORY FILTER
-====================================================== */
+========================================================= */
 
 .product-page-filter {
     width: 100%;
+
     padding: 20px;
+
     background: #fff;
 }
 
+
 .product-page-filter-wrapper {
     max-width: 1500px;
+
     margin: auto;
+
     display: flex;
+
     flex-wrap: wrap;
+
     justify-content: center;
+
     gap: 15px;
 }
 
+
 .product-page-filter-btn {
     padding: 12px 22px;
+
     border: none;
+
     border-radius: 30px;
+
     background: #f3f3f3;
+
     color: #222;
+
+    font-family: "Inter", sans-serif;
+
     font-size: 15px;
+
     font-weight: 600;
+
     cursor: pointer;
-    transition: .3s;
+
+    transition: 0.3s;
 }
+
 
 .product-page-filter-btn:hover,
 .product-page-filter-btn.active {
     background: #CF4930;
+
     color: #fff;
 }
 
-/* ======================================================
+
+/* =========================================================
    PRODUCT COUNT
-====================================================== */
+========================================================= */
 
 .product-count {
     text-align: center;
+
     margin: 30px 0;
 }
 
+
 .product-count h3 {
     margin: 0;
+
     font-size: 38px;
+
     color: #071321;
 }
 
-/* ======================================================
+
+/* =========================================================
    PRODUCT LIST
-====================================================== */
+========================================================= */
 
 .product-page-list {
     width: 100%;
+
     padding: 20px 5% 70px;
+
     background: #fff;
 }
+
+
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
 
 .product-page-grid {
     display: flex;
+
     flex-wrap: wrap;
+
     justify-content: center;
+
     gap: 30px;
 }
 
-/* ======================================================
-   CARD
-====================================================== */
+
+/* =========================================================
+   PRODUCT CARD
+========================================================= */
 
 .product-page-card {
     width: 320px;
+
     background: #fff;
+
     border-radius: 18px;
+
     overflow: hidden;
-    box-shadow: 0 10px 25px rgba(0,0,0,.08);
-    transition: .35s;
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease;
 }
+
 
 .product-page-card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 18px 40px rgba(0,0,0,.15);
+
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.15);
 }
 
-/* ======================================================
-   IMAGE
-====================================================== */
+
+/* =========================================================
+   PRODUCT IMAGE
+========================================================= */
 
 .product-page-image {
     width: 100%;
+
     height: 320px;
+
     object-fit: contain;
+
     background: #fff;
+
     padding: 15px;
+
     display: block;
-    transition: transform .4s ease;
+
+    transition:
+        transform 0.4s ease;
 }
+
 
 .product-page-card:hover .product-page-image {
     transform: scale(1.04);
 }
 
-/* ======================================================
-   CONTENT
-====================================================== */
+
+/* =========================================================
+   PRODUCT CONTENT
+========================================================= */
 
 .product-page-content {
     padding: 22px;
 }
 
+
 .product-page-content h3 {
     margin: 0 0 10px;
+
+    font-family: "Inter", sans-serif;
+
     font-size: 22px;
+
     font-weight: 700;
+
     color: #071321;
-    transition: .3s;
+
+    transition: 0.3s;
 }
 
-.product-page-card:hover .product-page-content h3 {
+
+.product-page-card:hover
+.product-page-content h3 {
     color: #CF4930;
 }
 
+
 .product-page-content p {
     margin: 0;
+
     color: #666;
+
+    font-family: "Inter", sans-serif;
+
     line-height: 1.7;
+
     font-size: 15px;
 
     display: -webkit-box;
+
     -webkit-line-clamp: 3;
+
     -webkit-box-orient: vertical;
+
     overflow: hidden;
 }
 
+
+/* =========================================================
+   PRODUCT CATEGORY
+========================================================= */
+
 .product-category {
     display: inline-block;
+
     margin-top: 16px;
+
     padding: 8px 18px;
+
     background: #CF4930;
+
     color: #fff;
+
     border-radius: 30px;
+
+    font-family: "Inter", sans-serif;
+
     font-size: 13px;
+
     font-weight: 600;
 }
 
-/* ======================================================
-   RESPONSIVE
-====================================================== */
 
-@media (max-width:1200px){
+/* =========================================================
+   LOADING / EMPTY MESSAGE
+========================================================= */
 
-.product-page-grid{
-    justify-content:center;
+.product-message {
+    text-align: center;
+
+    padding: 50px 20px;
+
+    margin: 0;
+
+    color: #071321;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 20px;
 }
 
+
+/* =========================================================
+   RESPONSIVE - 1200PX
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .product-page-banner-content {
+        left: 10%;
+
+        max-width: 55%;
+    }
+
+
+    .product-page-banner-content h1 {
+        font-size: 38px;
+    }
 }
 
-@media (max-width:992px){
 
-.product-page-card{
-    width:300px;
+/* =========================================================
+   RESPONSIVE - 992PX
+========================================================= */
+
+@media (max-width: 992px) {
+
+    .product-page-banner-content {
+        left: 12%;
+
+        max-width: 55%;
+    }
+
+
+    .product-page-banner-content h1 {
+        font-size: 34px;
+    }
+
+
+    .product-page-banner-content p {
+        font-size: 14px;
+    }
+
+
+    /* PRODUCTS */
+
+    .product-page-card {
+        width: 300px;
+    }
+
+
+    .product-page-image {
+        height: 300px;
+    }
 }
 
-.product-page-image{
-    height:300px;
+
+/* =========================================================
+   MOBILE - 768PX
+   FULL BANNER
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* =====================================================
+       BANNER
+    ===================================================== */
+
+    .product-page-banner {
+        position: relative;
+
+        width: 100%;
+
+        height: 390px !important;
+
+        min-height: 390px !important;
+
+        overflow: hidden;
+
+        background: #000;
+    }
+
+
+    /* =====================================================
+       BANNER IMAGE
+    ===================================================== */
+
+    .product-page-banner-image {
+        position: absolute !important;
+
+        inset: 0 !important;
+
+        width: 100% !important;
+
+        height: 100% !important;
+
+        min-width: 100% !important;
+
+        min-height: 100% !important;
+
+        display: block !important;
+
+        object-fit: cover !important;
+
+        object-position: center center !important;
+    }
+
+
+    /* =====================================================
+       BANNER OVERLAY
+    ===================================================== */
+
+    .product-page-banner-overlay {
+        position: absolute !important;
+
+        inset: 0 !important;
+
+        width: 100% !important;
+
+        height: 100% !important;
+
+        z-index: 2 !important;
+
+        background:
+            linear-gradient(
+                to right,
+                rgba(0, 0, 0, 0.58) 0%,
+                rgba(0, 0, 0, 0.38) 45%,
+                rgba(0, 0, 0, 0.10) 100%
+            ) !important;
+    }
+
+
+    /* =====================================================
+       BANNER CONTENT
+
+       Starts below mobile navbar
+    ===================================================== */
+
+    .product-page-banner-content {
+        position: absolute !important;
+
+        top: 0 !important;
+
+        left: 0 !important;
+
+        right: auto !important;
+
+        width: 100% !important;
+
+        max-width: none !important;
+
+        height: 100% !important;
+
+        transform: none !important;
+
+        z-index: 10 !important;
+
+        display: flex !important;
+
+        flex-direction: column !important;
+
+        align-items: flex-start !important;
+
+        justify-content: flex-start !important;
+
+        padding: 88px 18px 25px !important;
+
+        color: #fff !important;
+
+        text-align: left !important;
+    }
+
+
+    /* =====================================================
+       THE ROYAL KRAFT
+    ===================================================== */
+
+    .product-page-banner-kicker {
+        display: inline-block !important;
+
+        width: fit-content !important;
+
+        visibility: visible !important;
+
+        opacity: 1 !important;
+
+        position: relative !important;
+
+        z-index: 20 !important;
+
+        margin: 0 0 10px !important;
+
+        padding: 6px 10px !important;
+
+        background: #0B2A4A !important;
+
+        color: #fff !important;
+
+        font-family: "Inter", sans-serif !important;
+
+        font-size: 10px !important;
+
+        font-weight: 700 !important;
+
+        line-height: 1 !important;
+
+        letter-spacing: 0.3px !important;
+
+        text-transform: uppercase !important;
+
+        border-radius: 3px !important;
+    }
+
+
+    /* =====================================================
+       BANNER TITLE
+    ===================================================== */
+
+    .product-page-banner-content h1 {
+        display: block !important;
+
+        width: 100% !important;
+
+        max-width: 350px !important;
+
+        margin: 0 0 10px !important;
+
+        padding: 0 !important;
+
+        font-family: "Playfair Display", serif !important;
+
+        font-size: 30px !important;
+
+        font-weight: 700 !important;
+
+        line-height: 1.08 !important;
+
+        color: #fff !important;
+
+        text-shadow:
+            0 3px 10px rgba(0, 0, 0, 0.55) !important;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .product-page-banner-content p {
+        display: block !important;
+
+        width: 100% !important;
+
+        max-width: 360px !important;
+
+        margin: 0 0 17px !important;
+
+        padding: 0 !important;
+
+        font-family: "Inter", sans-serif !important;
+
+        font-size: 12px !important;
+
+        font-weight: 400 !important;
+
+        line-height: 1.45 !important;
+
+        color: #fff !important;
+
+        text-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.55) !important;
+    }
+
+
+    /* =====================================================
+       EXPLORE COLLECTION
+    ===================================================== */
+
+    .product-page-banner-cta {
+        display: inline-flex !important;
+
+        align-items: center !important;
+
+        justify-content: center !important;
+
+        gap: 8px !important;
+
+        width: fit-content !important;
+
+        min-width: 150px !important;
+
+        height: 40px !important;
+
+        padding: 0 16px !important;
+
+        border: none !important;
+
+        border-radius: 0 !important;
+
+        background: #D6A54A !important;
+
+        color: #fff !important;
+
+        font-family: "Inter", sans-serif !important;
+
+        font-size: 11px !important;
+
+        font-weight: 700 !important;
+
+        line-height: 1 !important;
+
+        cursor: pointer !important;
+    }
+
+
+    .product-page-banner-cta svg {
+        width: 15px !important;
+
+        height: 15px !important;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    .product-search-section {
+        padding: 25px 20px 10px;
+    }
+
+
+    .product-search-input {
+        height: 52px;
+
+        font-size: 15px;
+    }
+
+
+    /* =====================================================
+       FILTER
+    ===================================================== */
+
+    .product-page-filter {
+        padding: 20px;
+    }
+
+
+    .product-page-filter-wrapper {
+        gap: 10px;
+    }
+
+
+    .product-page-filter-btn {
+        padding: 10px 16px;
+
+        font-size: 14px;
+    }
+
+
+    /* =====================================================
+       PRODUCTS
+    ===================================================== */
+
+    .product-page-list {
+        padding: 20px;
+    }
+
+
+    .product-page-grid {
+        gap: 20px;
+    }
+
+
+    .product-page-card {
+        width: 100%;
+
+        max-width: 340px;
+    }
+
+
+    .product-page-image {
+        height: 280px;
+    }
+
+
+    .product-page-content h3 {
+        font-size: 20px;
+    }
 }
 
+
+/* =========================================================
+   MOBILE - 576PX
+========================================================= */
+
+@media (max-width: 576px) {
+
+    /* =====================================================
+       FULL BANNER
+    ===================================================== */
+
+    .product-page-banner {
+        height: 370px !important;
+
+        min-height: 370px !important;
+    }
+
+
+    .product-page-banner-image {
+        width: 100% !important;
+
+        height: 100% !important;
+
+        min-height: 100% !important;
+
+        object-fit: cover !important;
+
+        object-position: center center !important;
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .product-page-banner-content {
+        padding: 82px 16px 25px !important;
+    }
+
+
+    /* =====================================================
+       KICKER
+    ===================================================== */
+
+    .product-page-banner-kicker {
+        display: inline-block !important;
+
+        visibility: visible !important;
+
+        opacity: 1 !important;
+
+        font-size: 9px !important;
+
+        padding: 6px 9px !important;
+
+        margin-bottom: 9px !important;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .product-page-banner-content h1 {
+        font-size: 28px !important;
+
+        max-width: 320px !important;
+
+        line-height: 1.08 !important;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .product-page-banner-content p {
+        font-size: 11.5px !important;
+
+        max-width: 340px !important;
+
+        line-height: 1.45 !important;
+
+        margin-bottom: 15px !important;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .product-page-banner-cta {
+        min-width: 145px !important;
+
+        height: 40px !important;
+
+        padding: 0 15px !important;
+
+        font-size: 10.5px !important;
+    }
+
+
+    /* =====================================================
+       FILTER
+    ===================================================== */
+
+    .product-page-filter-wrapper {
+        gap: 9px;
+    }
+
+
+    .product-page-filter-btn {
+        padding: 9px 14px;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       PRODUCTS
+    ===================================================== */
+
+    .product-page-card {
+        max-width: 100%;
+    }
+
+
+    .product-page-image {
+        height: 270px;
+    }
+
+
+    .product-page-content {
+        padding: 20px;
+    }
+
+
+    .product-page-content h3 {
+        font-size: 19px;
+    }
+
+
+    .product-page-content p {
+        font-size: 14px;
+    }
 }
 
-@media (max-width:768px){
 
-.product-page-list{
-    padding:20px;
+/* =========================================================
+   MOBILE - 480PX
+========================================================= */
+
+@media (max-width: 480px) {
+
+    /* =====================================================
+       FULL BANNER
+    ===================================================== */
+
+    .product-page-banner {
+        height: 360px !important;
+
+        min-height: 360px !important;
+    }
+
+
+    .product-page-banner-image {
+        width: 100% !important;
+
+        height: 100% !important;
+
+        min-height: 100% !important;
+
+        object-fit: cover !important;
+
+        object-position: center center !important;
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    .product-page-banner-overlay {
+        background:
+            linear-gradient(
+                to right,
+                rgba(0, 0, 0, 0.62) 0%,
+                rgba(0, 0, 0, 0.42) 43%,
+                rgba(0, 0, 0, 0.12) 80%,
+                rgba(0, 0, 0, 0) 100%
+            ) !important;
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .product-page-banner-content {
+        padding: 80px 14px 22px !important;
+    }
+
+
+    /* =====================================================
+       KICKER
+    ===================================================== */
+
+    .product-page-banner-kicker {
+        display: inline-block !important;
+
+        visibility: visible !important;
+
+        opacity: 1 !important;
+
+        font-size: 8.5px !important;
+
+        padding: 5px 8px !important;
+
+        margin-bottom: 8px !important;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .product-page-banner-content h1 {
+        font-size: 26px !important;
+
+        max-width: 300px !important;
+
+        line-height: 1.08 !important;
+
+        margin-bottom: 9px !important;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .product-page-banner-content p {
+        font-size: 10.5px !important;
+
+        max-width: 320px !important;
+
+        line-height: 1.42 !important;
+
+        margin-bottom: 13px !important;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .product-page-banner-cta {
+        min-width: 140px !important;
+
+        height: 38px !important;
+
+        padding: 0 13px !important;
+
+        font-size: 10px !important;
+    }
+
+
+    .product-page-banner-cta svg {
+        width: 14px !important;
+
+        height: 14px !important;
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    .product-search-section {
+        padding: 25px 18px 10px;
+    }
+
+
+    .product-search-input {
+        height: 50px;
+
+        padding: 0 18px;
+
+        font-size: 14px;
+    }
+
+
+    /* =====================================================
+       FILTER
+    ===================================================== */
+
+    .product-page-filter {
+        padding: 18px 14px;
+    }
+
+
+    .product-page-filter-wrapper {
+        gap: 8px;
+    }
+
+
+    .product-page-filter-btn {
+        padding: 9px 13px;
+
+        font-size: 12px;
+    }
+
+
+    /* =====================================================
+       PRODUCT LIST
+    ===================================================== */
+
+    .product-page-list {
+        padding: 20px 15px 50px;
+    }
+
+
+    .product-page-grid {
+        gap: 18px;
+    }
+
+
+    .product-page-card {
+        width: 100%;
+
+        max-width: 100%;
+
+        border-radius: 16px;
+    }
+
+
+    .product-page-image {
+        height: 250px;
+
+        padding: 10px;
+    }
+
+
+    .product-page-content {
+        padding: 18px;
+    }
+
+
+    .product-page-content h3 {
+        font-size: 18px;
+    }
+
+
+    .product-page-content p {
+        font-size: 13px;
+
+        line-height: 1.65;
+    }
+
+
+    .product-category {
+        font-size: 12px;
+
+        padding: 6px 14px;
+    }
 }
 
-.product-page-grid{
-    gap:20px;
+
+/* =========================================================
+   VERY SMALL MOBILE - 380PX
+========================================================= */
+
+@media (max-width: 380px) {
+
+    /* =====================================================
+       FULL BANNER
+    ===================================================== */
+
+    .product-page-banner {
+        height: 350px !important;
+
+        min-height: 350px !important;
+    }
+
+
+    .product-page-banner-image {
+        width: 100% !important;
+
+        height: 100% !important;
+
+        min-height: 100% !important;
+
+        object-fit: cover !important;
+
+        object-position: center center !important;
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .product-page-banner-content {
+        padding: 76px 12px 20px !important;
+    }
+
+
+    /* =====================================================
+       KICKER
+    ===================================================== */
+
+    .product-page-banner-kicker {
+        display: inline-block !important;
+
+        visibility: visible !important;
+
+        opacity: 1 !important;
+
+        font-size: 7.5px !important;
+
+        padding: 5px 7px !important;
+
+        margin-bottom: 7px !important;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .product-page-banner-content h1 {
+        font-size: 23px !important;
+
+        max-width: 275px !important;
+
+        line-height: 1.07 !important;
+
+        margin-bottom: 8px !important;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .product-page-banner-content p {
+        font-size: 10px !important;
+
+        max-width: 280px !important;
+
+        line-height: 1.38 !important;
+
+        margin-bottom: 11px !important;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .product-page-banner-cta {
+        min-width: 135px !important;
+
+        height: 36px !important;
+
+        padding: 0 11px !important;
+
+        font-size: 9px !important;
+    }
+
+
+    .product-page-banner-cta svg {
+        width: 13px !important;
+
+        height: 13px !important;
+    }
+
+
+    /* =====================================================
+       SEARCH
+    ===================================================== */
+
+    .product-search-section {
+        padding: 22px 15px 8px;
+    }
+
+
+    .product-search-input {
+        height: 48px;
+
+        padding: 0 16px;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       FILTER
+    ===================================================== */
+
+    .product-page-filter {
+        padding: 16px 10px;
+    }
+
+
+    .product-page-filter-wrapper {
+        gap: 7px;
+    }
+
+
+    .product-page-filter-btn {
+        padding: 8px 11px;
+
+        font-size: 11px;
+    }
+
+
+    /* =====================================================
+       PRODUCTS
+    ===================================================== */
+
+    .product-page-list {
+        padding: 18px 12px 40px;
+    }
+
+
+    .product-page-grid {
+        gap: 16px;
+    }
+
+
+    .product-page-image {
+        height: 230px;
+
+        padding: 8px;
+    }
+
+
+    .product-page-content {
+        padding: 16px;
+    }
+
+
+    .product-page-content h3 {
+        font-size: 17px;
+    }
+
+
+    .product-page-content p {
+        font-size: 12.5px;
+
+        line-height: 1.6;
+    }
+
+
+    .product-category {
+        font-size: 11px;
+
+        padding: 6px 12px;
+    }
 }
 
-.product-page-card{
-    width:100%;
-    max-width:340px;
-}
 
-.product-page-image{
-    height:280px;
-}
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
 
-.product-page-content h3{
-    font-size:20px;
-}
+@media (hover: none) and (pointer: coarse) {
 
-}
+    .product-page-card:hover {
+        transform: none;
 
-@media (max-width:480px){
+        box-shadow:
+            0 10px 25px rgba(0, 0, 0, 0.08);
+    }
 
-.product-page-card{
-    max-width:100%;
-}
 
-.product-page-image{
-    height:250px;
-    padding:10px;
-}
+    .product-page-card:hover
+    .product-page-image {
+        transform: none;
+    }
 
-.product-page-content{
-    padding:18px;
-}
 
-.product-page-content h3{
-    font-size:18px;
-}
+    .product-page-card:hover
+    .product-page-content h3 {
+        color: #071321;
+    }
 
-.product-page-content p{
-    font-size:13px;
-}
 
-.product-category{
-    font-size:12px;
-    padding:6px 14px;
-}
+    .product-page-banner-cta:hover {
+        transform: none;
 
+        background: #D6A54A;
+    }
+
+
+    .product-page-banner-cta:hover svg {
+        transform: none;
+    }
 }

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   useLocation,
   useParams,
@@ -6,9 +7,9 @@ import {
 } from "react-router-dom";
 
 import "./ProjectPage.css";
+
 import PageSeo from "../SeoPage/PageSeo";
 import ProjectDetails from "../Projects/ProjectDetails";
-import heroImage from "../../assets/1 (5).png";
 
 import {
   UserRound,
@@ -21,14 +22,21 @@ import {
   ClipboardList,
   Truck,
   Award,
+  ArrowRight,
 } from "lucide-react";
+
+
+/* =====================================================
+   API
+===================================================== */
 
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/project";
 
-// =====================================================
-// CREATE PROJECT SLUG
-// =====================================================
+
+/* =====================================================
+   CREATE PROJECT SLUG
+===================================================== */
 
 const createProjectSlug = (name) => {
   return String(name || "project")
@@ -38,9 +46,10 @@ const createProjectSlug = (name) => {
     .replace(/^-+|-+$/g, "");
 };
 
-// =====================================================
-// PROJECT JOURNEY
-// =====================================================
+
+/* =====================================================
+   PROJECT JOURNEY
+===================================================== */
 
 const journeySteps = [
   {
@@ -75,9 +84,10 @@ const journeySteps = [
   },
 ];
 
-// =====================================================
-// PROJECT STATS
-// =====================================================
+
+/* =====================================================
+   PROJECT STATS
+===================================================== */
 
 const journeyStats = [
   {
@@ -107,37 +117,66 @@ const journeyStats = [
   },
 ];
 
-// =====================================================
-// PROJECT PAGE
-// =====================================================
+
+/* =====================================================
+   PROJECT PAGE
+===================================================== */
 
 const ProjectPage = () => {
   const location = useLocation();
+
   const { projectName } = useParams();
+
   const navigate = useNavigate();
 
+
+  /* =====================================================
+     PROJECTS
+  ===================================================== */
+
   const [projects, setProjects] = useState([]);
+
+
+  /* =====================================================
+     ADMIN BANNER
+  ===================================================== */
+
+  const [banner, setBanner] = useState(null);
+
+
+  /* =====================================================
+     LOADING
+  ===================================================== */
+
   const [loading, setLoading] = useState(true);
 
-  // =====================================================
-  // SELECTED PROJECT
-  // =====================================================
+
+  /* =====================================================
+     SELECTED PROJECT
+  ===================================================== */
 
   const [selectedProject, setSelectedProject] = useState(
     location.state?.selectedProject || null
   );
 
-  // =====================================================
-  // LOAD PROJECTS
-  // =====================================================
+
+  /* =====================================================
+     LOAD PROJECTS + BANNER
+  ===================================================== */
 
   useEffect(() => {
     loadProjects();
   }, [projectName]);
 
+
   const loadProjects = async () => {
     try {
       setLoading(true);
+
+
+      /* =================================================
+         GET DATA FROM AWS
+      ================================================= */
 
       const response = await fetch(API_URL);
 
@@ -145,73 +184,139 @@ const ProjectPage = () => {
         throw new Error("Unable to load projects");
       }
 
+
       const data = await response.json();
 
-      const projectList = Array.isArray(data) ? data : [];
+      const allItems = Array.isArray(data)
+        ? data
+        : [];
+
+
+      /* =================================================
+         FIND ADMIN BANNER
+      ================================================= */
+
+      const bannerItem = allItems.find((item) => {
+        const category = String(
+          item.category ||
+            item.type ||
+            ""
+        ).toLowerCase();
+
+        return category === "banner";
+      });
+
+
+      setBanner(bannerItem || null);
+
+
+      /* =================================================
+         ONLY PROJECT ITEMS
+
+         Banner will NOT appear in project grid.
+      ================================================= */
+
+      const projectList = allItems.filter((item) => {
+        const category = String(
+          item.category ||
+            item.type ||
+            ""
+        ).toLowerCase();
+
+        return category !== "banner";
+      });
+
 
       setProjects(projectList);
 
-      // =====================================================
-      // PROJECT URL
-      // Example:
-      // /project/kings-palace
-      // =====================================================
+
+      /* =================================================
+         EXACT PROJECT URL
+
+         Example:
+         /project/kings-palace
+      ================================================= */
 
       if (projectName) {
-        const foundProject = projectList.find((project) => {
-          const slug = createProjectSlug(project.projectName);
+        const foundProject = projectList.find(
+          (project) => {
+            const slug = createProjectSlug(
+              project.projectName
+            );
 
-          return slug === projectName;
-        });
+            return slug === projectName;
+          }
+        );
 
-        setSelectedProject(foundProject || null);
+
+        setSelectedProject(
+          foundProject || null
+        );
 
         return;
       }
 
-      // =====================================================
-      // NORMAL PROJECT PAGE
-      // /project
-      // =====================================================
+
+      /* =================================================
+         NORMAL PROJECT PAGE
+
+         /project
+      ================================================= */
 
       setSelectedProject(null);
+
     } catch (error) {
-      console.error("Error loading projects:", error);
+      console.error(
+        "Error loading projects:",
+        error
+      );
 
       setProjects([]);
+
+      setBanner(null);
+
       setSelectedProject(null);
+
     } finally {
       setLoading(false);
     }
   };
 
-  // =====================================================
-  // OPEN EXACT PROJECT
-  // =====================================================
+
+  /* =====================================================
+     OPEN EXACT PROJECT
+  ===================================================== */
 
   const openProject = (project) => {
-    const projectSlug = createProjectSlug(
-      project.projectName
-    );
+    const projectSlug =
+      createProjectSlug(
+        project.projectName
+      );
 
-    navigate(`/project/${projectSlug}`, {
-      state: {
-        selectedProject: project,
-      },
-    });
+
+    navigate(
+      `/project/${projectSlug}`,
+      {
+        state: {
+          selectedProject: project,
+        },
+      }
+    );
   };
 
-  // =====================================================
-  // BACK TO PROJECT LIST
-  // =====================================================
+
+  /* =====================================================
+     BACK TO PROJECT LIST
+  ===================================================== */
 
   const closeProject = () => {
     navigate("/project");
   };
 
-  // =====================================================
-  // PROJECT LOADING
-  // =====================================================
+
+  /* =====================================================
+     PROJECT LOADING
+  ===================================================== */
 
   if (loading && projectName) {
     return (
@@ -231,9 +336,10 @@ const ProjectPage = () => {
     );
   }
 
-  // =====================================================
-  // PROJECT NOT FOUND
-  // =====================================================
+
+  /* =====================================================
+     PROJECT NOT FOUND
+  ===================================================== */
 
   if (
     projectName &&
@@ -271,12 +377,15 @@ const ProjectPage = () => {
             fontSize: "16px",
           }}
         >
-          The project you are looking for could not be found.
+          The project you are looking for could not
+          be found.
         </p>
 
         <button
           type="button"
-          onClick={() => navigate("/project")}
+          onClick={() =>
+            navigate("/project")
+          }
           style={{
             border: "none",
             padding: "12px 25px",
@@ -294,9 +403,10 @@ const ProjectPage = () => {
     );
   }
 
-  // =====================================================
-  // SHOW PROJECT DETAILS
-  // =====================================================
+
+  /* =====================================================
+     SHOW PROJECT DETAILS
+  ===================================================== */
 
   if (selectedProject) {
     return (
@@ -307,71 +417,133 @@ const ProjectPage = () => {
     );
   }
 
-  // =====================================================
-  // NORMAL PROJECT PAGE
-  // =====================================================
+
+  /* =====================================================
+     NORMAL PROJECT PAGE
+  ===================================================== */
 
   return (
     <>
+      {/* =================================================
+          SEO
+      ================================================= */}
+
       <PageSeo page="Project" />
 
-      {/* =====================================================
-          HERO
-      ===================================================== */}
+
+      {/* =================================================
+          HERO / ADMIN BANNER
+      ================================================= */}
 
       <section className="rk-hero-page">
-        <div className="rk-hero-page-bg">
-          <img
-            src={heroImage}
-            alt="Royal Craft Project"
-            className="rk-hero-page-img"
-          />
 
-          <div className="rk-hero-page-gradient"></div>
+        {/* =================================================
+            HERO IMAGE
+        ================================================= */}
+
+        <div className="rk-hero-page-bg">
+
+          {banner?.bannerImage ? (
+            <img
+              src={banner.bannerImage}
+              alt={
+                banner.bannerName ||
+                "Royal Craft Project"
+              }
+              className="rk-hero-page-img"
+            />
+          ) : (
+            <div className="rk-hero-page-fallback">
+              <h2>
+                No Banner Uploaded
+              </h2>
+            </div>
+          )}
+
         </div>
+
+
+        {/* =================================================
+            HERO CONTENT
+        ================================================= */}
 
         <div className="rk-hero-page-content">
+
           <div className="rk-hero-page-inner">
-            <span className="rk-hero-page-tag">
-              CRAFTED TO PERFECTION
-            </span>
+
+            {/* =================================================
+                CATEGORY
+            ================================================= */}
+
+            <span className="rk-hero-page-kicker">
+  THE ROYAL KRAFT
+</span>
+
+
+            {/* =================================================
+                BANNER NAME
+            ================================================= */}
+
+            {banner?.bannerName && (
+              <h1 className="rk-hero-page-title">
+                {banner.bannerName}
+              </h1>
+            )}
+
+
+            {/* =================================================
+                BANNER DESCRIPTION
+            ================================================= */}
+
+            {banner?.bannerDescription && (
+              <p className="rk-hero-page-desc">
+                {banner.bannerDescription}
+              </p>
+            )}
+
+
+            {/* =================================================
+                BUTTON
+            ================================================= */}
+
+            <button
+              type="button"
+              className="rk-hero-page-btn"
+              onClick={() =>
+                navigate("/contact")
+              }
+            >
+              {banner?.buttonText ||
+                banner?.bannerButtonText ||
+                "Explore Collection"}
+
+              <ArrowRight size={18} />
+            </button>
+
           </div>
+
         </div>
+
+
+        {/* =================================================
+            SOCIAL ICONS
+        ================================================= */}
 
         <div className="rk-hero-page-social">
 
-          <a
-            href="#"
-            className="rk-hero-page-icon"
-            aria-label="Mobile"
-          >
-            📱
-          </a>
-
-          <a
-            href="#"
-            className="rk-hero-page-icon"
-            aria-label="Phone"
-          >
-            📞
-          </a>
-
-          <a
-            href="#"
-            className="rk-hero-page-icon"
-            aria-label="Email"
-          >
-            ✉️
-          </a>
+        
 
         </div>
+
       </section>
 
-      {/* =====================================================
+
+      {/* =================================================
           INTRO
-      ===================================================== */}
+      ================================================= */}
 
       <section className="rk-project-intro">
+
         <div className="rk-project-intro-inner">
 
           <div className="rk-project-intro-left">
@@ -388,22 +560,26 @@ const ProjectPage = () => {
 
           </div>
 
+
           <div className="rk-project-intro-right">
 
             <p>
-              From palatial residences to luxury commercial spaces,
-              each project reflects our commitment to excellence,
-              innovation, and timeless design.
+              From palatial residences to luxury
+              commercial spaces, each project reflects
+              our commitment to excellence, innovation,
+              and timeless design.
             </p>
 
           </div>
 
         </div>
+
       </section>
 
-      {/* =====================================================
+
+      {/* =================================================
           PROJECT GRID
-      ===================================================== */}
+      ================================================= */}
 
       <section className="rk-project-grid-section">
 
@@ -447,7 +623,9 @@ const ProjectPage = () => {
               <div
                 className="rk-project-grid-card"
                 key={project.id}
-                onClick={() => openProject(project)}
+                onClick={() =>
+                  openProject(project)
+                }
                 style={{
                   cursor: "pointer",
                 }}
@@ -457,15 +635,30 @@ const ProjectPage = () => {
 
                 <div className="rk-project-grid-image">
 
-                  <img
-                    src={project.mainImage}
-                    alt={
-                      project.projectName ||
-                      "Project"
-                    }
-                  />
+                  {project.mainImage ? (
+
+                    <img
+                      src={project.mainImage}
+                      alt={
+                        project.projectName ||
+                        "Project"
+                      }
+                    />
+
+                  ) : (
+
+                    <div
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        background: "#000",
+                      }}
+                    />
+
+                  )}
 
                 </div>
+
 
                 {/* PROJECT NAME */}
 
@@ -487,9 +680,10 @@ const ProjectPage = () => {
 
       </section>
 
-      {/* =====================================================
+
+      {/* =================================================
           CTA
-      ===================================================== */}
+      ================================================= */}
 
       <section className="rk-project-cta">
 
@@ -504,6 +698,7 @@ const ProjectPage = () => {
           <div className="rk-project-cta-gradient"></div>
 
         </div>
+
 
         <div className="rk-project-cta-content">
 
@@ -536,9 +731,10 @@ const ProjectPage = () => {
 
       </section>
 
-      {/* =====================================================
+
+      {/* =================================================
           PROJECT JOURNEY
-      ===================================================== */}
+      ================================================= */}
 
       <section className="rk-journey-section">
 
@@ -560,111 +756,118 @@ const ProjectPage = () => {
 
           </div>
 
+
           <p className="rk-journey-desc">
-            Every project we undertake follows a thoughtful
-            process that ensures precision, transparency,
-            and perfection at every stage.
+            Every project we undertake follows a
+            thoughtful process that ensures precision,
+            transparency, and perfection at every stage.
           </p>
 
         </div>
 
-        {/* =====================================================
-            JOURNEY STEPS
-        ===================================================== */}
+
+        {/* JOURNEY STEPS */}
 
         <div className="rk-journey-steps">
 
-          {journeySteps.map((step, index) => {
+          {journeySteps.map(
+            (step, index) => {
 
-            const Icon = step.icon;
+              const Icon = step.icon;
 
-            return (
-              <React.Fragment key={step.no}>
+              return (
+                <React.Fragment
+                  key={step.no}
+                >
 
-                <div className="rk-journey-step">
+                  <div className="rk-journey-step">
 
-                  <Icon
-                    className="rk-journey-step-icon"
-                    size={30}
-                    strokeWidth={1.5}
-                  />
+                    <Icon
+                      className="rk-journey-step-icon"
+                      size={30}
+                      strokeWidth={1.5}
+                    />
 
-                  <div className="rk-journey-step-text">
+                    <div className="rk-journey-step-text">
 
-                    <div className="rk-journey-step-no">
-                      {step.no}
+                      <div className="rk-journey-step-no">
+                        {step.no}
+                      </div>
+
+                      <h4>
+                        {step.title}
+                      </h4>
+
+                      <p>
+                        {step.desc}
+                      </p>
+
                     </div>
-
-                    <h4>
-                      {step.title}
-                    </h4>
-
-                    <p>
-                      {step.desc}
-                    </p>
 
                   </div>
 
-                </div>
 
-                {index <
-                  journeySteps.length - 1 && (
-                  <span className="rk-journey-arrow">
-                    →
-                  </span>
-                )}
+                  {index <
+                    journeySteps.length - 1 && (
+                    <span className="rk-journey-arrow">
+                      →
+                    </span>
+                  )}
 
-              </React.Fragment>
-            );
-
-          })}
+                </React.Fragment>
+              );
+            }
+          )}
 
         </div>
 
-        {/* =====================================================
-            STATS
-        ===================================================== */}
+
+        {/* STATS */}
 
         <div className="rk-journey-stats">
 
-          {journeyStats.map((item, index) => {
+          {journeyStats.map(
+            (item, index) => {
 
-            const Icon = item.icon;
+              const Icon = item.icon;
 
-            return (
-              <React.Fragment key={index}>
+              return (
+                <React.Fragment
+                  key={index}
+                >
 
-                <div className="rk-journey-stat">
+                  <div className="rk-journey-stat">
 
-                  <Icon
-                    className="rk-journey-stat-icon"
-                    size={28}
-                    strokeWidth={1.5}
-                  />
+                    <Icon
+                      className="rk-journey-stat-icon"
+                      size={28}
+                      strokeWidth={1.5}
+                    />
 
-                  <div>
+                    <div>
 
-                    <strong>
-                      {item.value}
-                    </strong>
+                      <strong>
+                        {item.value}
+                      </strong>
 
-                    <span>
-                      {item.label}
-                    </span>
+                      <span>
+                        {item.label}
+                      </span>
+
+                    </div>
 
                   </div>
 
-                </div>
 
-                {index <
-                  journeyStats.length - 1 && (
-                  <div className="rk-journey-stat-divider"></div>
-                )}
+                  {index <
+                    journeyStats.length - 1 && (
+                    <div className="rk-journey-stat-divider"></div>
+                  )}
 
-              </React.Fragment>
-            );
-
-          })}
+                </React.Fragment>
+              );
+            }
+          )}
 
         </div>
 

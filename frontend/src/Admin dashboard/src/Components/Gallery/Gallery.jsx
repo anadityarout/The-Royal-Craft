@@ -5,19 +5,36 @@ const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/gallery";
 
 const Gallery = () => {
-
-  /* =====================================
-     Categories / States
-  ===================================== */
+  // =========================================================
+  // MAIN STATES
+  // =========================================================
 
   const [showForm, setShowForm] = useState(false);
-
+  const [showTypeDropdown, setShowTypeDropdown] = useState(false);
+  const [formType, setFormType] = useState("gallery");
   const [loading, setLoading] = useState(false);
 
   const [gallery, setGallery] = useState([]);
 
-  const [isEditing, setIsEditing] = useState(false);
+  // =========================================================
+  // BANNER STATES
+  // =========================================================
 
+  const [banner, setBanner] = useState(null);
+  const [bannerEditing, setBannerEditing] = useState(false);
+
+  const [bannerForm, setBannerForm] = useState({
+    image: null,
+    preview: "",
+    name: "",
+    description: "",
+  });
+
+  // =========================================================
+  // GALLERY EDIT STATES
+  // =========================================================
+
+  const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState(null);
 
   const [form, setForm] = useState({
@@ -28,10 +45,9 @@ const Gallery = () => {
     description: "",
   });
 
-
-  /* =====================================
-     PAGINATION
-  ===================================== */
+  // =========================================================
+  // PAGINATION
+  // =========================================================
 
   const GALLERY_PER_PAGE = 5;
 
@@ -49,83 +65,91 @@ const Gallery = () => {
     startIndex + GALLERY_PER_PAGE
   );
 
-
-  /* =====================================
-     Automatically Fix Page After Delete
-  ===================================== */
-
-  useEffect(() => {
-
-    const pages = Math.max(
-      1,
-      Math.ceil(gallery.length / GALLERY_PER_PAGE)
-    );
-
-    setCurrentPage((page) =>
-      Math.min(page, pages)
-    );
-
-  }, [gallery.length]);
-
-
-  /* =====================================
-     Load Gallery
-  ===================================== */
+  // =========================================================
+  // LOAD DATA
+  // =========================================================
 
   useEffect(() => {
-
     loadGallery();
-
+    loadBanner();
   }, []);
 
+  // =========================================================
+  // LOAD GALLERY
+  // =========================================================
 
   const loadGallery = async () => {
-
     try {
-
       setLoading(true);
 
       const response = await fetch(API_URL);
 
       if (!response.ok) {
-
-        throw new Error(
-          "Failed to load gallery."
-        );
-
+        throw new Error("Failed to load gallery.");
       }
 
       const data = await response.json();
 
       setGallery(
-        Array.isArray(data)
-          ? data
-          : []
+        Array.isArray(data) ? data : []
       );
-
     } catch (err) {
-
-      console.log(err);
-
+      console.error("Gallery load error:", err);
       setGallery([]);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
+  // =========================================================
+  // LOAD BANNER
+  // =========================================================
 
-  /* =====================================
-     Upload Image To S3
-  ===================================== */
+  const loadBanner = async () => {
+    try {
+      const response = await fetch(
+        `${API_URL}?type=banner`
+      );
 
-  const uploadImage = async (file) => {
+      if (!response.ok) {
+        throw new Error(
+          "Failed to load gallery banner."
+        );
+      }
+
+      const data = await response.json();
+
+      if (data && data.image) {
+        setBanner(data);
+      } else {
+        setBanner(null);
+      }
+    } catch (err) {
+      console.error(
+        "Banner load error:",
+        err
+      );
+
+      setBanner(null);
+    }
+  };
+
+  // =========================================================
+  // UPLOAD IMAGE TO S3
+  // =========================================================
+
+  const uploadImage = async (
+    file,
+    type = "gallery"
+  ) => {
+    if (!file) {
+      throw new Error(
+        "Please select an image."
+      );
+    }
 
     const response = await fetch(
-      `${API_URL}?upload=true&fileName=${encodeURIComponent(
+      `${API_URL}?upload=true&type=${type}&fileName=${encodeURIComponent(
         file.name
       )}&fileType=${encodeURIComponent(
         file.type
@@ -133,69 +157,74 @@ const Gallery = () => {
     );
 
     if (!response.ok) {
-
       throw new Error(
         "Unable to get upload URL."
       );
-
     }
 
     const uploadData =
       await response.json();
 
-    const uploadResponse = await fetch(
-      uploadData.uploadUrl,
-      {
-        method: "PUT",
+    const uploadResponse =
+      await fetch(
+        uploadData.uploadUrl,
+        {
+          method: "PUT",
 
-        headers: {
-          "Content-Type": file.type,
-        },
+          headers: {
+            "Content-Type": file.type,
+          },
 
-        body: file,
-      }
-    );
+          body: file,
+        }
+      );
 
     if (!uploadResponse.ok) {
-
       throw new Error(
         "Image upload failed."
       );
-
     }
 
     return uploadData.fileUrl;
-
   };
 
-
-  /* =====================================
-     Select Image
-  ===================================== */
+  // =========================================================
+  // GALLERY IMAGE SELECT
+  // =========================================================
 
   const handleImage = (e) => {
-
-    const file =
-      e.target.files[0];
+    const file = e.target.files?.[0];
 
     if (!file) return;
 
     setForm((prev) => ({
       ...prev,
       image: file,
-      preview:
-        URL.createObjectURL(file),
+      preview: URL.createObjectURL(file),
     }));
-
   };
 
+  // =========================================================
+  // BANNER IMAGE SELECT
+  // =========================================================
 
-  /* =====================================
-     Reset Form
-  ===================================== */
+  const handleBannerImage = (e) => {
+    const file = e.target.files?.[0];
 
-  const resetForm = () => {
+    if (!file) return;
 
+    setBannerForm((prev) => ({
+      ...prev,
+      image: file,
+      preview: URL.createObjectURL(file),
+    }));
+  };
+
+  // =========================================================
+  // RESET GALLERY FORM
+  // =========================================================
+
+  const resetGalleryForm = () => {
     setForm({
       image: null,
       preview: "",
@@ -205,79 +234,142 @@ const Gallery = () => {
     });
 
     setIsEditing(false);
-
     setEditId(null);
-
     setShowForm(false);
-
   };
 
+  // =========================================================
+  // RESET BANNER FORM
+  // =========================================================
 
-  /* =====================================
-     Save Gallery
-  ===================================== */
+  const resetBannerForm = () => {
+    setBannerForm({
+      image: null,
+      preview: "",
+      name: "",
+      description: "",
+    });
+
+    setBannerEditing(false);
+    setShowForm(false);
+  };
+
+  // =========================================================
+  // CLOSE EVERYTHING
+  // =========================================================
+
+  const closeForm = () => {
+    setShowForm(false);
+    setShowTypeDropdown(false);
+    setFormType("gallery");
+
+    setIsEditing(false);
+    setEditId(null);
+
+    setBannerEditing(false);
+
+    setForm({
+      image: null,
+      preview: "",
+      primaryName: "",
+      secondaryName: "",
+      description: "",
+    });
+
+    setBannerForm({
+      image: null,
+      preview: "",
+      name: "",
+      description: "",
+    });
+  };
+
+  // =========================================================
+  // SELECT GALLERY PAGE
+  // =========================================================
+
+  const selectGalleryPage = () => {
+    setFormType("gallery");
+    setShowTypeDropdown(false);
+
+    setIsEditing(false);
+    setEditId(null);
+
+    setForm({
+      image: null,
+      preview: "",
+      primaryName: "",
+      secondaryName: "",
+      description: "",
+    });
+
+    setShowForm(true);
+  };
+
+  // =========================================================
+  // SELECT BANNER
+  // =========================================================
+
+  const selectBanner = () => {
+    setFormType("banner");
+    setShowTypeDropdown(false);
+
+    // If banner already exists,
+    // open it in EDIT mode.
+    setBannerEditing(!!banner);
+
+    setBannerForm({
+      image: null,
+      preview: banner?.image || "",
+      name: banner?.name || "",
+      description: banner?.description || "",
+    });
+
+    setShowForm(true);
+  };
+
+  // =========================================================
+  // SAVE GALLERY
+  // =========================================================
 
   const saveGallery = async () => {
-
     try {
-
-      if (
-        !isEditing &&
-        !form.image
-      ) {
-
-        alert(
-          "Please upload an image."
-        );
-
+      // New gallery image requires an image
+      if (!isEditing && !form.image) {
+        alert("Please upload an image.");
         return;
-
       }
 
       setLoading(true);
 
-
-      /* ==========================
-         Upload Image
-      ========================== */
+      // =====================================================
+      // IMAGE URL
+      // =====================================================
 
       let imageUrl = form.preview;
 
       if (form.image) {
-
-        imageUrl =
-          await uploadImage(
-            form.image
-          );
-
+        imageUrl = await uploadImage(
+          form.image,
+          "gallery"
+        );
       }
 
-
-      /* ==========================
-         Payload
-      ========================== */
+      // =====================================================
+      // PAYLOAD
+      // =====================================================
 
       const payload = {
-
         id: editId,
-
         image: imageUrl,
-
-        primaryName:
-          form.primaryName,
-
-        secondaryName:
-          form.secondaryName,
-
-        description:
-          form.description,
-
+        primaryName: form.primaryName,
+        secondaryName: form.secondaryName,
+        description: form.description,
       };
 
-
-      /* ==========================
-         Save / Update
-      ========================== */
+      // =====================================================
+      // POST / PUT
+      // =====================================================
 
       const response = await fetch(
         API_URL,
@@ -291,71 +383,204 @@ const Gallery = () => {
               "application/json",
           },
 
-          body:
-            JSON.stringify(payload),
-
+          body: JSON.stringify(payload),
         }
       );
-
 
       const result =
         await response.json();
 
-
       if (!response.ok) {
-
         throw new Error(
           result.message ||
             (isEditing
               ? "Unable to update gallery."
               : "Unable to save gallery.")
         );
-
       }
 
-
+      // Reload gallery
       await loadGallery();
 
-      resetForm();
-
+      // Close form
+      resetGalleryForm();
 
       alert(
         isEditing
           ? "Gallery updated successfully."
           : "Gallery added successfully."
       );
-
-
     } catch (err) {
-
-      console.error(err);
+      console.error(
+        "Save gallery error:",
+        err
+      );
 
       alert(err.message);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
+  // =========================================================
+  // SAVE BANNER
+  // =========================================================
 
-  /* =====================================
-     Edit Gallery
-  ===================================== */
+  const saveBanner = async () => {
+    try {
+      // =====================================================
+      // VALIDATION
+      // =====================================================
+
+      if (
+        !bannerEditing &&
+        !bannerForm.image &&
+        !bannerForm.preview
+      ) {
+        alert(
+          "Please upload a banner image."
+        );
+
+        return;
+      }
+
+      if (
+        !bannerForm.name.trim()
+      ) {
+        alert(
+          "Please enter banner name."
+        );
+
+        return;
+      }
+
+      setLoading(true);
+
+      // =====================================================
+      // IMAGE URL
+      // =====================================================
+
+      let imageUrl =
+        bannerForm.preview;
+
+      // Upload new banner image
+      if (bannerForm.image) {
+        imageUrl =
+          await uploadImage(
+            bannerForm.image,
+            "banner"
+          );
+      }
+
+      // =====================================================
+      // PAYLOAD
+      // =====================================================
+
+      const payload = {
+        id:
+          banner?.id ||
+          "gallery-banner",
+
+        image: imageUrl,
+
+        name:
+          bannerForm.name.trim(),
+
+        description:
+          bannerForm.description.trim(),
+      };
+
+      // =====================================================
+      // SAVE BANNER
+      // =====================================================
+
+      const response =
+        await fetch(
+          `${API_URL}?type=banner`,
+          {
+            method:
+              bannerEditing
+                ? "PUT"
+                : "POST",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body:
+              JSON.stringify(
+                payload
+              ),
+          }
+        );
+
+      const result =
+        await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            (bannerEditing
+              ? "Unable to update banner."
+              : "Unable to save banner.")
+        );
+      }
+
+      // =====================================================
+      // UPDATE LOCAL BANNER
+      // =====================================================
+
+      if (result.data) {
+        setBanner(result.data);
+      } else {
+        await loadBanner();
+      }
+
+      // Close banner form
+      setBannerEditing(false);
+      setShowForm(false);
+
+      setBannerForm({
+        image: null,
+        preview: "",
+        name: "",
+        description: "",
+      });
+
+      alert(
+        bannerEditing
+          ? "Gallery banner updated successfully."
+          : "Gallery banner saved successfully."
+      );
+    } catch (err) {
+      console.error(
+        "Save banner error:",
+        err
+      );
+
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // =========================================================
+  // EDIT GALLERY
+  // =========================================================
 
   const editGallery = (item) => {
+    setFormType("gallery");
+    setShowTypeDropdown(false);
 
     setIsEditing(true);
-
     setEditId(item.id);
 
     setForm({
-
       image: null,
 
-      preview: item.image,
+      preview:
+        item.image || "",
 
       primaryName:
         item.primaryName || "",
@@ -365,132 +590,215 @@ const Gallery = () => {
 
       description:
         item.description || "",
-
     });
 
     setShowForm(true);
-
   };
 
+  // =========================================================
+  // EDIT BANNER
+  // =========================================================
 
-  /* =====================================
-     Delete Gallery
-  ===================================== */
+  const editBanner = () => {
+    if (!banner) {
+      return;
+    }
+
+    setFormType("banner");
+    setShowTypeDropdown(false);
+
+    setBannerEditing(true);
+
+    setBannerForm({
+      image: null,
+
+      preview:
+        banner.image || "",
+
+      name:
+        banner.name || "",
+
+      description:
+        banner.description || "",
+    });
+
+    setShowForm(true);
+  };
+
+  // =========================================================
+  // DELETE GALLERY
+  // =========================================================
 
   const deleteGallery = async (id) => {
-
     if (
       !window.confirm(
         "Delete this image?"
       )
     ) {
-
       return;
-
     }
 
-
     try {
-
       setLoading(true);
 
+      const response =
+        await fetch(
+          API_URL,
+          {
+            method: "DELETE",
 
-      const response = await fetch(
-        API_URL,
-        {
-          method: "DELETE",
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
 
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body:
-            JSON.stringify({
+            body: JSON.stringify({
               id,
             }),
-
-        }
-      );
-
+          }
+        );
 
       const result =
         await response.json();
 
-
       if (!response.ok) {
-
         throw new Error(
           result.message ||
             "Delete failed."
         );
-
       }
 
-
       await loadGallery();
-
 
       alert(
         "Gallery deleted successfully."
       );
-
-
     } catch (err) {
-
-      console.error(err);
+      console.error(
+        "Delete gallery error:",
+        err
+      );
 
       alert(err.message);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
+  // =========================================================
+  // DELETE BANNER
+  // =========================================================
 
-  /* =====================================
-     PAGE CHANGE
-  ===================================== */
+  const deleteBanner = async () => {
+    if (!banner) {
+      return;
+    }
+
+    if (
+      !window.confirm(
+        "Delete this gallery banner?"
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response =
+        await fetch(
+          `${API_URL}?type=banner`,
+          {
+            method: "DELETE",
+
+            headers: {
+              "Content-Type":
+                "application/json",
+            },
+
+            body: JSON.stringify({
+              id:
+                banner.id ||
+                "gallery-banner",
+            }),
+          }
+        );
+
+      const result =
+        await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message ||
+            "Banner delete failed."
+        );
+      }
+
+      setBanner(null);
+
+      alert(
+        "Gallery banner deleted successfully."
+      );
+    } catch (err) {
+      console.error(
+        "Delete banner error:",
+        err
+      );
+
+      alert(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // =========================================================
+  // PAGE CHANGE
+  // =========================================================
 
   const goToPage = (page) => {
-
     if (
       page < 1 ||
       page > totalPages
     ) {
-
       return;
-
     }
 
     setCurrentPage(page);
-
-
-    /* Scroll to top */
 
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-
   };
 
+  // =========================================================
+  // FIX PAGE AFTER DELETE
+  // =========================================================
 
-  /* =====================================
-     RETURN
-  ===================================== */
+  useEffect(() => {
+    const pages = Math.max(
+      1,
+      Math.ceil(
+        gallery.length /
+          GALLERY_PER_PAGE
+      )
+    );
+
+    setCurrentPage((page) =>
+      Math.min(page, pages)
+    );
+  }, [gallery.length]);
+
+  // =========================================================
+  // RETURN
+  // =========================================================
 
   return (
-
     <div className="gallery-page">
 
-
-      {/* =====================================
+      {/* =====================================================
           HEADER
-      ===================================== */}
+      ===================================================== */}
 
       <div className="gallery-header">
 
@@ -498,167 +806,326 @@ const Gallery = () => {
           Gallery Page
         </h2>
 
+        {/* =================================================
+            ADD IMAGE DROPDOWN
+        ================================================= */}
 
-        <button
-          onClick={() => {
+        <div className="add-image-wrapper">
 
-            resetForm();
+          <button
+            className="add-image-btn"
+            onClick={() => {
+              setShowTypeDropdown(
+                (prev) => !prev
+              );
+            }}
+            disabled={loading}
+          >
+            + Add Image
 
-            setShowForm(true);
+            <span className="dropdown-arrow">
+              {showTypeDropdown
+                ? "▲"
+                : "▼"}
+            </span>
+          </button>
 
-          }}
+          {showTypeDropdown && (
+            <div className="add-image-dropdown">
 
-          disabled={loading}
-        >
-          + Add Image
-        </button>
+              {/* BANNER */}
+
+              <button
+                type="button"
+                onClick={
+                  selectBanner
+                }
+              >
+                Banner
+              </button>
+
+              {/* GALLERY PAGE */}
+
+              <button
+                type="button"
+                onClick={
+                  selectGalleryPage
+                }
+              >
+                Gallery Page
+              </button>
+
+            </div>
+          )}
+
+        </div>
 
       </div>
 
-
-      {/* =====================================
-          UPLOAD FORM
-      ===================================== */}
+      {/* =====================================================
+          FORM
+      ===================================================== */}
 
       {showForm && (
 
         <div className="upload-box">
 
-          <h3>
+          {/* =================================================
+              BANNER FORM
+          ================================================= */}
 
-            {isEditing
-              ? "Edit Gallery"
-              : "Add Gallery"}
+          {formType === "banner" ? (
 
-          </h3>
+            <>
 
+              <h3>
+                {bannerEditing
+                  ? "Edit Gallery Banner"
+                  : "Add Gallery Banner"}
+              </h3>
 
-          {/* Image */}
+              {/* BANNER IMAGE */}
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImage}
-          />
+              <label>
+                Banner Image
+              </label>
 
-
-          {/* Image Preview */}
-
-          {form.preview && (
-
-            <div className="gallery-image-preview">
-
-              <img
-                src={form.preview}
-                alt="Preview"
-                className="preview-image"
+              <input
+                type="file"
+                accept="image/*"
+                onChange={
+                  handleBannerImage
+                }
               />
 
-            </div>
+              {/* BANNER PREVIEW */}
+
+              {bannerForm.preview && (
+                <div className="gallery-image-preview">
+
+                  <img
+                    src={
+                      bannerForm.preview
+                    }
+                    alt="Banner Preview"
+                    className="preview-image"
+                  />
+
+                </div>
+              )}
+
+              {/* BANNER NAME */}
+
+              <input
+                type="text"
+                placeholder="Banner Name"
+                value={
+                  bannerForm.name
+                }
+                onChange={(e) =>
+                  setBannerForm(
+                    (prev) => ({
+                      ...prev,
+
+                      name:
+                        e.target.value,
+                    })
+                  )
+                }
+              />
+
+              {/* BANNER DESCRIPTION */}
+
+              <textarea
+                rows="5"
+                placeholder="Banner Description"
+                value={
+                  bannerForm.description
+                }
+                onChange={(e) =>
+                  setBannerForm(
+                    (prev) => ({
+                      ...prev,
+
+                      description:
+                        e.target.value,
+                    })
+                  )
+                }
+              />
+
+              {/* BUTTONS */}
+
+              <div className="btns">
+
+                <button
+                  onClick={
+                    saveBanner
+                  }
+                  disabled={loading}
+                >
+                  {loading
+                    ? bannerEditing
+                      ? "Updating..."
+                      : "Saving..."
+                    : bannerEditing
+                    ? "Update Banner"
+                    : "Save Banner"}
+                </button>
+
+                <button
+                  onClick={
+                    closeForm
+                  }
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+
+              </div>
+
+            </>
+
+          ) : (
+
+            /* =================================================
+               GALLERY PAGE FORM
+            ================================================= */
+
+            <>
+
+              <h3>
+                {isEditing
+                  ? "Edit Gallery"
+                  : "Add Gallery"}
+              </h3>
+
+              {/* IMAGE */}
+
+              <input
+                type="file"
+                accept="image/*"
+                onChange={
+                  handleImage
+                }
+              />
+
+              {/* IMAGE PREVIEW */}
+
+              {form.preview && (
+                <div className="gallery-image-preview">
+
+                  <img
+                    src={
+                      form.preview
+                    }
+                    alt="Preview"
+                    className="preview-image"
+                  />
+
+                </div>
+              )}
+
+              {/* PRIMARY NAME */}
+
+              <input
+                type="text"
+                placeholder="Primary Name (Optional)"
+                value={
+                  form.primaryName
+                }
+                onChange={(e) =>
+                  setForm(
+                    (prev) => ({
+                      ...prev,
+
+                      primaryName:
+                        e.target.value,
+                    })
+                  )
+                }
+              />
+
+              {/* SECONDARY NAME */}
+
+              <input
+                type="text"
+                placeholder="Secondary Name (Optional)"
+                value={
+                  form.secondaryName
+                }
+                onChange={(e) =>
+                  setForm(
+                    (prev) => ({
+                      ...prev,
+
+                      secondaryName:
+                        e.target.value,
+                    })
+                  )
+                }
+              />
+
+              {/* DESCRIPTION */}
+
+              <textarea
+                rows="4"
+                placeholder="Description (Optional)"
+                value={
+                  form.description
+                }
+                onChange={(e) =>
+                  setForm(
+                    (prev) => ({
+                      ...prev,
+
+                      description:
+                        e.target.value,
+                    })
+                  )
+                }
+              />
+
+              {/* BUTTONS */}
+
+              <div className="btns">
+
+                <button
+                  onClick={
+                    saveGallery
+                  }
+                  disabled={loading}
+                >
+                  {loading
+                    ? isEditing
+                      ? "Updating..."
+                      : "Saving..."
+                    : isEditing
+                    ? "Update Gallery"
+                    : "Save Gallery"}
+                </button>
+
+                <button
+                  onClick={
+                    closeForm
+                  }
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+
+              </div>
+
+            </>
 
           )}
 
-
-          {/* Primary Name */}
-
-          <input
-            type="text"
-            placeholder="Primary Name (Optional)"
-            value={
-              form.primaryName
-            }
-
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-
-                primaryName:
-                  e.target.value,
-
-              }))
-            }
-          />
-
-
-          {/* Secondary Name */}
-
-          <input
-            type="text"
-            placeholder="Secondary Name (Optional)"
-            value={
-              form.secondaryName
-            }
-
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-
-                secondaryName:
-                  e.target.value,
-
-              }))
-            }
-          />
-
-
-          {/* Description */}
-
-          <textarea
-            rows="4"
-            placeholder="Description (Optional)"
-            value={
-              form.description
-            }
-
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
-
-                description:
-                  e.target.value,
-
-              }))
-            }
-          />
-
-
-          {/* Buttons */}
-
-          <div className="btns">
-
-            <button
-              onClick={saveGallery}
-              disabled={loading}
-            >
-
-              {loading
-                ? isEditing
-                  ? "Updating..."
-                  : "Saving..."
-                : isEditing
-                ? "Update Gallery"
-                : "Save Gallery"}
-
-            </button>
-
-
-            <button
-              onClick={resetForm}
-              disabled={loading}
-            >
-              Cancel
-            </button>
-
-          </div>
-
         </div>
-
       )}
 
-
-      {/* =====================================
-          GALLERY TABLE
-      ===================================== */}
+      {/* =====================================================
+          TABLE
+      ===================================================== */}
 
       <div className="table-container">
 
@@ -708,19 +1175,115 @@ const Gallery = () => {
 
             </thead>
 
-
             <tbody>
 
-              {currentGallery.length > 0 ? (
+              {/* =================================================
+                  BANNER ROW
+              ================================================= */}
+
+              {banner && (
+
+                <tr>
+
+                  <td>
+                    B
+                  </td>
+
+                  <td>
+
+                    <img
+                      src={
+                        banner.image
+                      }
+                      alt={
+                        banner.name ||
+                        "Gallery Banner"
+                      }
+                      className="preview-image"
+                    />
+
+                  </td>
+
+                  <td>
+                    {banner.name ||
+                      "-"}
+                  </td>
+
+                  <td>
+                    -
+                  </td>
+
+                  <td
+                    style={{
+                      maxWidth:
+                        "350px",
+                      whiteSpace:
+                        "pre-wrap",
+                      wordBreak:
+                        "break-word",
+                    }}
+                  >
+                    {banner.description ||
+                      "-"}
+                  </td>
+
+                  <td>
+                    Banner
+                  </td>
+
+                  <td>
+
+                    <div className="action-buttons">
+
+                      <button
+                        className="edit-btn"
+                        onClick={
+                          editBanner
+                        }
+                        disabled={
+                          loading
+                        }
+                      >
+                        Edit
+                      </button>
+
+                      <button
+                        className="delete-btn"
+                        onClick={
+                          deleteBanner
+                        }
+                        disabled={
+                          loading
+                        }
+                      >
+                        Delete
+                      </button>
+
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              )}
+
+              {/* =================================================
+                  GALLERY ROWS
+              ================================================= */}
+
+              {currentGallery.length >
+              0 ? (
 
                 currentGallery.map(
                   (item, index) => (
 
                     <tr
-                      key={item.id}
+                      key={
+                        item.id
+                      }
                     >
 
-                      {/* Number */}
+                      {/* NUMBER */}
 
                       <td>
                         {startIndex +
@@ -728,13 +1291,14 @@ const Gallery = () => {
                           1}
                       </td>
 
-
-                      {/* Preview */}
+                      {/* PREVIEW */}
 
                       <td>
 
                         <img
-                          src={item.image}
+                          src={
+                            item.image
+                          }
                           alt={
                             item.primaryName ||
                             "Gallery"
@@ -744,45 +1308,43 @@ const Gallery = () => {
 
                       </td>
 
-
-                      {/* Primary Name */}
+                      {/* PRIMARY NAME */}
 
                       <td>
-
                         {item.primaryName ||
                           "-"}
-
                       </td>
 
-
-                      {/* Secondary Name */}
+                      {/* SECONDARY NAME */}
 
                       <td>
-
                         {item.secondaryName ||
                           "-"}
-
                       </td>
 
+                      {/* DESCRIPTION */}
 
-                      {/* Description */}
-
-                      <td>
-
+                      <td
+                        style={{
+                          maxWidth:
+                            "350px",
+                          whiteSpace:
+                            "pre-wrap",
+                          wordBreak:
+                            "break-word",
+                        }}
+                      >
                         {item.description ||
                           "-"}
-
                       </td>
 
-
-                      {/* Type */}
+                      {/* TYPE */}
 
                       <td>
                         Image
                       </td>
 
-
-                      {/* Actions */}
+                      {/* ACTION */}
 
                       <td>
 
@@ -795,11 +1357,12 @@ const Gallery = () => {
                                 item
                               )
                             }
-                            disabled={loading}
+                            disabled={
+                              loading
+                            }
                           >
                             Edit
                           </button>
-
 
                           <button
                             className="delete-btn"
@@ -808,7 +1371,9 @@ const Gallery = () => {
                                 item.id
                               )
                             }
-                            disabled={loading}
+                            disabled={
+                              loading
+                            }
                           >
                             Delete
                           </button>
@@ -822,7 +1387,7 @@ const Gallery = () => {
                   )
                 )
 
-              ) : (
+              ) : !banner ? (
 
                 <tr>
 
@@ -837,9 +1402,11 @@ const Gallery = () => {
                     <br />
 
                     Click{" "}
+
                     <strong>
                       + Add Image
                     </strong>{" "}
+
                     to upload your
                     first image.
 
@@ -847,7 +1414,7 @@ const Gallery = () => {
 
                 </tr>
 
-              )}
+              ) : null}
 
             </tbody>
 
@@ -857,18 +1424,16 @@ const Gallery = () => {
 
       </div>
 
-
-      {/* =====================================
+      {/* =====================================================
           PAGINATION
-      ===================================== */}
+      ===================================================== */}
 
       {gallery.length >
         GALLERY_PER_PAGE && (
 
         <div className="pagination">
 
-
-          {/* Previous */}
+          {/* PREVIOUS */}
 
           <button
             className="page-btn prev-next"
@@ -877,49 +1442,50 @@ const Gallery = () => {
                 currentPage - 1
               )
             }
-
             disabled={
               currentPage === 1
             }
           >
-            
+            ‹
           </button>
 
-
-          {/* Page Numbers */}
+          {/* PAGE NUMBERS */}
 
           <div className="page-numbers">
 
             {Array.from(
               {
-                length: totalPages,
+                length:
+                  totalPages,
               },
               (_, index) =>
                 index + 1
-            ).map((page) => (
+            ).map(
+              (page) => (
 
-              <button
-                key={page}
+                <button
+                  key={page}
+                  className={`page-btn ${
+                    currentPage ===
+                    page
+                      ? "active"
+                      : ""
+                  }`}
+                  onClick={() =>
+                    goToPage(
+                      page
+                    )
+                  }
+                >
+                  {page}
+                </button>
 
-                className={`page-btn ${
-                  currentPage === page
-                    ? "active"
-                    : ""
-                }`}
-
-                onClick={() =>
-                  goToPage(page)
-                }
-              >
-                {page}
-              </button>
-
-            ))}
+              )
+            )}
 
           </div>
 
-
-          {/* Next */}
+          {/* NEXT */}
 
           <button
             className="page-btn prev-next"
@@ -928,24 +1494,20 @@ const Gallery = () => {
                 currentPage + 1
               )
             }
-
             disabled={
               currentPage ===
               totalPages
             }
           >
-            
+            ›
           </button>
-
 
         </div>
 
       )}
 
     </div>
-
   );
-
 };
 
 export default Gallery;

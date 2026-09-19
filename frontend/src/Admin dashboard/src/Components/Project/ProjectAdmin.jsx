@@ -1,13 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./ProjectAdmin.css";
 
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/project";
 
 const ProjectAdmin = () => {
+  /* =========================================================
+     FORM
+  ========================================================= */
+
+  const [showForm, setShowForm] = useState(false);
 
   /* =========================================================
-     FORM STATES
+     IMAGE TYPE
+     Banner / Project
+  ========================================================= */
+
+  const [category, setCategory] = useState("");
+
+  /* =========================================================
+     PROJECT DETAILS
   ========================================================= */
 
   const [projectName, setProjectName] = useState("");
@@ -15,29 +27,33 @@ const ProjectAdmin = () => {
   const [projectDate, setProjectDate] = useState("");
   const [location, setLocation] = useState("");
 
-
   /* =========================================================
-     MAIN IMAGE
+     MAIN PROJECT IMAGE
   ========================================================= */
 
   const [mainImage, setMainImage] = useState(null);
   const [mainPreview, setMainPreview] = useState("");
 
+  /* =========================================================
+     BANNER
+  ========================================================= */
+
+  const [bannerImage, setBannerImage] = useState(null);
+  const [bannerPreview, setBannerPreview] = useState("");
+  const [bannerName, setBannerName] = useState("");
+  const [bannerDescription, setBannerDescription] = useState("");
 
   /* =========================================================
-     GALLERY IMAGES
+     PROJECT GALLERY IMAGES
   ========================================================= */
 
   const [galleryImages, setGalleryImages] = useState([]);
 
-
   /* =========================================================
-     PROJECT LIST
+     SAVED ITEMS
   ========================================================= */
 
   const [projects, setProjects] = useState([]);
-
-  const [showForm, setShowForm] = useState(false);
 
   const [loading, setLoading] = useState(false);
 
@@ -45,6 +61,12 @@ const ProjectAdmin = () => {
 
   const [editId, setEditId] = useState(null);
 
+  /* =========================================================
+     FILE REFERENCES
+  ========================================================= */
+
+  const mainFileRef = useRef(null);
+  const bannerFileRef = useRef(null);
 
   /* =========================================================
      PAGINATION
@@ -66,26 +88,20 @@ const ProjectAdmin = () => {
     startIndex + PROJECTS_PER_PAGE
   );
 
-
   /* =========================================================
-     LOAD PROJECTS
+     LOAD PROJECTS / BANNERS
   ========================================================= */
 
   useEffect(() => {
     loadProjects();
   }, []);
 
-
   const loadProjects = async () => {
-
     try {
-
       const response = await fetch(API_URL);
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to load projects."
-        );
+        throw new Error("Unable to load items.");
       }
 
       const data = await response.json();
@@ -93,59 +109,131 @@ const ProjectAdmin = () => {
       setProjects(
         Array.isArray(data) ? data : []
       );
-
     } catch (err) {
-
-      console.log(err);
-
+      console.error("Load error:", err);
       setProjects([]);
-
     }
-
   };
 
-
   /* =========================================================
-     KEEP CURRENT PAGE VALID
+     KEEP PAGE VALID
   ========================================================= */
 
   useEffect(() => {
-
     const pages = Math.max(
       1,
       Math.ceil(
-        projects.length /
-          PROJECTS_PER_PAGE
+        projects.length / PROJECTS_PER_PAGE
       )
     );
 
     setCurrentPage((page) =>
       Math.min(page, pages)
     );
-
   }, [projects.length]);
 
+  /* =========================================================
+     ADD IMAGE BUTTON
+     
+     IMPORTANT:
+     When clicking + Add Image,
+     category stays empty.
+     User must choose Banner or Project.
+  ========================================================= */
+
+  const handleAddImage = () => {
+    setShowForm(true);
+
+    setCategory("");
+
+    setProjectName("");
+    setDescription("");
+    setProjectDate("");
+    setLocation("");
+
+    setMainImage(null);
+    setMainPreview("");
+
+    setBannerImage(null);
+    setBannerPreview("");
+    setBannerName("");
+    setBannerDescription("");
+
+    setGalleryImages([]);
+
+    setIsEditing(false);
+    setEditId(null);
+
+    if (mainFileRef.current) {
+      mainFileRef.current.value = "";
+    }
+
+    if (bannerFileRef.current) {
+      bannerFileRef.current.value = "";
+    }
+  };
+
+  /* =========================================================
+     CATEGORY CHANGE
+  ========================================================= */
+
+  const handleCategoryChange = (e) => {
+    const value = e.target.value;
+
+    setCategory(value);
+
+    /*
+      Clear the other form when changing type.
+      This prevents Banner data from mixing with Project data.
+    */
+
+    if (value === "Banner") {
+      setProjectName("");
+      setDescription("");
+      setProjectDate("");
+      setLocation("");
+
+      setMainImage(null);
+      setMainPreview("");
+
+      setGalleryImages([]);
+
+      if (mainFileRef.current) {
+        mainFileRef.current.value = "";
+      }
+    }
+
+    if (value === "Project") {
+      setBannerImage(null);
+      setBannerPreview("");
+      setBannerName("");
+      setBannerDescription("");
+
+      if (bannerFileRef.current) {
+        bannerFileRef.current.value = "";
+      }
+    }
+  };
 
   /* =========================================================
      UPLOAD IMAGE TO S3
   ========================================================= */
 
   const uploadImage = async (file) => {
+    if (!file) {
+      throw new Error("Please select an image.");
+    }
 
     const response = await fetch(
       `${API_URL}?upload=true&fileName=${encodeURIComponent(
         file.name
-      )}&fileType=${encodeURIComponent(
-        file.type
-      )}`
+      )}&fileType=${encodeURIComponent(file.type)}`
     );
 
     if (!response.ok) {
-
       throw new Error(
         "Unable to get upload URL."
       );
-
     }
 
     const uploadData =
@@ -166,71 +254,93 @@ const ProjectAdmin = () => {
       );
 
     if (!uploadResponse.ok) {
-
       throw new Error(
         "Image upload failed."
       );
-
     }
 
     return uploadData.fileUrl;
-
   };
 
-
   /* =========================================================
-     MAIN IMAGE
+     MAIN PROJECT IMAGE
   ========================================================= */
 
   const handleMainImage = (e) => {
-
     const file =
-      e.target.files[0];
+      e.target.files?.[0];
 
     if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image.");
+      return;
+    }
 
     setMainImage(file);
 
     setMainPreview(
       URL.createObjectURL(file)
     );
-
   };
 
-
   /* =========================================================
-     ADD GALLERY IMAGE
+     BANNER IMAGE
   ========================================================= */
 
-  const addGalleryImage = () => {
+  const handleBannerImage = (e) => {
+    const file =
+      e.target.files?.[0];
 
-    setGalleryImages([
-      ...galleryImages,
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image.");
+      return;
+    }
+
+    setBannerImage(file);
+
+    setBannerPreview(
+      URL.createObjectURL(file)
+    );
+  };
+
+  /* =========================================================
+     ADD PROJECT GALLERY IMAGE
+  ========================================================= */
+
+  const addProjectImage = () => {
+    setGalleryImages((previous) => [
+      ...previous,
       {
         file: null,
         preview: "",
       },
     ]);
-
   };
 
-
   /* =========================================================
-     CHANGE GALLERY IMAGE
+     CHANGE PROJECT GALLERY IMAGE
   ========================================================= */
 
   const handleGalleryImage = (
     index,
     e
   ) => {
-
     const file =
-      e.target.files[0];
+      e.target.files?.[0];
 
     if (!file) return;
 
-    const updated =
-      [...galleryImages];
+    if (!file.type.startsWith("image/")) {
+      alert("Please select an image.");
+      return;
+    }
+
+    const updated = [
+      ...galleryImages,
+    ];
 
     updated[index] = {
       file,
@@ -239,117 +349,208 @@ const ProjectAdmin = () => {
     };
 
     setGalleryImages(updated);
-
   };
 
-
   /* =========================================================
-     REMOVE GALLERY IMAGE
+     REMOVE PROJECT GALLERY IMAGE
   ========================================================= */
 
   const removeGalleryImage = (
     index
   ) => {
-
     setGalleryImages(
-      galleryImages.filter(
-        (_, i) => i !== index
-      )
+      (previous) =>
+        previous.filter(
+          (_, i) => i !== index
+        )
     );
-
   };
 
-
   /* =========================================================
-     SAVE PROJECT
+     SAVE
   ========================================================= */
 
   const handleSave = async () => {
+    /* =======================================================
+       CATEGORY REQUIRED
+    ======================================================= */
 
-    if (!projectName.trim()) {
-
+    if (!category) {
       alert(
-        "Please enter Project Name."
+        "Please select Banner or Project."
       );
-
       return;
-
     }
 
+    /* =======================================================
+       BANNER VALIDATION
+    ======================================================= */
 
-    if (
-      !isEditing &&
-      !mainImage
-    ) {
+    if (category === "Banner") {
+      if (
+        !bannerImage &&
+        !bannerPreview
+      ) {
+        alert(
+          "Please select Banner Image."
+        );
+        return;
+      }
 
-      alert(
-        "Please select Main Image."
-      );
-
-      return;
-
+      if (!bannerName.trim()) {
+        alert(
+          "Please enter Banner Name."
+        );
+        return;
+      }
     }
 
+    /* =======================================================
+       PROJECT VALIDATION
+    ======================================================= */
+
+    if (category === "Project") {
+      if (!projectName.trim()) {
+        alert(
+          "Please enter Project Name."
+        );
+        return;
+      }
+
+      if (
+        !isEditing &&
+        !mainImage
+      ) {
+        alert(
+          "Please select Main Image."
+        );
+        return;
+      }
+    }
 
     try {
-
       setLoading(true);
 
+      /* =====================================================
+         BANNER SAVE
+      ===================================================== */
 
-      /* =====================================
-         MAIN IMAGE
-      ===================================== */
+      if (category === "Banner") {
+        let bannerImageUrl =
+          bannerPreview;
+
+        if (bannerImage) {
+          bannerImageUrl =
+            await uploadImage(
+              bannerImage
+            );
+        }
+
+        const response =
+          await fetch(
+            API_URL,
+            {
+              method: isEditing
+                ? "PUT"
+                : "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+
+              body: JSON.stringify({
+                id: editId,
+
+                type: "Banner",
+
+                bannerImage:
+                  bannerImageUrl,
+
+                bannerName:
+                  bannerName.trim(),
+
+                bannerDescription:
+                  bannerDescription.trim(),
+              }),
+            }
+          );
+
+        const result =
+          await response
+            .json()
+            .catch(() => ({}));
+
+        if (!response.ok) {
+          throw new Error(
+            result.message ||
+              result.error ||
+              "Unable to save banner."
+          );
+        }
+
+        await loadProjects();
+
+        if (!isEditing) {
+          setCurrentPage(1);
+        }
+
+        const wasEditing =
+          isEditing;
+
+        resetForm();
+
+        alert(
+          wasEditing
+            ? "Banner updated successfully."
+            : "Banner saved successfully."
+        );
+
+        return;
+      }
+
+      /* =====================================================
+         PROJECT MAIN IMAGE
+      ===================================================== */
 
       let mainImageUrl =
         mainPreview;
 
       if (mainImage) {
-
         mainImageUrl =
           await uploadImage(
             mainImage
           );
-
       }
 
-
-      /* =====================================
-         GALLERY IMAGES
-      ===================================== */
+      /* =====================================================
+         PROJECT GALLERY
+      ===================================================== */
 
       const galleryUrls = [];
 
       for (
         const image of galleryImages
       ) {
-
         if (image.file) {
-
           const url =
             await uploadImage(
               image.file
             );
 
           galleryUrls.push(url);
-
-        } else {
-
-          if (image.preview) {
-
-            galleryUrls.push(
-              image.preview
-            );
-
-          }
-
+        } else if (
+          image.preview
+        ) {
+          galleryUrls.push(
+            image.preview
+          );
         }
-
       }
 
-
-      /* =====================================
-         API REQUEST
-      ===================================== */
+      /* =====================================================
+         PROJECT API
+      ===================================================== */
 
       const response =
         await fetch(
@@ -367,9 +568,13 @@ const ProjectAdmin = () => {
             body: JSON.stringify({
               id: editId,
 
-              projectName,
+              type: "Project",
 
-              description,
+              projectName:
+                projectName.trim(),
+
+              description:
+                description.trim(),
 
               projectDate,
 
@@ -384,85 +589,67 @@ const ProjectAdmin = () => {
           }
         );
 
-
       const result =
-        await response.json().catch(
-          () => ({})
-        );
-
+        await response
+          .json()
+          .catch(() => ({}));
 
       if (!response.ok) {
-
         throw new Error(
           result.message ||
+            result.error ||
             "Unable to save project."
         );
-
       }
-
 
       await loadProjects();
 
-
-      /* =====================================
-         AFTER ADD / UPDATE
-      ===================================== */
-
       if (!isEditing) {
-
         setCurrentPage(1);
-
       }
 
+      const wasEditing =
+        isEditing;
 
       resetForm();
 
-
       alert(
-        isEditing
+        wasEditing
           ? "Project updated successfully."
           : "Project saved successfully."
       );
-
-
     } catch (err) {
+      console.error(
+        "Save error:",
+        err
+      );
 
-      console.error(err);
-
-      alert(err.message);
-
+      alert(
+        err.message ||
+          "Unable to save."
+      );
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
-
   /* =========================================================
-     DELETE PROJECT
+     DELETE
   ========================================================= */
 
   const deleteProject = async (
     id
   ) => {
-
     if (
       !window.confirm(
-        "Delete this project?"
+        "Delete this item?"
       )
     ) {
-
       return;
-
     }
 
-
     try {
-
       setLoading(true);
-
 
       const response =
         await fetch(
@@ -481,86 +668,129 @@ const ProjectAdmin = () => {
           }
         );
 
-
       const result =
-        await response.json().catch(
-          () => ({})
-        );
-
+        await response
+          .json()
+          .catch(() => ({}));
 
       if (!response.ok) {
-
         throw new Error(
           result.message ||
-            "Unable to delete project."
+            result.error ||
+            "Unable to delete item."
         );
-
       }
-
 
       await loadProjects();
 
-
       alert(
-        "Project deleted successfully."
+        "Item deleted successfully."
       );
-
-
     } catch (err) {
-
       console.error(err);
 
-      alert(err.message);
-
+      alert(
+        err.message ||
+          "Unable to delete item."
+      );
     } finally {
-
       setLoading(false);
-
     }
-
   };
-
 
   /* =========================================================
      RESET FORM
   ========================================================= */
 
   const resetForm = () => {
+    setShowForm(false);
+
+    setCategory("");
 
     setProjectName("");
-
     setDescription("");
-
     setProjectDate("");
-
     setLocation("");
 
     setMainImage(null);
-
     setMainPreview("");
+
+    setBannerImage(null);
+    setBannerPreview("");
+    setBannerName("");
+    setBannerDescription("");
 
     setGalleryImages([]);
 
     setIsEditing(false);
-
     setEditId(null);
 
-    setShowForm(false);
+    if (mainFileRef.current) {
+      mainFileRef.current.value = "";
+    }
 
+    if (bannerFileRef.current) {
+      bannerFileRef.current.value = "";
+    }
   };
 
-
   /* =========================================================
-     EDIT PROJECT
+     EDIT
   ========================================================= */
 
   const editProject = (
     project
   ) => {
+    setShowForm(true);
 
     setIsEditing(true);
 
     setEditId(project.id);
+
+    /* =====================================================
+       BANNER
+    ===================================================== */
+
+    if (
+      project.type === "Banner" ||
+      project.bannerImage ||
+      project.bannerName ||
+      project.bannerDescription
+    ) {
+      setCategory("Banner");
+
+      setBannerImage(null);
+
+      setBannerPreview(
+        project.bannerImage || ""
+      );
+
+      setBannerName(
+        project.bannerName || ""
+      );
+
+      setBannerDescription(
+        project.bannerDescription || ""
+      );
+
+      setProjectName("");
+      setDescription("");
+      setProjectDate("");
+      setLocation("");
+
+      setMainImage(null);
+      setMainPreview("");
+
+      setGalleryImages([]);
+
+      return;
+    }
+
+    /* =====================================================
+       PROJECT
+    ===================================================== */
+
+    setCategory("Project");
 
     setProjectName(
       project.projectName || ""
@@ -584,7 +814,6 @@ const ProjectAdmin = () => {
       project.mainImage || ""
     );
 
-
     setGalleryImages(
       (
         project.galleryImages ||
@@ -595,51 +824,41 @@ const ProjectAdmin = () => {
       }))
     );
 
-
-    setShowForm(true);
-
+    setBannerImage(null);
+    setBannerPreview("");
+    setBannerName("");
+    setBannerDescription("");
   };
-
 
   /* =========================================================
      PAGE CHANGE
   ========================================================= */
 
   const goToPage = (page) => {
-
     if (
       page < 1 ||
       page > totalPages
     ) {
-
       return;
-
     }
 
     setCurrentPage(page);
-
-
-    /* Scroll to top */
 
     window.scrollTo({
       top: 0,
       behavior: "smooth",
     });
-
   };
-
 
   /* =========================================================
      RETURN
   ========================================================= */
 
   return (
-
     <div className="project-admin">
 
-
       {/* =====================================================
-          PAGE HEADER
+          HEADER
       ===================================================== */}
 
       <div className="table-header">
@@ -648,240 +867,126 @@ const ProjectAdmin = () => {
           Project Admin
         </h1>
 
-
         <button
+          type="button"
           className="add-btn"
-          onClick={() => {
-
-            resetForm();
-
-            setShowForm(true);
-
-          }}
-
+          onClick={
+            handleAddImage
+          }
           disabled={loading}
         >
-          + Add Project
+          + Add Image
         </button>
 
       </div>
 
 
       {/* =====================================================
-          ADD / EDIT PROJECT FORM
+          FORM
       ===================================================== */}
 
       {showForm && (
-        <>
 
+        <div className="section">
 
           {/* =================================================
-              MAIN IMAGE
+              CATEGORY DROPDOWN
           ================================================= */}
 
-          <div className="section">
+          <div className="category-selector">
 
-            <h3>
-              Main Image
-            </h3>
+            <label>
+              Select Image Type
+            </label>
 
-
-            <input
-              type="file"
-              accept="image/*"
+            <select
+              value={category}
               onChange={
-                handleMainImage
+                handleCategoryChange
               }
-            />
+              disabled={loading}
+            >
 
+              <option value="">
+                Select Type
+              </option>
 
-            {mainPreview && (
+              <option value="Banner">
+                Banner
+              </option>
 
-              <img
-                src={mainPreview}
-                alt="Main Preview"
-                className="preview-image"
-              />
+              <option value="Project">
+                Project
+              </option>
 
-            )}
+            </select>
 
           </div>
 
 
           {/* =================================================
-              GALLERY IMAGES
+              BANNER FORM
           ================================================= */}
 
-          <div className="section">
+          {category === "Banner" && (
 
-            <div className="gallery-header">
+            <div className="banner-form">
 
               <h3>
-                Gallery Images
+                Banner
               </h3>
 
 
-              <button
-                className="add-btn"
-                type="button"
-                onClick={
-                  addGalleryImage
-                }
-              >
-                + Add Image
-              </button>
-
-            </div>
-
-
-            {galleryImages.map(
-              (image, index) => (
-
-                <div
-                  className="gallery-card"
-                  key={index}
-                >
-
-                  <h4>
-                    Image {index + 1}
-                  </h4>
-
-
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) =>
-                      handleGalleryImage(
-                        index,
-                        e
-                      )
-                    }
-                  />
-
-
-                  {image.preview && (
-
-                    <img
-                      src={image.preview}
-                      alt={`Gallery ${index + 1}`}
-                      className="preview-image"
-                    />
-
-                  )}
-
-
-                  <button
-                    className="remove-btn"
-                    type="button"
-                    onClick={() =>
-                      removeGalleryImage(
-                        index
-                      )
-                    }
-                  >
-                    Remove
-                  </button>
-
-                </div>
-
-              )
-            )}
-
-          </div>
-
-
-          {/* =================================================
-              PROJECT DETAILS
-          ================================================= */}
-
-          <div className="section">
-
-            <h3>
-              {isEditing
-                ? "Edit Project"
-                : "Project Details"}
-            </h3>
-
-
-            {/* Project Name */}
-
-            <div className="form-group">
-
-              <label>
-                Project Name
-              </label>
-
-              <input
-                type="text"
-                placeholder="Enter Project Name"
-                value={projectName}
-                onChange={(e) =>
-                  setProjectName(
-                    e.target.value
-                  )
-                }
-              />
-
-            </div>
-
-
-            {/* Description */}
-
-            <div className="form-group">
-
-              <label>
-                Description
-              </label>
-
-              <textarea
-                rows="5"
-                placeholder="Enter Description"
-                value={description}
-                onChange={(e) =>
-                  setDescription(
-                    e.target.value
-                  )
-                }
-              />
-
-            </div>
-
-
-            {/* Date + Location */}
-
-            <div className="form-row">
+              {/* Banner Image */}
 
               <div className="form-group">
 
                 <label>
-                  Date
+                  Banner Image
                 </label>
 
                 <input
-                  type="date"
-                  value={projectDate}
-                  onChange={(e) =>
-                    setProjectDate(
-                      e.target.value
-                    )
+                  ref={
+                    bannerFileRef
+                  }
+                  type="file"
+                  accept="image/*"
+                  onChange={
+                    handleBannerImage
                   }
                 />
+
+                {bannerPreview && (
+
+                  <img
+                    src={
+                      bannerPreview
+                    }
+                    alt="Banner Preview"
+                    className="preview-image"
+                  />
+
+                )}
 
               </div>
 
 
+              {/* Banner Name */}
+
               <div className="form-group">
 
                 <label>
-                  Location
+                  Banner Name
                 </label>
 
                 <input
                   type="text"
-                  placeholder="Enter Location"
-                  value={location}
+                  placeholder="Enter Banner Name"
+                  value={
+                    bannerName
+                  }
                   onChange={(e) =>
-                    setLocation(
+                    setBannerName(
                       e.target.value
                     )
                   }
@@ -889,41 +994,346 @@ const ProjectAdmin = () => {
 
               </div>
 
+
+              {/* Banner Description */}
+
+              <div className="form-group">
+
+                <label>
+                  Banner Description
+                </label>
+
+                <textarea
+                  rows="5"
+                  placeholder="Enter Banner Description"
+                  value={
+                    bannerDescription
+                  }
+                  onChange={(e) =>
+                    setBannerDescription(
+                      e.target.value
+                    )
+                  }
+                />
+
+              </div>
+
+
+              {/* Banner Save / Cancel */}
+
+              <div className="save-section">
+
+                <button
+                  type="button"
+                  className="save-btn"
+                  onClick={
+                    handleSave
+                  }
+                  disabled={loading}
+                >
+
+                  {loading
+                    ? "Saving..."
+                    : isEditing
+                    ? "Update Banner"
+                    : "Save Banner"}
+
+                </button>
+
+
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={
+                    resetForm
+                  }
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+
+              </div>
+
             </div>
 
+          )}
 
-            {/* Save */}
 
-            <div className="save-section">
+          {/* =================================================
+              PROJECT FORM
+          ================================================= */}
 
-              <button
-                className="save-btn"
-                onClick={
-                  handleSave
-                }
-                disabled={loading}
-              >
+          {category === "Project" && (
 
-                {loading
-                  ? isEditing
-                    ? "Updating..."
-                    : "Saving..."
-                  : isEditing
-                  ? "Update Project"
-                  : "Save Project"}
+            <div className="project-form">
 
-              </button>
+              {/* Main Image */}
+
+              <div className="form-group">
+
+                <label>
+                  Main Image
+                </label>
+
+                <input
+                  ref={
+                    mainFileRef
+                  }
+                  type="file"
+                  accept="image/*"
+                  onChange={
+                    handleMainImage
+                  }
+                />
+
+                {mainPreview && (
+
+                  <img
+                    src={
+                      mainPreview
+                    }
+                    alt="Main Preview"
+                    className="preview-image"
+                  />
+
+                )}
+
+              </div>
+
+
+              {/* Project Gallery */}
+
+              <div className="gallery-header">
+
+                <h3>
+                  Project Images
+                </h3>
+
+                <button
+                  type="button"
+                  className="add-btn"
+                  onClick={
+                    addProjectImage
+                  }
+                  disabled={loading}
+                >
+                  + Add Project Image
+                </button>
+
+              </div>
+
+
+              {galleryImages.map(
+                (
+                  image,
+                  index
+                ) => (
+
+                  <div
+                    className="gallery-card"
+                    key={index}
+                  >
+
+                    <h4>
+                      Project Image{" "}
+                      {index + 1}
+                    </h4>
+
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) =>
+                        handleGalleryImage(
+                          index,
+                          e
+                        )
+                      }
+                    />
+
+                    {image.preview && (
+
+                      <img
+                        src={
+                          image.preview
+                        }
+                        alt={`Project ${
+                          index + 1
+                        }`}
+                        className="preview-image"
+                      />
+
+                    )}
+
+                    <button
+                      type="button"
+                      className="remove-btn"
+                      onClick={() =>
+                        removeGalleryImage(
+                          index
+                        )
+                      }
+                    >
+                      Remove
+                    </button>
+
+                  </div>
+
+                )
+              )}
+
+
+              {/* Project Details */}
+
+              <h3>
+                {isEditing
+                  ? "Edit Project"
+                  : "Project Details"}
+              </h3>
+
+
+              {/* Project Name */}
+
+              <div className="form-group">
+
+                <label>
+                  Project Name
+                </label>
+
+                <input
+                  type="text"
+                  placeholder="Enter Project Name"
+                  value={
+                    projectName
+                  }
+                  onChange={(e) =>
+                    setProjectName(
+                      e.target.value
+                    )
+                  }
+                />
+
+              </div>
+
+
+              {/* Description */}
+
+              <div className="form-group">
+
+                <label>
+                  Description
+                </label>
+
+                <textarea
+                  rows="5"
+                  placeholder="Enter Description"
+                  value={
+                    description
+                  }
+                  onChange={(e) =>
+                    setDescription(
+                      e.target.value
+                    )
+                  }
+                />
+
+              </div>
+
+
+              {/* Date + Location */}
+
+              <div className="form-row">
+
+                <div className="form-group">
+
+                  <label>
+                    Date
+                  </label>
+
+                  <input
+                    type="date"
+                    value={
+                      projectDate
+                    }
+                    onChange={(e) =>
+                      setProjectDate(
+                        e.target.value
+                      )
+                    }
+                  />
+
+                </div>
+
+
+                <div className="form-group">
+
+                  <label>
+                    Location
+                  </label>
+
+                  <input
+                    type="text"
+                    placeholder="Enter Location"
+                    value={
+                      location
+                    }
+                    onChange={(e) =>
+                      setLocation(
+                        e.target.value
+                      )
+                    }
+                  />
+
+                </div>
+
+              </div>
+
+
+              {/* Project Save / Cancel */}
+
+              <div className="save-section">
+
+                <button
+                  type="button"
+                  className="save-btn"
+                  onClick={
+                    handleSave
+                  }
+                  disabled={loading}
+                >
+
+                  {loading
+                    ? "Saving..."
+                    : isEditing
+                    ? "Update Project"
+                    : "Save Project"}
+
+                </button>
+
+
+                <button
+                  type="button"
+                  className="cancel-btn"
+                  onClick={
+                    resetForm
+                  }
+                  disabled={loading}
+                >
+                  Cancel
+                </button>
+
+              </div>
 
             </div>
 
-          </div>
+          )}
 
-        </>
+        </div>
+
       )}
 
 
       {/* =====================================================
-          SAVED PROJECTS
+          SAVED ITEMS
       ===================================================== */}
 
       <div className="section">
@@ -954,15 +1364,15 @@ const ProjectAdmin = () => {
                 </th>
 
                 <th>
-                  Project Name
+                  Type
+                </th>
+
+                <th>
+                  Name
                 </th>
 
                 <th>
                   Description
-                </th>
-
-                <th>
-                  Gallery Images
                 </th>
 
                 <th>
@@ -1000,14 +1410,18 @@ const ProjectAdmin = () => {
               ) : (
 
                 currentProjects.map(
-                  (project, index) => (
+                  (
+                    project,
+                    index
+                  ) => (
 
                     <tr
-                      key={project.id}
+                      key={
+                        project.id
+                      }
                     >
 
-
-                      {/* Number */}
+                      {/* No */}
 
                       <td>
                         {startIndex +
@@ -1022,10 +1436,18 @@ const ProjectAdmin = () => {
 
                         <img
                           src={
-                            project.mainImage
+                            project.type ===
+                            "Banner"
+                              ? project.bannerImage
+                              : project.mainImage
                           }
                           alt={
-                            project.projectName
+                            project.type ===
+                            "Banner"
+                              ? project.bannerName ||
+                                "Banner"
+                              : project.projectName ||
+                                "Project"
                           }
                           className="table-image"
                         />
@@ -1033,10 +1455,27 @@ const ProjectAdmin = () => {
                       </td>
 
 
-                      {/* Project Name */}
+                      {/* Type */}
 
                       <td>
-                        {project.projectName}
+
+                        {project.type ||
+                          "Project"}
+
+                      </td>
+
+
+                      {/* Name */}
+
+                      <td>
+
+                        {project.type ===
+                        "Banner"
+                          ? project.bannerName ||
+                            "-"
+                          : project.projectName ||
+                            "-"}
+
                       </td>
 
 
@@ -1044,26 +1483,12 @@ const ProjectAdmin = () => {
 
                       <td className="desc-cell">
 
-                        {project.description ||
-                          "-"}
-
-                      </td>
-
-
-                      {/* Gallery Count */}
-
-                      <td>
-
-                        <span className="gallery-count">
-
-                          {project.galleryImages
-                            ? project
-                                .galleryImages
-                                .length
-                            : 0}{" "}
-                          Images
-
-                        </span>
+                        {project.type ===
+                        "Banner"
+                          ? project.bannerDescription ||
+                            "-"
+                          : project.description ||
+                            "-"}
 
                       </td>
 
@@ -1071,16 +1496,26 @@ const ProjectAdmin = () => {
                       {/* Date */}
 
                       <td>
-                        {project.projectDate ||
-                          "-"}
+
+                        {project.type ===
+                        "Banner"
+                          ? "-"
+                          : project.projectDate ||
+                            "-"}
+
                       </td>
 
 
                       {/* Location */}
 
                       <td>
-                        {project.location ||
-                          "-"}
+
+                        {project.type ===
+                        "Banner"
+                          ? "-"
+                          : project.location ||
+                            "-"}
+
                       </td>
 
 
@@ -1091,6 +1526,7 @@ const ProjectAdmin = () => {
                         <div className="project-actions">
 
                           <button
+                            type="button"
                             className="edit-btn"
                             onClick={() =>
                               editProject(
@@ -1104,6 +1540,7 @@ const ProjectAdmin = () => {
 
 
                           <button
+                            type="button"
                             className="delete-btn"
                             onClick={() =>
                               deleteProject(
@@ -1142,10 +1579,8 @@ const ProjectAdmin = () => {
 
           <div className="pagination">
 
-
-            {/* Previous */}
-
             <button
+              type="button"
               className="page-btn prev-next"
               onClick={() =>
                 goToPage(
@@ -1156,44 +1591,48 @@ const ProjectAdmin = () => {
                 currentPage === 1
               }
             >
-              
+              ‹
             </button>
 
-
-            {/* Page Numbers */}
 
             <div className="page-numbers">
 
               {Array.from(
                 {
-                  length: totalPages,
+                  length:
+                    totalPages,
                 },
                 (_, index) =>
                   index + 1
-              ).map((page) => (
+              ).map(
+                (page) => (
 
-                <button
-                  key={page}
-                  className={`page-btn ${
-                    currentPage === page
-                      ? "active"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    goToPage(page)
-                  }
-                >
-                  {page}
-                </button>
+                  <button
+                    type="button"
+                    key={page}
+                    className={`page-btn ${
+                      currentPage ===
+                      page
+                        ? "active"
+                        : ""
+                    }`}
+                    onClick={() =>
+                      goToPage(
+                        page
+                      )
+                    }
+                  >
+                    {page}
+                  </button>
 
-              ))}
+                )
+              )}
 
             </div>
 
 
-            {/* Next */}
-
             <button
+              type="button"
               className="page-btn prev-next"
               onClick={() =>
                 goToPage(
@@ -1205,9 +1644,8 @@ const ProjectAdmin = () => {
                 totalPages
               }
             >
-              
+              ›
             </button>
-
 
           </div>
 
@@ -1216,9 +1654,7 @@ const ProjectAdmin = () => {
       </div>
 
     </div>
-
   );
-
 };
 
 export default ProjectAdmin;

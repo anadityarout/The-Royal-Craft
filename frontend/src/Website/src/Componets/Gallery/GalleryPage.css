@@ -1,199 +1,1916 @@
+/* =========================================================
+   GOOGLE FONTS
+========================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap");
+
+
+/* =========================================================
+   GALLERY PAGE
+========================================================= */
+
 .gallery-page {
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+
     background: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    overflow-x: hidden;
 }
+
+
+/* =========================================================
+   GALLERY BANNER
+========================================================= */
 
 .gallery-banner {
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    position: relative;
+
+    width: 100vw;
+    max-width: 100vw;
+
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+
+    margin-top: 0;
+    margin-bottom: 0;
+
+    padding: 0;
+
     overflow: hidden;
+
+    background: #000;
 }
 
-.gallery-banner img {
+
+/* =========================================================
+   BANNER IMAGE
+========================================================= */
+
+.gallery-banner-image {
     display: block;
+
     width: 100%;
     height: auto;
+
+    min-height: 0;
+
+    object-fit: cover;
+    object-position: center center;
 }
 
-/* ===========================
-   Gallery Intro
-=========================== */
+
+/* =========================================================
+   EMPTY BANNER
+========================================================= */
+
+.gallery-banner-empty {
+    width: 100%;
+    min-height: 500px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+
+    color: #fff;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 48px;
+}
+
+
+/* =========================================================
+   BANNER OVERLAY
+========================================================= */
+
+.gallery-banner-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    box-sizing: border-box;
+
+    background:
+        linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.18) 0%,
+            rgba(0, 0, 0, 0.08) 45%,
+            rgba(0, 0, 0, 0) 75%
+        );
+}
+
+
+/* =========================================================
+   BANNER CONTAINER
+========================================================= */
+
+.gallery-banner-container {
+    position: absolute;
+
+    inset: 0;
+
+    width: 100%;
+    max-width: 1400px;
+
+    margin: 0 auto;
+
+    padding: 0 20px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+/* =========================================================
+   BANNER CONTENT
+========================================================= */
+
+.gallery-banner-content {
+    width: 560px;
+    max-width: 48%;
+
+    text-align: left;
+
+    color: #fff;
+}
+
+
+/* =========================================================
+   BANNER KICKER
+========================================================= */
+
+.gallery-banner-kicker {
+    display: inline-block;
+
+    margin-bottom: 20px;
+
+    padding: 7px 14px;
+
+    background: #0B2A4A;
+
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    letter-spacing: 0.4px;
+
+    text-transform: uppercase;
+
+    border-radius: 0;
+}
+
+
+/* =========================================================
+   BANNER TITLE
+========================================================= */
+
+.gallery-banner-content h1 {
+    max-width: 560px;
+
+    margin: 0;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 48px;
+
+    font-weight: 700;
+
+    line-height: 1.12;
+
+    letter-spacing: -0.5px;
+
+    color: #fff;
+
+    text-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.22);
+}
+
+
+/* =========================================================
+   BANNER DESCRIPTION
+========================================================= */
+
+.gallery-banner-content p {
+    max-width: 560px;
+
+    margin: 16px 0 0;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 400;
+
+    line-height: 1.7;
+
+    color: #fff;
+
+    text-shadow:
+        0 1px 5px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   BANNER BUTTON
+========================================================= */
+
+.gallery-banner-button {
+    margin-top: 26px;
+
+    min-width: 205px;
+    height: 48px;
+
+    padding: 0 25px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 16px;
+
+    border: none;
+
+    border-radius: 0;
+
+    background: #D6A54A;
+
+    color: #fff;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        transform 0.3s ease;
+}
+
+
+.gallery-banner-button span {
+    white-space: nowrap;
+}
+
+
+.gallery-banner-button svg {
+    flex-shrink: 0;
+
+    transition:
+        transform 0.3s ease;
+}
+
+
+.gallery-banner-button:hover {
+    background: #BF8D34;
+
+    transform: translateY(-2px);
+}
+
+
+.gallery-banner-button:hover svg {
+    transform: translateX(5px);
+}
+
+
+/* =========================================================
+   BREADCRUMB
+========================================================= */
+
+.gallery-banner-breadcrumb {
+    display: none !important;
+}
+
+
+/* =========================================================
+   GALLERY INTRO
+========================================================= */
 
 .gallery-intro {
-  width: 100%;
-  padding: 80px 80px 60px;
-  box-sizing: border-box;
+    width: 100%;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
+    padding: 80px 80px 60px;
+
+    box-sizing: border-box;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    text-align: center;
 }
+
+
+/* =========================================================
+   GALLERY TAG
+========================================================= */
 
 .gallery-tag {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: #555;
-  margin-bottom: 20px;
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    color: #555;
 }
+
 
 .gallery-tag::before {
-  content: "";
-  width: 32px;
-  height: 2px;
-  background: #c85b3d;
+    content: "";
+
+    width: 32px;
+    height: 2px;
+
+    background: #CF4930;
 }
+
+
+/* =========================================================
+   GALLERY TITLE
+========================================================= */
 
 .gallery-title {
-  max-width: 700px;
-  margin: 0 auto;
-  font-family: "Playfair Display", serif;
-  font-size: 52px;
-  font-weight: 500;
-  line-height: 1.2;
-  color: #111;
+    max-width: 700px;
+
+    margin: 0 auto;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 52px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+
+    color: #111;
 }
+
 
 .gallery-title span {
-  color: #c85b3d;
+    color: #CF4930;
 }
+
+
+/* =========================================================
+   GALLERY DESCRIPTION
+========================================================= */
 
 .gallery-description {
-  max-width: 560px;
-  margin: 24px auto 0;
-  font-size: 18px;
-  line-height: 1.8;
-  color: #666;
+    max-width: 560px;
+
+    margin: 24px auto 0;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 400;
+
+    line-height: 1.8;
+
+    color: #666;
 }
 
-/* ===========================
-   Gallery
-=========================== */
+
+/* =========================================================
+   GALLERY CONTAINER
+========================================================= */
 
 .gallery-container {
     width: 90%;
+
     max-width: 1500px;
+
     margin: 0 auto 80px;
 
     display: grid;
+
     grid-template-columns: repeat(4, 1fr);
+
     gap: 30px;
 }
 
+
+/* =========================================================
+   GALLERY MESSAGE
+========================================================= */
+
+.gallery-message {
+    grid-column: 1 / -1;
+
+    margin: 40px 0;
+
+    text-align: center;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    color: #555;
+}
+
+
+/* =========================================================
+   GALLERY CARD
+========================================================= */
+
 .gallery-card {
     position: relative;
+
     width: 100%;
+
     background: #fff;
+
     border-radius: 16px;
+
     overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,.08);
-    transition: .3s;
+
+    box-shadow:
+        0 8px 25px rgba(0, 0, 0, 0.08);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
 }
+
 
 .gallery-card:hover {
     transform: translateY(-8px);
+
+    box-shadow:
+        0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
+
+/* =========================================================
+   GALLERY IMAGE
+========================================================= */
+
 .gallery-card img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
     display: block;
+
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    object-fit: cover;
 }
+
+
+/* =========================================================
+   GALLERY CONTENT
+========================================================= */
 
 .gallery-content {
     position: absolute;
-    inset: auto 0 0 0;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     padding: 20px;
+
     text-align: center;
-    background: linear-gradient(to top, rgba(0,0,0,.75), transparent);
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0.78),
+            rgba(0, 0, 0, 0)
+        );
+
     opacity: 0;
+
     transform: translateY(10px);
-    transition: .3s;
+
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
 }
+
 
 .gallery-card:hover .gallery-content {
     opacity: 1;
+
     transform: translateY(0);
 }
 
+
+/* =========================================================
+   GALLERY CARD TITLE
+========================================================= */
+
 .gallery-content h3 {
-  margin: 0 0 10px;
-  font-size: 24px;
-  color: #fff;
+    margin: 0 0 10px;
+
+    font-family: "Playfair Display", serif;
+
+    font-size: 24px;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+
+    color: #fff;
 }
+
+
+/* =========================================================
+   GALLERY CARD SECONDARY TITLE
+========================================================= */
 
 .gallery-content h5 {
-  margin: 0 0 10px;
-  font-size: 16px;
-  color: #eee;
-  font-weight: 500;
+    margin: 0 0 10px;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 16px;
+
+    font-weight: 500;
+
+    line-height: 1.3;
+
+    color: #eee;
 }
+
+
+/* =========================================================
+   GALLERY CARD DESCRIPTION
+========================================================= */
 
 .gallery-content p {
-  margin: 0;
-  color: #ddd;
-  line-height: 1.7;
-  font-size: 15px;
+    margin: 0;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 15px;
+
+    font-weight: 400;
+
+    line-height: 1.7;
+
+    color: #ddd;
 }
 
-/* ===========================
-Responsive
-=========================== */
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1400px) {
+
+    .gallery-banner-content {
+        width: 600px;
+    }
+
+
+    .gallery-banner-content h1 {
+        font-size: 52px;
+    }
+
+
+    .gallery-banner-content p {
+        font-size: 16px;
+    }
+}
+
+
+/* =========================================================
+   LARGE TABLET / SMALL DESKTOP
+========================================================= */
+
+@media (max-width: 1200px) {
+
+    .gallery-banner-content {
+        width: 520px;
+
+        max-width: 50%;
+    }
+
+
+    .gallery-banner-content h1 {
+        font-size: 44px;
+    }
+
+
+    .gallery-banner-content p {
+        font-size: 15px;
+    }
+
+
+    .gallery-container {
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 25px;
+    }
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
 
 @media (max-width: 992px) {
 
-    .gallery-intro{
-        padding:60px 40px;
+    .gallery-banner-container {
+        padding: 0 40px;
     }
 
-    .gallery-title{
-        font-size:40px;
+
+    .gallery-banner-content {
+        width: 500px;
+
+        max-width: 60%;
     }
 
-    .gallery-description{
-        font-size:16px;
+
+    .gallery-banner-kicker {
+        margin-bottom: 14px;
+
+        padding: 6px 12px;
+
+        font-size: 11px;
     }
 
-    .gallery-container{
+
+    .gallery-banner-content h1 {
+        font-size: 40px;
+
+        line-height: 1.15;
+    }
+
+
+    .gallery-banner-content p {
+        max-width: 500px;
+
+        margin-top: 12px;
+
+        font-size: 14px;
+
+        line-height: 1.6;
+    }
+
+
+    .gallery-banner-button {
+        margin-top: 20px;
+
+        min-width: 190px;
+
+        height: 46px;
+
+        font-size: 13px;
+    }
+
+
+    .gallery-intro {
+        padding: 60px 40px;
+    }
+
+
+    .gallery-title {
+        font-size: 40px;
+    }
+
+
+    .gallery-description {
+        font-size: 16px;
+    }
+
+
+    .gallery-container {
+        width: 92%;
+
         grid-template-columns: repeat(2, 1fr);
-    }
 
+        gap: 24px;
+    }
 }
 
-@media (max-width:768px){
 
-    .gallery-intro{
-        padding:50px 20px;
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    /* =====================================================
+       PAGE
+    ===================================================== */
+
+    .gallery-page {
+        width: 100%;
+
+        overflow-x: hidden;
     }
 
-    .gallery-title{
-        font-size:34px;
+
+    /* =====================================================
+       MOBILE BANNER
+    ===================================================== */
+
+    .gallery-banner {
+        position: relative;
+
+        width: 100%;
+
+        max-width: 100%;
+
+        height: 360px;
+
+        min-height: 360px;
+
+        margin: 0;
+
+        padding: 0;
+
+        overflow: hidden;
     }
 
-    .gallery-container{
-        width:92%;
+
+    /* =====================================================
+       MOBILE BANNER IMAGE
+    ===================================================== */
+
+    .gallery-banner-image {
+        display: block;
+
+        width: 100%;
+
+        height: 100%;
+
+        min-height: 100%;
+
+        object-fit: cover;
+
+        object-position: center center;
+    }
+
+
+    /* =====================================================
+       MOBILE OVERLAY
+    ===================================================== */
+
+    .gallery-banner-overlay {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+
+        height: 100%;
+
+        background:
+            linear-gradient(
+                to right,
+                rgba(0, 0, 0, 0.58) 0%,
+                rgba(0, 0, 0, 0.40) 40%,
+                rgba(0, 0, 0, 0.16) 72%,
+                rgba(0, 0, 0, 0) 100%
+            );
+    }
+
+
+    /* =====================================================
+       MOBILE BANNER CONTAINER
+    ===================================================== */
+
+    .gallery-banner-container {
+        position: absolute;
+
+        inset: 0;
+
+        width: 100%;
+
+        max-width: 100%;
+
+        margin: 0;
+
+        padding: 0 24px;
+
+        box-sizing: border-box;
+
+        display: flex;
+
+        align-items: center;
+    }
+
+
+    /* =====================================================
+       MOBILE CONTENT
+    ===================================================== */
+
+    .gallery-banner-content {
+        width: 75%;
+
+        max-width: 75%;
+
+        text-align: left;
+    }
+
+
+    /* =====================================================
+       MOBILE KICKER
+    ===================================================== */
+
+    .gallery-banner-kicker {
+        display: inline-block;
+
+        margin-bottom: 13px;
+
+        padding: 7px 11px;
+
+        background: #0B2A4A;
+
+        color: #fff;
+
+        font-family: "Inter", sans-serif;
+
+        font-size: 10px;
+
+        font-weight: 700;
+
+        line-height: 1;
+
+        letter-spacing: 0.3px;
+    }
+
+
+    /* =====================================================
+       MOBILE TITLE
+    ===================================================== */
+
+    .gallery-banner-content h1 {
+        max-width: 100%;
+
+        margin: 0;
+
+        font-family: "Playfair Display", serif;
+
+        font-size: 34px;
+
+        font-weight: 700;
+
+        line-height: 1.12;
+
+        letter-spacing: -0.3px;
+
+        color: #fff;
+    }
+
+
+    /* =====================================================
+       MOBILE DESCRIPTION
+    ===================================================== */
+
+    .gallery-banner-content p {
+        max-width: 100%;
+
+        margin: 12px 0 0;
+
+        font-family: "Inter", sans-serif;
+
+        font-size: 13px;
+
+        font-weight: 400;
+
+        line-height: 1.55;
+
+        color: #fff;
+    }
+
+
+    /* =====================================================
+       MOBILE BUTTON
+    ===================================================== */
+
+    .gallery-banner-button {
+        margin-top: 20px;
+
+        min-width: 175px;
+
+        height: 44px;
+
+        padding: 0 18px;
+
+        display: inline-flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 12px;
+
+        border: none;
+
+        border-radius: 0;
+
+        background: #D6A54A;
+
+        color: #fff;
+
+        font-family: "Inter", sans-serif;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        line-height: 1;
+
+        cursor: pointer;
+    }
+
+
+    .gallery-banner-button svg {
+        width: 17px;
+
+        height: 17px;
+
+        flex-shrink: 0;
+    }
+
+
+    /* =====================================================
+       MOBILE INTRO
+    ===================================================== */
+
+    .gallery-intro {
+        width: 100%;
+
+        padding: 55px 22px 45px;
+
+        box-sizing: border-box;
+    }
+
+
+    /* =====================================================
+       MOBILE TAG
+    ===================================================== */
+
+    .gallery-tag {
+        gap: 10px;
+
+        margin-bottom: 15px;
+
+        font-size: 11px;
+
+        letter-spacing: 2.2px;
+    }
+
+
+    .gallery-tag::before {
+        width: 25px;
+
+        height: 2px;
+    }
+
+
+    /* =====================================================
+       MOBILE TITLE
+    ===================================================== */
+
+    .gallery-title {
+        width: 100%;
+
+        max-width: 600px;
+
+        font-size: 34px;
+
+        line-height: 1.18;
+    }
+
+
+    /* =====================================================
+       MOBILE DESCRIPTION
+    ===================================================== */
+
+    .gallery-description {
+        width: 100%;
+
+        max-width: 520px;
+
+        margin-top: 18px;
+
+        font-size: 15px;
+
+        line-height: 1.7;
+    }
+
+
+    /* =====================================================
+       MOBILE GALLERY
+    ===================================================== */
+
+    .gallery-container {
+        width: calc(100% - 40px);
+
+        max-width: none;
+
+        margin: 0 auto 60px;
+
         grid-template-columns: repeat(2, 1fr);
-        gap:20px;
+
+        gap: 18px;
     }
 
+
+    /* =====================================================
+       MOBILE CARD
+    ===================================================== */
+
+    .gallery-card {
+        border-radius: 12px;
+
+        box-shadow:
+            0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .gallery-card:hover {
+        transform: none;
+
+        box-shadow:
+            0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =====================================================
+       MOBILE IMAGE
+    ===================================================== */
+
+    .gallery-card img {
+        width: 100%;
+
+        aspect-ratio: 1 / 1;
+
+        object-fit: cover;
+    }
+
+
+    /* =====================================================
+       MOBILE CONTENT
+    ===================================================== */
+
+    .gallery-content {
+        padding: 14px;
+    }
+
+
+    .gallery-content h3 {
+        margin-bottom: 6px;
+
+        font-size: 19px;
+    }
+
+
+    .gallery-content h5 {
+        margin-bottom: 6px;
+
+        font-size: 13px;
+    }
+
+
+    .gallery-content p {
+        font-size: 12px;
+
+        line-height: 1.5;
+    }
 }
 
-@media (max-width:480px){
 
-    .gallery-container{
-        width:94%;
+/* =========================================================
+   SMALL MOBILE
+   576px
+========================================================= */
+
+@media (max-width: 576px) {
+
+    /* =====================================================
+       BANNER
+    ===================================================== */
+
+    .gallery-banner {
+        height: 330px;
+
+        min-height: 330px;
+    }
+
+
+    .gallery-banner-image {
+        width: 100%;
+
+        height: 100%;
+
+        min-height: 100%;
+
+        object-fit: cover;
+
+        object-position: center center;
+    }
+
+
+    .gallery-banner-container {
+        padding: 0 20px;
+    }
+
+
+    .gallery-banner-content {
+        width: 78%;
+
+        max-width: 78%;
+    }
+
+
+    /* =====================================================
+       KICKER
+    ===================================================== */
+
+    .gallery-banner-kicker {
+        margin-bottom: 11px;
+
+        padding: 6px 10px;
+
+        font-size: 9px;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .gallery-banner-content h1 {
+        font-size: 30px;
+
+        line-height: 1.12;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .gallery-banner-content p {
+        margin-top: 10px;
+
+        font-size: 12px;
+
+        line-height: 1.5;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .gallery-banner-button {
+        margin-top: 17px;
+
+        min-width: 165px;
+
+        height: 42px;
+
+        padding: 0 16px;
+
+        gap: 10px;
+
+        font-size: 11px;
+    }
+
+
+    .gallery-banner-button svg {
+        width: 16px;
+
+        height: 16px;
+    }
+
+
+    /* =====================================================
+       INTRO
+    ===================================================== */
+
+    .gallery-intro {
+        padding: 48px 18px 40px;
+    }
+
+
+    .gallery-tag {
+        font-size: 10px;
+
+        letter-spacing: 1.8px;
+    }
+
+
+    .gallery-tag::before {
+        width: 22px;
+    }
+
+
+    .gallery-title {
+        font-size: 30px;
+
+        line-height: 1.2;
+    }
+
+
+    .gallery-description {
+        margin-top: 16px;
+
+        font-size: 14px;
+
+        line-height: 1.65;
+    }
+
+
+    /* =====================================================
+       GALLERY
+    ===================================================== */
+
+    .gallery-container {
+        width: calc(100% - 32px);
+
+        gap: 16px;
+
+        margin-bottom: 50px;
+    }
+
+
+    .gallery-card {
+        border-radius: 10px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   480px
+========================================================= */
+
+@media (max-width: 480px) {
+
+    /* =====================================================
+       BANNER
+    ===================================================== */
+
+    .gallery-banner {
+        height: 310px;
+
+        min-height: 310px;
+    }
+
+
+    .gallery-banner-image {
+        width: 100%;
+
+        height: 100%;
+
+        object-fit: cover;
+
+        object-position: center center;
+    }
+
+
+    /* =====================================================
+       OVERLAY
+    ===================================================== */
+
+    .gallery-banner-overlay {
+        background:
+            linear-gradient(
+                to right,
+                rgba(0, 0, 0, 0.62) 0%,
+                rgba(0, 0, 0, 0.42) 43%,
+                rgba(0, 0, 0, 0.12) 80%,
+                rgba(0, 0, 0, 0) 100%
+            );
+    }
+
+
+    /* =====================================================
+       CONTAINER
+    ===================================================== */
+
+    .gallery-banner-container {
+        padding: 0 18px;
+    }
+
+
+    /* =====================================================
+       CONTENT
+    ===================================================== */
+
+    .gallery-banner-content {
+        width: 82%;
+
+        max-width: 82%;
+    }
+
+
+    /* =====================================================
+       KICKER
+    ===================================================== */
+
+    .gallery-banner-kicker {
+        margin-bottom: 9px;
+
+        padding: 5px 9px;
+
+        font-size: 8px;
+
+        letter-spacing: 0.2px;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .gallery-banner-content h1 {
+        font-size: 27px;
+
+        line-height: 1.1;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .gallery-banner-content p {
+        margin-top: 8px;
+
+        font-size: 11px;
+
+        line-height: 1.45;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .gallery-banner-button {
+        margin-top: 14px;
+
+        min-width: 150px;
+
+        height: 39px;
+
+        padding: 0 14px;
+
+        gap: 8px;
+
+        font-size: 10px;
+    }
+
+
+    .gallery-banner-button svg {
+        width: 14px;
+
+        height: 14px;
+    }
+
+
+    /* =====================================================
+       INTRO
+    ===================================================== */
+
+    .gallery-intro {
+        padding: 42px 16px 36px;
+    }
+
+
+    .gallery-tag {
+        gap: 9px;
+
+        font-size: 9px;
+
+        letter-spacing: 1.5px;
+    }
+
+
+    .gallery-tag::before {
+        width: 20px;
+    }
+
+
+    .gallery-title {
+        font-size: 27px;
+
+        line-height: 1.2;
+    }
+
+
+    .gallery-description {
+        max-width: 340px;
+
+        font-size: 14px;
+
+        line-height: 1.65;
+    }
+
+
+    /* =====================================================
+       GALLERY
+    ===================================================== */
+
+    .gallery-container {
+        width: calc(100% - 28px);
+
         grid-template-columns: 1fr;
-        gap:18px;
+
+        gap: 18px;
+
+        margin-bottom: 45px;
     }
 
+
+    .gallery-card {
+        border-radius: 12px;
+    }
+
+
+    .gallery-card img {
+        aspect-ratio: 1 / 1;
+    }
+
+
+    .gallery-content {
+        padding: 16px;
+    }
+
+
+    .gallery-content h3 {
+        font-size: 20px;
+    }
+
+
+    .gallery-content h5 {
+        font-size: 14px;
+    }
+
+
+    .gallery-content p {
+        font-size: 13px;
+
+        line-height: 1.55;
+    }
+}
+
+
+/* =========================================================
+   EXTRA SMALL PHONES
+   380px
+========================================================= */
+
+@media (max-width: 380px) {
+
+    /* =====================================================
+       BANNER
+    ===================================================== */
+
+    .gallery-banner {
+        height: 290px;
+
+        min-height: 290px;
+    }
+
+
+    .gallery-banner-container {
+        padding: 0 15px;
+    }
+
+
+    .gallery-banner-content {
+        width: 86%;
+
+        max-width: 86%;
+    }
+
+
+    /* =====================================================
+       KICKER
+    ===================================================== */
+
+    .gallery-banner-kicker {
+        margin-bottom: 7px;
+
+        padding: 4px 7px;
+
+        font-size: 7.5px;
+    }
+
+
+    /* =====================================================
+       TITLE
+    ===================================================== */
+
+    .gallery-banner-content h1 {
+        font-size: 23px;
+
+        line-height: 1.1;
+    }
+
+
+    /* =====================================================
+       DESCRIPTION
+    ===================================================== */
+
+    .gallery-banner-content p {
+        font-size: 10px;
+
+        line-height: 1.4;
+    }
+
+
+    /* =====================================================
+       BUTTON
+    ===================================================== */
+
+    .gallery-banner-button {
+        margin-top: 11px;
+
+        min-width: 140px;
+
+        height: 36px;
+
+        padding: 0 11px;
+
+        gap: 7px;
+
+        font-size: 9px;
+    }
+
+
+    .gallery-banner-button svg {
+        width: 13px;
+
+        height: 13px;
+    }
+
+
+    /* =====================================================
+       INTRO
+    ===================================================== */
+
+    .gallery-intro {
+        padding: 38px 14px 32px;
+    }
+
+
+    .gallery-tag {
+        font-size: 8px;
+
+        letter-spacing: 1.3px;
+    }
+
+
+    .gallery-tag::before {
+        width: 18px;
+    }
+
+
+    .gallery-title {
+        font-size: 25px;
+
+        line-height: 1.2;
+    }
+
+
+    .gallery-description {
+        font-size: 13px;
+
+        line-height: 1.6;
+    }
+
+
+    /* =====================================================
+       GALLERY
+    ===================================================== */
+
+    .gallery-container {
+        width: calc(100% - 24px);
+
+        gap: 16px;
+
+        margin-bottom: 40px;
+    }
+
+
+    .gallery-content {
+        padding: 14px;
+    }
+
+
+    .gallery-content h3 {
+        font-size: 18px;
+    }
+
+
+    .gallery-content h5 {
+        font-size: 13px;
+    }
+
+
+    .gallery-content p {
+        font-size: 12px;
+    }
+}
+
+
+/* =========================================================
+   TOUCH DEVICES
+========================================================= */
+
+@media (hover: none) and (pointer: coarse) {
+
+    .gallery-card:hover {
+        transform: none;
+
+        box-shadow:
+            0 8px 25px rgba(0, 0, 0, 0.08);
+    }
+
+
+    .gallery-card:hover .gallery-content {
+        opacity: 0;
+
+        transform: translateY(10px);
+    }
+}
+
+/* =========================================================
+   FINAL MOBILE GALLERY BANNER
+   SAME MOBILE STYLE AS SHOP / ABOUT
+   These rules are intentionally at the end so they override
+   the older mobile banner rules above.
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .gallery-banner {
+        position: relative;
+        width: 100%;
+        max-width: 100%;
+        height: 420px;
+        min-height: 420px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .gallery-banner-image {
+        position: absolute;
+        inset: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 100%;
+        object-fit: cover;
+        object-position: center center;
+    }
+
+    .gallery-banner-overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        background:
+            linear-gradient(
+                to right,
+                rgba(0, 0, 0, 0.78) 0%,
+                rgba(0, 0, 0, 0.55) 38%,
+                rgba(0, 0, 0, 0.25) 68%,
+                rgba(0, 0, 0, 0.08) 100%
+            );
+    }
+
+    .gallery-banner-container {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+    }
+
+    .gallery-banner-content {
+        width: 100%;
+        max-width: 340px;
+        text-align: left;
+    }
+
+    .gallery-banner-kicker {
+        display: inline-block;
+        margin-bottom: 13px;
+        padding: 7px 11px;
+        background: #0B2A4A;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        line-height: 1;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        border-radius: 0;
+    }
+
+    .gallery-banner-content h1 {
+        max-width: 100%;
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.12;
+        letter-spacing: -0.3px;
+        color: #fff;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .gallery-banner-content p {
+        max-width: 100%;
+        margin: 12px 0 0;
+        font-family: "Inter", sans-serif;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 1.55;
+        color: #fff;
+        text-shadow: 0 1px 5px rgba(0, 0, 0, 0.35);
+    }
+
+    .gallery-banner-button {
+        margin-top: 20px;
+        min-width: 145px;
+        height: 42px;
+        padding: 0 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        border: none;
+        border-radius: 0;
+        background: #D6A54A;
+        color: #fff;
+        font-family: "Inter", sans-serif;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        cursor: pointer;
+    }
+
+    .gallery-banner-button svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 576px) {
+
+    .gallery-banner {
+        height: 390px;
+        min-height: 390px;
+    }
+
+    .gallery-banner-container {
+        padding: 20px;
+    }
+
+    .gallery-banner-content {
+        width: 100%;
+        max-width: 315px;
+    }
+
+    .gallery-banner-kicker {
+        margin-bottom: 11px;
+        padding: 6px 10px;
+        font-size: 9px;
+    }
+
+    .gallery-banner-content h1 {
+        font-size: 28px;
+        line-height: 1.12;
+    }
+
+    .gallery-banner-content p {
+        margin-top: 10px;
+        font-size: 11.5px;
+        line-height: 1.5;
+    }
+
+    .gallery-banner-button {
+        margin-top: 18px;
+        min-width: 142px;
+        height: 41px;
+        padding: 0 16px;
+        gap: 9px;
+        font-size: 11px;
+    }
+
+    .gallery-banner-button svg {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .gallery-banner {
+        height: 370px;
+        min-height: 370px;
+    }
+
+    .gallery-banner-container {
+        padding: 18px;
+    }
+
+    .gallery-banner-content {
+        width: 100%;
+        max-width: 295px;
+    }
+
+    .gallery-banner-kicker {
+        margin-bottom: 9px;
+        padding: 5px 9px;
+        font-size: 8px;
+        letter-spacing: 0.2px;
+    }
+
+    .gallery-banner-content h1 {
+        font-size: 25px;
+        line-height: 1.1;
+    }
+
+    .gallery-banner-content p {
+        margin-top: 8px;
+        font-size: 10.5px;
+        line-height: 1.45;
+    }
+
+    .gallery-banner-button {
+        margin-top: 15px;
+        min-width: 135px;
+        height: 39px;
+        padding: 0 14px;
+        gap: 8px;
+        font-size: 10px;
+    }
+
+    .gallery-banner-button svg {
+        width: 14px;
+        height: 14px;
+    }
 }

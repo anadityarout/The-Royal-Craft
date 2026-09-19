@@ -1,9 +1,7 @@
 // Shop.jsx
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Shop.css";
-import BannerImage from "../../assets/banner.jpg";
 import PageSeo from "../SeoPage/PageSeo";
 
 import {
@@ -13,8 +11,10 @@ import {
   FiHeadphones,
 } from "react-icons/fi";
 
+import { ArrowRight } from "lucide-react";
+
 // =====================================================
-// PRODUCT API
+// API
 // =====================================================
 
 const PRODUCT_API =
@@ -64,16 +64,18 @@ const Shop = () => {
     "Exterior",
     "Railings",
     "Selfie Point",
-   "Royal Fiber Lamp",
+    "Royal Fiber Lamp",
   ];
 
   // =====================================================
-  // BANNER
+  // SHOP BANNER
   // =====================================================
 
   const [shopData, setShopData] = useState({
+    image: "",
+    name: "Shop",
+    description: "",
     breadcrumb: "Home > Shop",
-    image: BannerImage,
   });
 
   // =====================================================
@@ -117,6 +119,10 @@ const Shop = () => {
     loadData();
   }, []);
 
+  // =====================================================
+  // LOAD SHOP BANNER + PRODUCTS
+  // =====================================================
+
   const loadData = async () => {
     try {
       setLoading(true);
@@ -125,28 +131,39 @@ const Shop = () => {
       // LOAD SHOP BANNER
       // =================================================
 
-      const banner =
-        localStorage.getItem("shopBanner");
+      const bannerResponse = await fetch(
+        `${PRODUCT_API}?type=banner`
+      );
 
-      if (banner) {
-        try {
-          const data = JSON.parse(banner);
+      if (!bannerResponse.ok) {
+        throw new Error("Unable to load shop banner.");
+      }
 
-          setShopData({
-            title: data.title || "Shop",
+      const bannerData = await bannerResponse.json();
 
-            breadcrumb:
-              data.breadcrumb || "Home > Shop",
+      console.log(
+        "Shop Banner API Response:",
+        bannerData
+      );
 
-            image:
-              data.image || BannerImage,
-          });
-        } catch (error) {
-          console.error(
-            "Invalid shop banner data:",
-            error
-          );
-        }
+      // =================================================
+      // SET SHOP BANNER
+      // =================================================
+
+      if (bannerData && bannerData.image) {
+        setShopData({
+          image: bannerData.image,
+          name: bannerData.name || "Shop",
+          description: bannerData.description || "",
+          breadcrumb: "Home > Shop",
+        });
+      } else {
+        setShopData({
+          image: "",
+          name: "Shop",
+          description: "",
+          breadcrumb: "Home > Shop",
+        });
       }
 
       // =================================================
@@ -156,24 +173,26 @@ const Shop = () => {
       const response = await fetch(PRODUCT_API);
 
       if (!response.ok) {
-        throw new Error(
-          "Unable to load products."
-        );
+        throw new Error("Unable to load products.");
       }
 
-      const productData =
-        await response.json();
+      const productData = await response.json();
 
-      const safeProducts =
-        Array.isArray(productData)
-          ? productData
-          : [];
+      console.log(
+        "Products API Response:",
+        productData
+      );
+
+      // =================================================
+      // SAFE PRODUCTS
+      // =================================================
+
+      const safeProducts = Array.isArray(productData)
+        ? productData
+        : [];
 
       setProducts(safeProducts);
-
-      setFilteredProducts(
-        safeProducts
-      );
+      setFilteredProducts(safeProducts);
     } catch (error) {
       console.error(
         "Shop data loading error:",
@@ -214,21 +233,18 @@ const Shop = () => {
     // =================================================
 
     if (searchText.trim() !== "") {
-      const keyword =
-        searchText
-          .toLowerCase()
-          .trim();
+      const keyword = searchText
+        .toLowerCase()
+        .trim();
 
       result = result.filter(
         (item) =>
           item.name
             ?.toLowerCase()
             .includes(keyword) ||
-
           item.category
             ?.toLowerCase()
             .includes(keyword) ||
-
           item.description
             ?.toLowerCase()
             .includes(keyword)
@@ -315,43 +331,47 @@ const Shop = () => {
   };
 
   // =====================================================
+  // EXPLORE COLLECTION
+  // =====================================================
+
+  const handleExploreCollection = () => {
+    const shopBody =
+      document.querySelector(".shop-body");
+
+    if (shopBody) {
+      shopBody.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }
+  };
+
+  // =====================================================
   // OPEN PRODUCT DETAILS
   // =====================================================
 
-  // =====================================================
-// OPEN PRODUCT DETAILS
-// =====================================================
+  const openProduct = (product) => {
+    if (!product) return;
 
-const openProduct = (product) => {
-  if (!product) return;
+    const productSlug =
+      createProductSlug(product.name);
 
-  // Create URL-friendly product name
-  const productSlug =
-    createProductSlug(product.name);
+    console.log(
+      "Opening product:",
+      product.name
+    );
 
-  console.log(
-    "Opening product:",
-    product.name
-  );
+    console.log(
+      "Product URL:",
+      `/shop/${productSlug}`
+    );
 
-  console.log(
-    "Product URL:",
-    `/shop/${productSlug}`
-  );
-
-  // =================================================
-  // OPEN PRODUCT DETAILS
-  // =================================================
-
-  navigate(
-    `/shop/${productSlug}`,
-    {
+    navigate(`/shop/${productSlug}`, {
       state: {
         product: product,
       },
-    }
-  );
-};
+    });
+  };
 
   // =====================================================
   // RETURN
@@ -359,6 +379,10 @@ const openProduct = (product) => {
 
   return (
     <>
+      {/* =================================================
+          SEO
+      ================================================= */}
+
       <PageSeo page="Shop" />
 
       <div className="shop-page">
@@ -369,27 +393,81 @@ const openProduct = (product) => {
 
         <section className="shop-banner">
 
-          <img
-            src={shopData.image}
-            alt="Shop Banner"
-            className="shop-banner-img"
-          />
+          {/* =================================================
+              BANNER IMAGE
+          ================================================= */}
+
+          {shopData.image ? (
+            <img
+              src={shopData.image}
+              alt={
+                shopData.name ||
+                "Shop Banner"
+              }
+              className="shop-banner-img"
+              loading="eager"
+              fetchPriority="high"
+            />
+          ) : null}
+
+          {/* =================================================
+              BANNER OVERLAY
+          ================================================= */}
+
+          <div className="shop-overlay"></div>
+
+          {/* =================================================
+              BANNER CONTENT
+          ================================================= */}
 
           <div className="shop-container">
 
             <div className="shop-content">
 
+              {/* =================================================
+                  KICKER
+              ================================================= */}
+
+              <span className="shop-banner-kicker">
+                THE ROYAL KRAFT
+              </span>
+
+              {/* =================================================
+                  BANNER NAME
+              ================================================= */}
+
               <h1>
-                {shopData.title}
+                {shopData.name || "Shop"}
               </h1>
 
-              <div className="breadcrumb">
+              {/* =================================================
+                  BANNER DESCRIPTION
+              ================================================= */}
 
+              {shopData.description && (
+                <p className="shop-banner-description">
+                  {shopData.description}
+                </p>
+              )}
+
+              {/* =================================================
+                  EXPLORE BUTTON
+              ================================================= */}
+
+              <button
+                type="button"
+                className="shop-banner-button"
+                onClick={handleExploreCollection}
+              >
                 <span>
-                  {shopData.title}
+                  Explore Collection
                 </span>
 
-              </div>
+                <ArrowRight
+                  size={20}
+                  strokeWidth={2}
+                />
+              </button>
 
             </div>
 
@@ -409,7 +487,9 @@ const openProduct = (product) => {
 
           <div className="search-section">
 
-            {/* SEARCH */}
+            {/* =================================================
+                SEARCH
+            ================================================= */}
 
             <div className="search-left">
 
@@ -444,9 +524,13 @@ const openProduct = (product) => {
 
             </div>
 
-            {/* FEATURES */}
+            {/* =================================================
+                FEATURES
+            ================================================= */}
 
             <div className="search-right">
+
+              {/* DELIVERY */}
 
               <div className="feature-item">
 
@@ -468,6 +552,8 @@ const openProduct = (product) => {
 
               </div>
 
+              {/* QUALITY */}
+
               <div className="feature-item">
 
                 <FiShield
@@ -487,6 +573,8 @@ const openProduct = (product) => {
                 </div>
 
               </div>
+
+              {/* HELP */}
 
               <div className="feature-item">
 
@@ -520,7 +608,6 @@ const openProduct = (product) => {
 
             {categories.map(
               (category) => (
-
                 <button
                   type="button"
                   key={category}
@@ -538,7 +625,6 @@ const openProduct = (product) => {
                 >
                   {category}
                 </button>
-
               )
             )}
 
@@ -576,11 +662,9 @@ const openProduct = (product) => {
           ================================================= */}
 
           {loading && (
-
             <div className="shop-loading">
               Loading Products...
             </div>
-
           )}
 
           {/* =================================================
@@ -603,9 +687,7 @@ const openProduct = (product) => {
                     }
                   >
 
-                    {/* =================================================
-                        PRODUCT IMAGE
-                    ================================================= */}
+                    {/* PRODUCT IMAGE */}
 
                     <div
                       className="product-image"
@@ -622,11 +704,13 @@ const openProduct = (product) => {
                           e.key === "Enter" ||
                           e.key === " "
                         ) {
+
                           e.preventDefault();
 
                           openProduct(
                             product
                           );
+
                         }
 
                       }}
@@ -645,29 +729,23 @@ const openProduct = (product) => {
 
                     </div>
 
-                    {/* =================================================
-                        PRODUCT INFORMATION
-                    ================================================= */}
+                    {/* PRODUCT INFORMATION */}
 
                     <div className="product-info">
 
                       {/* CATEGORY */}
 
                       {product.category && (
-
                         <span className="product-category">
                           {product.category}
                         </span>
-
                       )}
 
                       {/* NAME */}
 
                       <h3 className="product-name">
-
                         {product.name ||
                           "Product Name"}
-
                       </h3>
 
                       {/* BUTTON */}
@@ -696,9 +774,7 @@ const openProduct = (product) => {
               )
 
             ) : (
-
               !loading && (
-
                 <div className="no-product">
 
                   <img
@@ -717,9 +793,7 @@ const openProduct = (product) => {
                   </p>
 
                 </div>
-
               )
-
             )}
 
           </div>
