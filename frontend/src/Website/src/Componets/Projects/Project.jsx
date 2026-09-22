@@ -7,7 +7,12 @@ const API_URL =
 
 const Project = () => {
   const navigate = useNavigate();
+
   const [projects, setProjects] = useState([]);
+
+  // =====================================================
+  // LOAD PROJECTS
+  // =====================================================
 
   useEffect(() => {
     loadProjects();
@@ -23,12 +28,40 @@ const Project = () => {
 
       const data = await response.json();
 
-      setProjects(data);
+      // Make sure API response is an array
+      if (Array.isArray(data)) {
+        setProjects(data);
+      } else {
+        console.error("Invalid project data:", data);
+        setProjects([]);
+      }
     } catch (error) {
       console.error("Error loading projects:", error);
       setProjects([]);
     }
   };
+
+  // =====================================================
+  // ONLY SHOW VALID PROJECTS
+  // =====================================================
+
+  const validProjects = projects.filter((item) => {
+    const projectImage = item.mainImage?.trim();
+    const projectName = item.projectName?.trim();
+
+    // Don't show records without image or project name
+    if (!projectImage) return false;
+    if (!projectName) return false;
+
+    // Don't show banner records if API contains one
+    const type = item.type?.trim().toLowerCase();
+    const category = item.category?.trim().toLowerCase();
+
+    if (type === "banner") return false;
+    if (category === "banner") return false;
+
+    return true;
+  });
 
   // =====================================================
   // OPEN EXACT PROJECT WITH PROJECT NAME IN URL
@@ -47,6 +80,10 @@ const Project = () => {
       },
     });
   };
+
+  // =====================================================
+  // RENDER
+  // =====================================================
 
   return (
     <section className="rk-project-section">
@@ -71,8 +108,10 @@ const Project = () => {
             Our portfolio showcases luxury architectural décor created for
             hotels, banquet halls, villas, temples, resorts, commercial
             buildings, and premium residences across India.
+
             <br />
             <br />
+
             Every project is thoughtfully designed to blend elegance,
             durability, and architectural excellence.
           </p>
@@ -94,58 +133,69 @@ const Project = () => {
 
           <div className="rk-project-grid">
 
-            {projects.map((item) => (
+            {validProjects.length > 0 ? (
 
-              <div
-                className="rk-project-card"
-                key={item.id}
-              >
+              validProjects.map((item) => (
 
-                {/* =====================================================
-                    PROJECT IMAGE
-                ===================================================== */}
-
-                <div className="rk-project-image">
-
-                  <img
-                    src={item.mainImage}
-                    alt={item.projectName || "Project"}
-                  />
-
-                </div>
-
-                {/* =====================================================
-                    PROJECT FOOTER
-                ===================================================== */}
-
-                <div className="rk-project-footer">
-
-                  <span className="rk-project-icon">
-                    🏛
-                  </span>
-
-                  <span className="rk-project-name">
-                    {item.projectName}
-                  </span>
+                <div
+                  className="rk-project-card"
+                  key={item.id}
+                >
 
                   {/* =====================================================
-                      ONLY ARROW IS CLICKABLE
+                      PROJECT IMAGE
                   ===================================================== */}
 
-                  <button
-                    type="button"
-                    className="rk-project-arrow-btn"
-                    onClick={() => openProject(item)}
-                    aria-label={`View ${item.projectName}`}
-                  >
-                    →
-                  </button>
+                  <div className="rk-project-image">
+
+                    <img
+                      src={item.mainImage}
+                      alt={item.projectName}
+                      loading="lazy"
+                    />
+
+                  </div>
+
+                  {/* =====================================================
+                      PROJECT FOOTER
+                  ===================================================== */}
+
+                  <div className="rk-project-footer">
+
+                    <span className="rk-project-icon">
+                      🏛
+                    </span>
+
+                    <span className="rk-project-name">
+                      {item.projectName}
+                    </span>
+
+                    {/* =====================================================
+                        ONLY ARROW IS CLICKABLE
+                    ===================================================== */}
+
+                    <button
+                      type="button"
+                      className="rk-project-arrow-btn"
+                      onClick={() => openProject(item)}
+                      aria-label={`View ${item.projectName}`}
+                    >
+                      →
+                    </button>
+
+                  </div>
 
                 </div>
 
-              </div>
+              ))
 
-            ))}
+            ) : (
+
+              <p className="rk-project-status">
+                No projects available.
+              </p>
+
+            )}
 
           </div>
 
