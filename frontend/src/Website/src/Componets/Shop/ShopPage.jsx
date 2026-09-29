@@ -738,43 +738,18 @@ const ShopPage = ({
             ================================================= */}
 
             <div className="rk-shop-actions">
+  <button
+    type="button"
+    className="rk-enquiry-btn"
+    onClick={openEnquiry}
+  >
+    <MessageCircle size={18} strokeWidth={2} />
 
-              <button
-                type="button"
-                className="rk-enquiry-btn"
-                onClick={openEnquiry}
-              >
+    <span>Enquiry Now</span>
 
-                <MessageCircle
-                  size={18}
-                />
-
-                <span>
-                  Enquiry Now
-                </span>
-
-                <ArrowRight
-                  size={16}
-                />
-
-              </button>
-
-              <a
-                className="rk-whatsapp-btn"
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-
-                <Phone size={16} />
-
-                <span>
-                  Chat on WhatsApp
-                </span>
-
-              </a>
-
-            </div>
+    <ArrowRight size={17} strokeWidth={2} />
+  </button>
+</div>
 
             {/* CONSULTATION */}
 

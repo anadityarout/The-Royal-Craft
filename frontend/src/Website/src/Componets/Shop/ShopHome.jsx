@@ -7,6 +7,10 @@ import {
 } from "lucide-react";
 import "./ShopHome.css";
 
+// =====================================================
+// API
+// =====================================================
+
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/shop-product";
 
@@ -74,11 +78,7 @@ const ShopHome = () => {
 
       setProducts(productList);
     } catch (error) {
-      console.error(
-        "Product loading error:",
-        error
-      );
-
+      console.error("Product loading error:", error);
       setProducts([]);
     } finally {
       setLoading(false);
@@ -110,8 +110,7 @@ const ShopHome = () => {
 
     if (!track) return;
 
-    const card =
-      track.querySelector(".shop-card");
+    const card = track.querySelector(".shop-card");
 
     const cardWidth = card
       ? card.offsetWidth + 16
@@ -135,8 +134,7 @@ const ShopHome = () => {
       event.currentTarget.src !==
       FALLBACK_IMAGE
     ) {
-      event.currentTarget.src =
-        FALLBACK_IMAGE;
+      event.currentTarget.src = FALLBACK_IMAGE;
     }
   };
 
@@ -189,9 +187,7 @@ const ShopHome = () => {
           <button
             type="button"
             className="shop-arrow shop-arrow-left"
-            onClick={() =>
-              scrollByCard("left")
-            }
+            onClick={() => scrollByCard("left")}
             aria-label="Scroll left"
           >
             <ChevronLeft size={20} />
@@ -242,18 +238,14 @@ const ShopHome = () => {
                   index;
 
                 const isWished =
-                  wishlist.includes(
-                    productId
-                  );
+                  wishlist.includes(productId);
 
                 const productSlug =
-                  createProductSlug(
-                    item.name
-                  );
+                  createProductSlug(item.name);
 
                 return (
                   <Link
-                    to={`/shop/${productSlug}`}
+                    to={`/product/${productSlug}`}
                     state={{
                       product: item,
                     }}
@@ -280,9 +272,7 @@ const ShopHome = () => {
                         }
                         className="shop-image"
                         loading="lazy"
-                        onError={
-                          handleImageError
-                        }
+                        onError={handleImageError}
                       />
 
                       {/* =================================================
@@ -292,17 +282,13 @@ const ShopHome = () => {
                       <button
                         type="button"
                         className={`wishlist-btn ${
-                          isWished
-                            ? "active"
-                            : ""
+                          isWished ? "active" : ""
                         }`}
                         onClick={(event) => {
                           event.preventDefault();
                           event.stopPropagation();
 
-                          toggleWishlist(
-                            productId
-                          );
+                          toggleWishlist(productId);
                         }}
                         aria-label={
                           isWished
@@ -329,8 +315,7 @@ const ShopHome = () => {
                     <div className="shop-info">
 
                       <h4>
-                        {item.name ||
-                          "Product Name"}
+                        {item.name || "Product Name"}
                       </h4>
 
                       {item.category && (
@@ -354,9 +339,7 @@ const ShopHome = () => {
           <button
             type="button"
             className="shop-arrow shop-arrow-right"
-            onClick={() =>
-              scrollByCard("right")
-            }
+            onClick={() => scrollByCard("right")}
             aria-label="Scroll right"
           >
             <ChevronRight size={20} />
@@ -370,13 +353,11 @@ const ShopHome = () => {
 
         <div className="shop-home-footer">
 
-          <Link to="/shop">
-            <button
-              type="button"
-              className="all-btn"
-            >
-              VIEW ALL PRODUCTS
-            </button>
+          <Link
+            to="/product"
+            className="all-btn"
+          >
+            VIEW ALL PRODUCTS
           </Link>
 
         </div>

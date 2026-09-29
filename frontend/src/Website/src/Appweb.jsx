@@ -29,14 +29,12 @@ import HomeSlider from "./Componets/Home/HomeSlider";
 import About from "./Componets/About/About";
 import Counter from "./Componets/Counting/Counter";
 import Work from "./Componets/Work/Work";
-import Product from "./Componets/Product/Product";
 import Process from "./Componets/Process/Process";
 
 // =====================================================
 // PAGES
 // =====================================================
 
-import ProductPage from "./Componets/ProductPage/ProductPage";
 import ServicePage from "./Componets/Service/ServicePage";
 import BlogPage from "./Componets/Blog/BlogPage";
 import GalleryPage from "./Componets/Gallery/GalleryPage";
@@ -44,10 +42,10 @@ import AboutPage from "./Componets/AboutPage/AboutPage";
 import ContactPage from "./Componets/Contact/ContactPage";
 
 // =====================================================
-// SHOP
+// PRODUCT
 // =====================================================
 
-import Shop from "./Componets/Shop/Shop";
+import Product from "./Componets/Shop/Product";
 import ShopHome from "./Componets/Shop/ShopHome";
 import ShopPage from "./Componets/Shop/ShopPage";
 
@@ -83,7 +81,7 @@ const createProductSlug = (name) => {
 };
 
 // =====================================================
-// SCROLL TO TOP ON PAGE CHANGE
+// SCROLL TO TOP
 // =====================================================
 
 function ScrollToTop() {
@@ -118,12 +116,10 @@ function Home() {
       <Work />
 
       {/* =================================================
-          SHOP HOME
+          PRODUCT HOME
       ================================================= */}
 
       <ShopHome />
-
-      <Product />
 
       <Project />
 
@@ -139,10 +135,10 @@ function Home() {
 }
 
 // =====================================================
-// SHOP PRODUCT ROUTE
+// PRODUCT DETAIL ROUTE
 // =====================================================
 
-function ShopProductRoute() {
+function ProductDetailRoute() {
   const { productSlug } = useParams();
 
   const location = useLocation();
@@ -171,8 +167,7 @@ function ShopProductRoute() {
 
   useEffect(() => {
     // -------------------------------------------------
-    // If product came from Shop.jsx or ShopHome.jsx,
-    // use it immediately.
+    // Product came from Product.jsx
     // -------------------------------------------------
 
     if (location.state?.product) {
@@ -183,11 +178,7 @@ function ShopProductRoute() {
     }
 
     // -------------------------------------------------
-    // If user refreshes the page or directly opens
-    // the product URL, navigation state is empty.
-    //
-    // Therefore load products from API and find the
-    // matching product using the URL slug.
+    // Direct URL / Refresh
     // -------------------------------------------------
 
     const loadProduct = async () => {
@@ -289,7 +280,7 @@ function ShopProductRoute() {
 
         <button
           type="button"
-          onClick={() => navigate("/shop")}
+          onClick={() => navigate("/product")}
           style={{
             border: "none",
             padding: "12px 25px",
@@ -301,20 +292,20 @@ function ShopProductRoute() {
             fontWeight: "600",
           }}
         >
-          Back to Shop
+          Back to Product
         </button>
       </div>
     );
   }
 
   // ===================================================
-  // SHOP PRODUCT PAGE
+  // PRODUCT DETAIL PAGE
   // ===================================================
 
   return (
     <ShopPage
       product={product}
-      onBack={() => navigate("/shop")}
+      onBack={() => navigate("/product")}
     />
   );
 }
@@ -327,7 +318,7 @@ function WebsiteLayout() {
   const location = useLocation();
 
   // ===================================================
-  // GET SEO PAGE NAME FROM CURRENT URL
+  // SEO PAGE
   // ===================================================
 
   const getSeoPage = () => {
@@ -338,13 +329,11 @@ function WebsiteLayout() {
       return "Home";
     }
 
-    // PRODUCT
-    if (path === "/product") {
-      return "Product";
-    }
-
     // PROJECT
-    if (path === "/project" || path.startsWith("/project/")) {
+    if (
+      path === "/project" ||
+      path.startsWith("/project/")
+    ) {
       return "Project";
     }
 
@@ -353,9 +342,12 @@ function WebsiteLayout() {
       return "Service";
     }
 
-    // SHOP
-    if (path === "/shop" || path.startsWith("/shop/")) {
-      return "Shop";
+    // PRODUCT
+    if (
+      path === "/product" ||
+      path.startsWith("/product/")
+    ) {
+      return "Product";
     }
 
     // BLOG
@@ -378,7 +370,6 @@ function WebsiteLayout() {
       return "Contact";
     }
 
-    // NO SEO PAGE
     return "";
   };
 
@@ -388,18 +379,6 @@ function WebsiteLayout() {
     <>
       {/* =================================================
           DYNAMIC SEO
-          
-          SEO data comes from AWS API.
-          
-          Admin Dashboard
-                ↓
-          AWS Lambda
-                ↓
-          S3 seo.json
-                ↓
-          PageSeo
-                ↓
-          Website <head>
       ================================================= */}
 
       {seoPage && <PageSeo page={seoPage} />}
@@ -489,7 +468,6 @@ function NotFound() {
           padding: "13px 28px",
           background: "#e6009e",
           color: "#ffffff",
-          textDecoration: "none",
           border: "none",
           borderRadius: "6px",
           fontSize: "15px",
@@ -526,6 +504,7 @@ function App() {
         ================================================= */}
 
         <Route element={<WebsiteLayout />}>
+
           {/* =================================================
               HOME
           ================================================= */}
@@ -555,25 +534,16 @@ function App() {
 
           <Route
             path="/product"
-            element={<ProductPage />}
+            element={<Product />}
           />
 
           {/* =================================================
-              SHOP
+              PRODUCT DETAILS
           ================================================= */}
 
           <Route
-            path="/shop"
-            element={<Shop />}
-          />
-
-          {/* =================================================
-              SHOP PRODUCT DETAILS
-          ================================================= */}
-
-          <Route
-            path="/shop/:productSlug"
-            element={<ShopProductRoute />}
+            path="/product/:productSlug"
+            element={<ProductDetailRoute />}
           />
 
           {/* =================================================
@@ -620,6 +590,7 @@ function App() {
             path="/contact"
             element={<ContactPage />}
           />
+
         </Route>
 
         {/* =================================================

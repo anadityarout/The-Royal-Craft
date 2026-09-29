@@ -5,7 +5,6 @@ import {
   FaBars,
   FaTimes,
   FaHome,
-  FaShoppingBag,
   FaProjectDiagram,
   FaCogs,
   FaBoxOpen,
@@ -41,8 +40,6 @@ const Navbar = () => {
 
   // =====================================================
   // DESKTOP NAVIGATION
-  //
-  // ABOUT + GALLERY ARE NOT HERE
   // =====================================================
 
   const desktopNavLinks = [
@@ -63,10 +60,6 @@ const Navbar = () => {
       path: "/service",
     },
     {
-      name: "Shop",
-      path: "/shop",
-    },
-    {
       name: "Blog",
       path: "/blog",
     },
@@ -78,8 +71,6 @@ const Navbar = () => {
 
   // =====================================================
   // MOBILE / TABLET MENU
-  //
-  // ABOUT + GALLERY ARE ADDED HERE
   // =====================================================
 
   const mobileNavLinks = [
@@ -98,10 +89,6 @@ const Navbar = () => {
     {
       name: "Service",
       path: "/service",
-    },
-    {
-      name: "Shop",
-      path: "/shop",
     },
     {
       name: "Blog",
@@ -132,9 +119,9 @@ const Navbar = () => {
       icon: <FaHome />,
     },
     {
-      name: "Shop",
-      path: "/shop",
-      icon: <FaShoppingBag />,
+      name: "Product",
+      path: "/product",
+      icon: <FaBoxOpen />,
     },
     {
       name: "Project",
@@ -145,11 +132,6 @@ const Navbar = () => {
       name: "Service",
       path: "/service",
       icon: <FaCogs />,
-    },
-    {
-      name: "Product",
-      path: "/product",
-      icon: <FaBoxOpen />,
     },
   ];
 
@@ -191,7 +173,6 @@ const Navbar = () => {
             </Link>
           </div>
 
-
           {/* =================================================
               DESKTOP NAVIGATION
           ================================================= */}
@@ -225,7 +206,6 @@ const Navbar = () => {
 
           </nav>
 
-
           {/* =================================================
               MOBILE / TABLET HAMBURGER
           ================================================= */}
@@ -249,7 +229,6 @@ const Navbar = () => {
           </button>
 
         </div>
-
 
         {/* =====================================================
             MOBILE / TABLET SIDE MENU
@@ -276,7 +255,6 @@ const Navbar = () => {
             </Link>
           ))}
 
-
           {/* BOOK CONSULTATION */}
 
           <button
@@ -289,7 +267,6 @@ const Navbar = () => {
 
         </nav>
 
-
         {/* =====================================================
             CONSULTATION POPUP
         ===================================================== */}
@@ -300,7 +277,6 @@ const Navbar = () => {
         />
 
       </header>
-
 
       {/* =====================================================
           MOBILE + TABLET BOTTOM NAVIGATION

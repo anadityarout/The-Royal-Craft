@@ -1,4 +1,5 @@
-// Shop.jsx
+// Product.jsx
+
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Shop.css";
@@ -33,10 +34,10 @@ const createProductSlug = (name) => {
 };
 
 // =====================================================
-// SHOP
+// PRODUCT
 // =====================================================
 
-const Shop = () => {
+const Product = () => {
   const navigate = useNavigate();
 
   // =====================================================
@@ -68,14 +69,14 @@ const Shop = () => {
   ];
 
   // =====================================================
-  // SHOP BANNER
+  // PRODUCT BANNER
   // =====================================================
 
-  const [shopData, setShopData] = useState({
+  const [productData, setProductData] = useState({
     image: "",
-    name: "Shop",
+    name: "Product",
     description: "",
-    breadcrumb: "Home > Shop",
+    breadcrumb: "Home > Product",
   });
 
   // =====================================================
@@ -83,8 +84,7 @@ const Shop = () => {
   // =====================================================
 
   const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] =
-    useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
 
   // =====================================================
   // SEARCH
@@ -120,7 +120,7 @@ const Shop = () => {
   }, []);
 
   // =====================================================
-  // LOAD SHOP BANNER + PRODUCTS
+  // LOAD PRODUCT BANNER + PRODUCTS
   // =====================================================
 
   const loadData = async () => {
@@ -128,7 +128,7 @@ const Shop = () => {
       setLoading(true);
 
       // =================================================
-      // LOAD SHOP BANNER
+      // LOAD PRODUCT BANNER
       // =================================================
 
       const bannerResponse = await fetch(
@@ -136,33 +136,33 @@ const Shop = () => {
       );
 
       if (!bannerResponse.ok) {
-        throw new Error("Unable to load shop banner.");
+        throw new Error("Unable to load product banner.");
       }
 
       const bannerData = await bannerResponse.json();
 
       console.log(
-        "Shop Banner API Response:",
+        "Product Banner API Response:",
         bannerData
       );
 
       // =================================================
-      // SET SHOP BANNER
+      // SET PRODUCT BANNER
       // =================================================
 
       if (bannerData && bannerData.image) {
-        setShopData({
+        setProductData({
           image: bannerData.image,
-          name: bannerData.name || "Shop",
+          name: bannerData.name || "Product",
           description: bannerData.description || "",
-          breadcrumb: "Home > Shop",
+          breadcrumb: "Home > Product",
         });
       } else {
-        setShopData({
+        setProductData({
           image: "",
-          name: "Shop",
+          name: "Product",
           description: "",
-          breadcrumb: "Home > Shop",
+          breadcrumb: "Home > Product",
         });
       }
 
@@ -176,26 +176,28 @@ const Shop = () => {
         throw new Error("Unable to load products.");
       }
 
-      const productData = await response.json();
+      const productDataResponse = await response.json();
 
       console.log(
         "Products API Response:",
-        productData
+        productDataResponse
       );
 
       // =================================================
       // SAFE PRODUCTS
       // =================================================
 
-      const safeProducts = Array.isArray(productData)
-        ? productData
+      const safeProducts = Array.isArray(
+        productDataResponse
+      )
+        ? productDataResponse
         : [];
 
       setProducts(safeProducts);
       setFilteredProducts(safeProducts);
     } catch (error) {
       console.error(
-        "Shop data loading error:",
+        "Product data loading error:",
         error
       );
 
@@ -223,8 +225,7 @@ const Shop = () => {
 
     if (category !== "All Products") {
       result = result.filter(
-        (item) =>
-          item.category === category
+        (item) => item.category === category
       );
     }
 
@@ -257,25 +258,15 @@ const Shop = () => {
 
     if (sort === "Newest") {
       result.sort((a, b) => {
-        const dateA = new Date(
-          a.created || 0
-        );
-
-        const dateB = new Date(
-          b.created || 0
-        );
+        const dateA = new Date(a.created || 0);
+        const dateB = new Date(b.created || 0);
 
         return dateB - dateA;
       });
     } else {
       result.sort((a, b) => {
-        const dateA = new Date(
-          a.created || 0
-        );
-
-        const dateB = new Date(
-          b.created || 0
-        );
+        const dateA = new Date(a.created || 0);
+        const dateB = new Date(b.created || 0);
 
         return dateA - dateB;
       });
@@ -335,11 +326,11 @@ const Shop = () => {
   // =====================================================
 
   const handleExploreCollection = () => {
-    const shopBody =
+    const productBody =
       document.querySelector(".shop-body");
 
-    if (shopBody) {
-      shopBody.scrollIntoView({
+    if (productBody) {
+      productBody.scrollIntoView({
         behavior: "smooth",
         block: "start",
       });
@@ -363,10 +354,16 @@ const Shop = () => {
 
     console.log(
       "Product URL:",
-      `/shop/${productSlug}`
+      `/product/${productSlug}`
     );
 
-    navigate(`/shop/${productSlug}`, {
+    // =================================================
+    // IMPORTANT:
+    // PRODUCT DETAILS NOW USE /product/
+    // NOT /shop/
+    // =================================================
+
+    navigate(`/product/${productSlug}`, {
       state: {
         product: product,
       },
@@ -383,12 +380,12 @@ const Shop = () => {
           SEO
       ================================================= */}
 
-      <PageSeo page="Shop" />
+      <PageSeo page="Product" />
 
       <div className="shop-page">
 
         {/* =================================================
-            SHOP BANNER
+            PRODUCT BANNER
         ================================================= */}
 
         <section className="shop-banner">
@@ -397,12 +394,12 @@ const Shop = () => {
               BANNER IMAGE
           ================================================= */}
 
-          {shopData.image ? (
+          {productData.image ? (
             <img
-              src={shopData.image}
+              src={productData.image}
               alt={
-                shopData.name ||
-                "Shop Banner"
+                productData.name ||
+                "Product Banner"
               }
               className="shop-banner-img"
               loading="eager"
@@ -437,16 +434,16 @@ const Shop = () => {
               ================================================= */}
 
               <h1>
-                {shopData.name || "Shop"}
+                {productData.name || "Product"}
               </h1>
 
               {/* =================================================
                   BANNER DESCRIPTION
               ================================================= */}
 
-              {shopData.description && (
+              {productData.description && (
                 <p className="shop-banner-description">
-                  {shopData.description}
+                  {productData.description}
                 </p>
               )}
 
@@ -476,7 +473,7 @@ const Shop = () => {
         </section>
 
         {/* =================================================
-            SHOP BODY
+            PRODUCT BODY
         ================================================= */}
 
         <section className="shop-body">
@@ -539,7 +536,6 @@ const Shop = () => {
                 />
 
                 <div>
-
                   <h4>
                     Pan India Delivery
                   </h4>
@@ -547,7 +543,6 @@ const Shop = () => {
                   <p>
                     Reliable & On-time
                   </p>
-
                 </div>
 
               </div>
@@ -561,7 +556,6 @@ const Shop = () => {
                 />
 
                 <div>
-
                   <h4>
                     Quality Assured
                   </h4>
@@ -569,7 +563,6 @@ const Shop = () => {
                   <p>
                     Premium Materials
                   </p>
-
                 </div>
 
               </div>
@@ -583,7 +576,6 @@ const Shop = () => {
                 />
 
                 <div>
-
                   <h4>
                     Need Help?
                   </h4>
@@ -591,7 +583,6 @@ const Shop = () => {
                   <p>
                     +91 8130462200
                   </p>
-
                 </div>
 
               </div>
@@ -606,27 +597,22 @@ const Shop = () => {
 
           <div className="category-row">
 
-            {categories.map(
-              (category) => (
-                <button
-                  type="button"
-                  key={category}
-                  onClick={() =>
-                    handleCategory(
-                      category
-                    )
-                  }
-                  className={
-                    selectedCategory ===
-                    category
-                      ? "category-btn active"
-                      : "category-btn"
-                  }
-                >
-                  {category}
-                </button>
-              )
-            )}
+            {categories.map((category) => (
+              <button
+                type="button"
+                key={category}
+                onClick={() =>
+                  handleCategory(category)
+                }
+                className={
+                  selectedCategory === category
+                    ? "category-btn active"
+                    : "category-btn"
+                }
+              >
+                {category}
+              </button>
+            ))}
 
           </div>
 
@@ -642,7 +628,6 @@ const Shop = () => {
                 value={sortBy}
                 onChange={handleSort}
               >
-
                 <option value="Newest">
                   Sort by: Newest
                 </option>
@@ -650,7 +635,6 @@ const Shop = () => {
                 <option value="Oldest">
                   Sort by: Oldest
                 </option>
-
               </select>
 
             </div>
@@ -692,9 +676,7 @@ const Shop = () => {
                     <div
                       className="product-image"
                       onClick={() =>
-                        openProduct(
-                          product
-                        )
+                        openProduct(product)
                       }
                       role="button"
                       tabIndex={0}
@@ -704,13 +686,11 @@ const Shop = () => {
                           e.key === "Enter" ||
                           e.key === " "
                         ) {
-
                           e.preventDefault();
 
                           openProduct(
                             product
                           );
-
                         }
 
                       }}
@@ -769,7 +749,6 @@ const Shop = () => {
                     </div>
 
                   </div>
-
                 )
               )
 
@@ -805,4 +784,4 @@ const Shop = () => {
   );
 };
 
-export default Shop;
+export default Product;

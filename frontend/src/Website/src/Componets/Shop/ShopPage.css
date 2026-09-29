@@ -1,8 +1,11 @@
-/* ShopPage.css */
+/* =====================================================
+   ShopPage.css
+===================================================== */
 
-/* ===========================
-   Page / Two-tier layout
-=========================== */
+
+/* =====================================================
+   PAGE / TWO-TIER LAYOUT
+===================================================== */
 
 .rk-shop-details {
   width: 100%;
@@ -16,9 +19,10 @@
   margin: 0 auto;
 }
 
-/* ===========================
-   Breadcrumb
-=========================== */
+
+/* =====================================================
+   BREADCRUMB
+===================================================== */
 
 .rk-shop-breadcrumb {
   display: flex;
@@ -35,7 +39,7 @@
 }
 
 .rk-shop-breadcrumb span:hover {
-  color: #C89A2B;
+  color: #c89a2b;
 }
 
 .rk-shop-breadcrumb svg {
@@ -52,9 +56,10 @@
   color: #1d2b44 !important;
 }
 
-/* ===========================
-   Main Layout
-=========================== */
+
+/* =====================================================
+   MAIN LAYOUT
+===================================================== */
 
 .rk-shop-main {
   display: grid;
@@ -64,17 +69,20 @@
   margin-bottom: 50px;
 }
 
-/* ===========================
-   Left / Gallery
-=========================== */
+
+/* =====================================================
+   LEFT / GALLERY
+===================================================== */
 
 .rk-main-image-box {
   position: relative;
   width: 100%;
   height: 480px;
-  background: #fff;
+
+  background: #ffffff;
   border-radius: 14px;
   overflow: hidden;
+
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
 
   display: flex;
@@ -89,48 +97,73 @@
   background: #f5f5f5;
 }
 
+
+/* =====================================================
+   IMAGE ZOOM BUTTON
+===================================================== */
+
 .rk-image-zoom-btn {
   position: absolute;
   top: 16px;
   right: 16px;
+
   width: 38px;
   height: 38px;
+
   border: none;
   border-radius: 50%;
-  background: #fff;
+
+  background: #ffffff;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
+
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
   color: #1d2b44;
+
   transition: 0.3s;
 }
 
 .rk-image-zoom-btn:hover {
-  background: #C89A2B;
-  color: #fff;
+  background: #c89a2b;
+  color: #ffffff;
 }
+
+
+/* =====================================================
+   IMAGE NAVIGATION
+===================================================== */
 
 .rk-image-nav {
   position: absolute;
   top: 50%;
+
   transform: translateY(-50%);
+
   width: 40px;
   height: 40px;
+
   border: none;
   border-radius: 50%;
+
   background: rgba(29, 43, 68, 0.85);
-  color: #fff;
+  color: #ffffff;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
+
   transition: 0.3s;
 }
 
 .rk-image-nav:hover {
-  background: #C89A2B;
+  background: #c89a2b;
 }
 
 .rk-image-nav-prev {
@@ -140,6 +173,11 @@
 .rk-image-nav-next {
   right: 16px;
 }
+
+
+/* =====================================================
+   THUMBNAILS
+===================================================== */
 
 .rk-thumbnail-wrapper {
   display: flex;
@@ -151,12 +189,17 @@
 .rk-thumbnail {
   width: 95px;
   height: 95px;
+
   border-radius: 8px;
   overflow: hidden;
+
   cursor: pointer;
+
   border: 2px solid transparent;
+
   transition: 0.3s;
-  background: #fff;
+
+  background: #ffffff;
 
   display: flex;
   align-items: center;
@@ -175,12 +218,13 @@
 }
 
 .rk-thumbnail.active {
-  border-color: #C89A2B;
+  border-color: #c89a2b;
 }
 
-/* ===========================
-   Right / Details
-=========================== */
+
+/* =====================================================
+   RIGHT / PRODUCT DETAILS
+===================================================== */
 
 .rk-shop-right {
   padding-top: 6px;
@@ -188,60 +232,87 @@
 
 .rk-product-category {
   display: inline-block;
+
   padding: 8px 18px;
+
   background: #f4ede0;
-  color: #C89A2B;
+  color: #c89a2b;
+
   border-radius: 30px;
+
   font-size: 13px;
   font-weight: 700;
+
   letter-spacing: 0.5px;
+
   text-transform: uppercase;
+
   margin-bottom: 18px;
 }
 
 .rk-shop-right h1 {
   font-family: "Playfair Display", serif;
+
   font-size: 40px;
   line-height: 1.2;
+
   margin: 0 0 20px;
+
   color: #1d2b44;
 }
 
 .rk-product-description {
   color: #666;
+
   line-height: 1.9;
+
   font-size: 15px;
+
   margin: 0 0 30px;
 }
 
-/* ===========================
-   Feature Grid
-=========================== */
+
+/* =====================================================
+   FEATURE GRID
+===================================================== */
 
 .rk-feature-grid {
   display: grid;
+
   grid-template-columns: repeat(4, 1fr);
+
   gap: 18px;
+
   padding: 25px 0;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+
   margin-bottom: 30px;
 }
 
 .rk-feature-item {
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   text-align: center;
+
   gap: 10px;
 }
 
 .rk-feature-icon {
   width: 44px;
   height: 44px;
+
   border-radius: 50%;
+
   background: #f4ede0;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -249,143 +320,268 @@
 
 .rk-feature-item span {
   font-size: 12.5px;
+
   color: #555;
+
   font-weight: 500;
+
   line-height: 1.4;
 }
 
-/* ===========================
-   Action Buttons
-=========================== */
+
+/* =====================================================
+   ACTION BUTTONS
+===================================================== */
 
 .rk-shop-actions {
-  display: flex;
-  gap: 16px;
+  width: 100%;
+
+  margin-top: 26px;
   margin-bottom: 20px;
 }
 
+
+/* =====================================================
+   ENQUIRY NOW BUTTON
+===================================================== */
+
 .rk-enquiry-btn {
-  flex: 1.2;
+  width: 400px;
+  max-width: 100%;
+
+  min-height: 50px;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   gap: 10px;
-  padding: 16px 20px;
+
+  padding: 14px 20px;
+
   border: none;
+
+  border-radius: 7px;
+
   background: #1d2b44;
-  color: #fff;
+
+  color: #ffffff;
+
+  font-family: "Inter", sans-serif;
+
   font-size: 15px;
+
   font-weight: 600;
-  border-radius: 8px;
+
+  letter-spacing: 0.1px;
+
   cursor: pointer;
-  transition: 0.3s;
+
+  transition:
+    background 0.25s ease,
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.rk-enquiry-btn svg {
+  flex-shrink: 0;
+}
+
+.rk-enquiry-btn span {
+  line-height: 1;
 }
 
 .rk-enquiry-btn:hover {
-  background: #0f1a2c;
+  background: #16243c;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 6px 18px rgba(29, 45, 73, 0.18);
 }
+
+.rk-enquiry-btn:active {
+  transform: translateY(0);
+}
+
+.rk-enquiry-btn:focus-visible {
+  outline: 2px solid #1d2b44;
+  outline-offset: 3px;
+}
+
+
+/* =====================================================
+   WHATSAPP BUTTON
+===================================================== */
 
 .rk-whatsapp-btn {
   flex: 1;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   gap: 10px;
+
   padding: 16px 20px;
-  border: 1.5px solid #C89A2B;
+
+  border: 1.5px solid #c89a2b;
+
   background: transparent;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   font-size: 15px;
+
   font-weight: 600;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   text-decoration: none;
+
   transition: 0.3s;
 }
 
 .rk-whatsapp-btn:hover {
-  background: #C89A2B;
-  color: #fff;
+  background: #c89a2b;
+  color: #ffffff;
 }
+
+
+/* =====================================================
+   CONSULTATION NOTE
+===================================================== */
 
 .rk-consultation-note {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
+
   padding: 14px 18px;
+
   background: #f4ede0;
+
   border-radius: 8px;
+
   font-size: 13.5px;
+
   color: #7a6a45;
 }
 
-/* ===========================
-   Tabs
-=========================== */
+
+/* =====================================================
+   PRODUCT TABS
+===================================================== */
 
 .rk-product-tabs {
   display: flex;
+
   gap: 12px;
+
   margin-bottom: 25px;
 }
 
 .rk-tab {
   border: 1px solid #e6e2d8;
-  background: #fff;
+
+  background: #ffffff;
+
   padding: 13px 32px;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   font-weight: 600;
+
   font-size: 14px;
+
   color: #555;
+
   transition: 0.3s;
+}
+
+.rk-tab:hover {
+  border-color: #c89a2b;
+  color: #c89a2b;
 }
 
 .rk-tab.active {
   background: #1d2b44;
+
   border-color: #1d2b44;
-  color: #fff;
+
+  color: #ffffff;
 }
 
-/* ===========================
-   Tab Panels
-=========================== */
+
+/* =====================================================
+   TAB PANELS
+===================================================== */
 
 .rk-tab-panel {
-  background: #fff;
+  background: #ffffff;
+
   padding: 40px;
+
   border-radius: 14px;
+
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+
   margin-bottom: 40px;
+
   box-sizing: border-box;
 }
 
 .rk-tab-panel h2 {
   font-family: "Playfair Display", serif;
+
   color: #1d2b44;
+
   margin: 0 0 20px;
 }
 
 .rk-tab-panel p {
   color: #666;
+
   line-height: 1.9;
+
   margin: 0;
 }
 
+
+/* =====================================================
+   OVERVIEW
+===================================================== */
+
 .rk-overview-panel {
   display: grid;
+
   grid-template-columns: 1fr 1.1fr;
+
   gap: 50px;
+
   align-items: center;
 }
 
 .rk-overview-label {
   display: block;
+
   font-size: 12px;
+
   font-weight: 700;
+
   letter-spacing: 1px;
+
   text-transform: uppercase;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   margin-bottom: 14px;
 }
 
@@ -395,89 +591,123 @@
 
 .rk-highlight-list {
   list-style: none;
+
   padding: 0;
   margin: 0;
+
   display: flex;
+
   flex-direction: column;
+
   gap: 14px;
 }
 
 .rk-highlight-list li {
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   font-size: 14.5px;
+
   color: #333;
+
   font-weight: 500;
 }
 
 .rk-highlight-list svg {
-  color: #C89A2B;
+  color: #c89a2b;
+
   flex-shrink: 0;
 }
 
 .rk-overview-image {
   width: 100%;
+
   height: 340px;
+
   border-radius: 12px;
+
   overflow: hidden;
+
   background: #f5f5f5;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 }
 
 .rk-overview-image img {
   width: 100%;
   height: 100%;
+
   object-fit: contain;
 }
 
-/* ===========================
-   Specification Table
-=========================== */
+
+/* =====================================================
+   SPECIFICATION TABLE
+===================================================== */
 
 .rk-spec-table {
   width: 100%;
+
   border-collapse: collapse;
+
   table-layout: fixed;
 }
 
 .rk-spec-table tr {
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #eeeeee;
 }
 
 .rk-spec-title {
   width: 35%;
+
   font-weight: 700;
+
   color: #222;
+
   padding: 18px;
 }
 
 .rk-spec-value {
   padding: 18px;
+
   color: #666;
 }
 
 .rk-no-specification {
   color: #999;
+
   font-size: 14px;
 }
 
-/* ===========================
-   Process Cards
-=========================== */
+
+/* =====================================================
+   PROCESS CARDS
+===================================================== */
 
 .rk-process-cards {
   display: grid;
+
   grid-template-columns: repeat(4, 1fr);
+
   gap: 30px;
-  background: #fff;
+
+  background: #ffffff;
+
   padding: 45px;
+
   border-radius: 14px;
+
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.06);
+
   margin-bottom: 60px;
+
   box-sizing: border-box;
 }
 
@@ -488,34 +718,49 @@
 .rk-process-number {
   width: 52px;
   height: 52px;
+
   border-radius: 50%;
+
   background: #f4ede0;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   font-family: "Playfair Display", serif;
+
   font-weight: 700;
+
   font-size: 18px;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   margin: 0 auto 18px;
 }
 
 .rk-process-card h3 {
   font-size: 17px;
+
   color: #1d2b44;
+
   margin: 0 0 10px;
 }
 
 .rk-process-card p {
   font-size: 13.5px;
+
   color: #777;
+
   line-height: 1.7;
+
   margin: 0;
 }
 
-/* ===========================
-   Explore More
-=========================== */
+
+/* =====================================================
+   EXPLORE MORE
+===================================================== */
 
 .rk-explore-section {
   margin-bottom: 60px;
@@ -523,31 +768,45 @@
 
 .rk-explore-header {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   margin-bottom: 26px;
 }
 
 .rk-explore-header h2 {
   font-family: "Playfair Display", serif;
+
   font-size: 26px;
+
   color: #1d2b44;
+
   margin: 0;
 }
 
 .rk-view-all {
   display: flex;
+
   align-items: center;
+
   gap: 6px;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   font-weight: 600;
+
   font-size: 14px;
+
   cursor: pointer;
 }
 
 .rk-explore-grid {
   display: grid;
+
   grid-template-columns: repeat(5, 1fr);
+
   gap: 22px;
 }
 
@@ -557,13 +816,19 @@
 
 .rk-explore-image {
   width: 100%;
+
   aspect-ratio: 3 / 3.6;
+
   border-radius: 12px;
+
   overflow: hidden;
+
   margin-bottom: 14px;
+
   background: #f5f5f5;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 }
@@ -571,7 +836,9 @@
 .rk-explore-image img {
   width: 100%;
   height: 100%;
+
   object-fit: contain;
+
   transition: 0.4s;
 }
 
@@ -581,60 +848,92 @@
 
 .rk-explore-card h4 {
   font-size: 15px;
+
   color: #1d2b44;
+
   margin: 0 0 8px;
 }
 
 .rk-explore-link {
   display: flex;
+
   align-items: center;
+
   gap: 6px;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   font-size: 13px;
+
   font-weight: 600;
 }
 
-/* ===========================
-   Bottom CTA
-=========================== */
+
+/* =====================================================
+   BOTTOM CTA
+===================================================== */
 
 .rk-shop-cta {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   background: #1d2b44;
+
   padding: 45px 55px;
+
   border-radius: 14px;
+
   flex-wrap: wrap;
+
   gap: 20px;
 }
 
 .rk-shop-cta-text h3 {
   font-family: "Playfair Display", serif;
-  color: #fff;
+
+  color: #ffffff;
+
   font-size: 24px;
+
   margin: 0 0 8px;
 }
 
 .rk-shop-cta-text p {
   color: #b9c2d0;
+
   margin: 0;
+
   font-size: 14.5px;
 }
 
 .rk-shop-cta-btn {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
+
   padding: 16px 28px;
+
   border: none;
-  background: #C89A2B;
-  color: #fff;
+
+  background: #c89a2b;
+
+  color: #ffffff;
+
   font-size: 14.5px;
+
   font-weight: 700;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   white-space: nowrap;
+
   transition: 0.3s;
 }
 
@@ -642,63 +941,97 @@
   background: #b38722;
 }
 
-/* ===========================
-   Enquiry Modal
-=========================== */
+
+/* =====================================================
+   ENQUIRY MODAL
+===================================================== */
 
 .rk-enquiry-overlay {
   position: fixed;
+
   top: 0;
   left: 0;
+
   width: 100%;
   height: 100%;
+
   background: rgba(15, 20, 30, 0.55);
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   z-index: 1000;
+
   padding: 20px;
+
   box-sizing: border-box;
 }
 
 .rk-enquiry-modal {
   position: relative;
+
   width: 100%;
+
   max-width: 440px;
-  background: #fff;
+
+  background: #ffffff;
+
   border-radius: 14px;
+
   padding: 40px 35px 35px;
+
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+
   box-sizing: border-box;
 }
 
 .rk-enquiry-close {
   position: absolute;
+
   top: 18px;
   right: 18px;
+
   width: 32px;
   height: 32px;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   border: none;
+
   background: #f4f6f8;
+
   border-radius: 50%;
+
   cursor: pointer;
+
   color: #555;
+
   transition: 0.3s;
 }
 
 .rk-enquiry-close:hover {
-  background: #eee;
+  background: #eeeeee;
 }
 
 .rk-enquiry-modal h3 {
   margin: 0 0 28px;
+
   font-size: 22px;
+
   color: #1d2b44;
+
   font-family: "Playfair Display", serif;
 }
+
+
+/* =====================================================
+   ENQUIRY FORM
+===================================================== */
 
 .rk-enquiry-field {
   margin-bottom: 22px;
@@ -706,53 +1039,109 @@
 
 .rk-enquiry-field label {
   display: block;
+
   font-size: 12px;
+
   font-weight: 700;
+
   letter-spacing: 0.5px;
+
   color: #1d2b44;
+
   text-transform: uppercase;
+
   margin-bottom: 10px;
 }
 
-.rk-enquiry-field input {
+.rk-enquiry-field input,
+.rk-enquiry-field textarea {
   width: 100%;
+
   padding: 14px 16px;
+
   border: 1px solid #e6ddc9;
+
   border-radius: 8px;
+
   font-size: 15px;
+
   color: #1d2b44;
+
   box-sizing: border-box;
+
   outline: none;
+
   transition: 0.3s;
+
+  font-family: inherit;
+
+  background: #ffffff;
 }
 
-.rk-enquiry-field input::placeholder {
+.rk-enquiry-field textarea {
+  min-height: 110px;
+
+  resize: vertical;
+
+  line-height: 1.6;
+}
+
+.rk-enquiry-field input::placeholder,
+.rk-enquiry-field textarea::placeholder {
   color: #a9a9a9;
 }
 
-.rk-enquiry-field input:focus {
-  border-color: #C89A2B;
-  box-shadow: 0 0 0 3px rgba(200, 154, 43, 0.12);
+.rk-enquiry-field input:focus,
+.rk-enquiry-field textarea:focus {
+  border-color: #c89a2b;
+
+  box-shadow:
+    0 0 0 3px rgba(200, 154, 43, 0.12);
 }
+
+.rk-enquiry-field input:disabled,
+.rk-enquiry-field textarea:disabled {
+  background: #f6f6f6;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   ENQUIRY FORM ACTIONS
+===================================================== */
 
 .rk-enquiry-actions {
   display: flex;
+
   gap: 14px;
+
   margin-top: 10px;
 }
 
 .rk-enquiry-submit-btn {
   flex: 1.4;
+
   padding: 16px 10px;
+
   border: none;
-  background: #C89A2B;
-  color: #fff;
+
+  background: #c89a2b;
+
+  color: #ffffff;
+
   font-size: 14px;
+
   font-weight: 700;
+
   letter-spacing: 0.5px;
+
   text-transform: uppercase;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   transition: 0.3s;
 }
 
@@ -760,168 +1149,332 @@
   background: #b38722;
 }
 
+.rk-enquiry-submit-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
 .rk-enquiry-cancel-btn {
   flex: 1;
+
   padding: 16px 10px;
+
   border: 1px solid #e2e2e2;
+
   background: #f4f6f8;
-  color: #333;
+
+  color: #333333;
+
   font-size: 14px;
+
   font-weight: 700;
+
   letter-spacing: 0.5px;
+
   text-transform: uppercase;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   transition: 0.3s;
 }
 
 .rk-enquiry-cancel-btn:hover {
   background: #eaeaea;
 }
-/* ===========================
-   Customization Tab
-=========================== */
+
+.rk-enquiry-cancel-btn:disabled {
+  opacity: 0.65;
+
+  cursor: not-allowed;
+}
+
+
+/* =====================================================
+   CUSTOMIZATION TAB
+===================================================== */
 
 .rk-customization-heading {
   position: relative;
+
   font-family: "Playfair Display", serif;
+
   font-size: 22px;
+
   color: #1d2b44;
+
   padding-bottom: 16px;
+
   margin: 0 0 20px;
 }
 
 .rk-customization-heading::after {
   content: "";
+
   position: absolute;
+
   left: 0;
   bottom: 0;
+
   width: 42px;
   height: 3px;
-  background: #C89A2B;
+
+  background: #c89a2b;
 }
 
 .rk-customization-intro {
   color: #666;
+
   line-height: 1.9;
+
   font-size: 15px;
+
   margin: 0 0 35px;
+
   max-width: 720px;
 }
 
 .rk-customization-grid {
   display: grid;
+
   grid-template-columns: 1fr 1fr;
+
   column-gap: 50px;
+
   row-gap: 28px;
+
   margin-bottom: 35px;
 }
 
 .rk-customization-item {
   display: flex;
+
   align-items: flex-start;
+
   gap: 16px;
 }
 
 .rk-customization-icon {
   width: 44px;
   height: 44px;
+
   flex-shrink: 0;
+
   border-radius: 10px;
+
   background: #f4ede0;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
 }
 
 .rk-customization-item h4 {
   font-size: 15px;
+
   color: #1d2b44;
+
   margin: 0 0 6px;
 }
 
 .rk-customization-item p {
   font-size: 13.5px;
+
   color: #777;
+
   margin: 0;
+
   line-height: 1.6;
 }
 
+
+/* =====================================================
+   CUSTOMIZATION CTA
+===================================================== */
+
 .rk-customization-cta {
   display: flex;
+
   align-items: center;
+
   gap: 22px;
-  border: 1px solid #C89A2B;
+
+  border: 1px solid #c89a2b;
+
   background: #fdfaf3;
+
   border-radius: 12px;
+
   padding: 28px 30px;
+
   flex-wrap: wrap;
 }
 
 .rk-customization-cta-icon {
   width: 56px;
   height: 56px;
+
   flex-shrink: 0;
+
   border-radius: 12px;
+
   background: #f4ede0;
-  color: #C89A2B;
+
+  color: #c89a2b;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
 }
 
 .rk-customization-cta-text {
   flex: 1;
+
   min-width: 220px;
 }
 
 .rk-customization-cta-text h3 {
   font-family: "Playfair Display", serif;
+
   font-size: 17px;
+
   color: #1d2b44;
+
   margin: 0 0 6px;
 }
 
 .rk-customization-cta-text p {
   font-size: 13.5px;
+
   color: #777;
+
   margin: 0;
+
   line-height: 1.7;
 }
 
 .rk-customization-cta-btn {
   display: flex;
+
   align-items: center;
+
   gap: 10px;
+
   padding: 15px 26px;
+
   border: none;
-  background: #C89A2B;
-  color: #fff;
+
+  background: #c89a2b;
+
+  color: #ffffff;
+
   font-size: 14px;
+
   font-weight: 700;
+
   border-radius: 8px;
+
   cursor: pointer;
+
   white-space: nowrap;
+
   transition: 0.3s;
 }
 
 .rk-customization-cta-btn:hover {
   background: #b38722;
 }
-/* ===========================
-   Responsive
-=========================== */
+
+
+/* =====================================================
+   PRODUCT NOT FOUND
+===================================================== */
+
+.rk-shop-product-not-found {
+  min-height: 60vh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+}
+
+.rk-shop-product-not-found h2 {
+  color: #1d2b44;
+
+  font-family: "Playfair Display", serif;
+
+  margin: 0 0 20px;
+}
+
+.rk-shop-product-not-found button {
+  border: none;
+
+  background: #1d2b44;
+
+  color: #ffffff;
+
+  padding: 12px 25px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: 0.3s;
+}
+
+.rk-shop-product-not-found button:hover {
+  background: #c89a2b;
+}
+
+
+/* =====================================================
+   RESPONSIVE - 1200px
+===================================================== */
 
 @media (max-width: 1200px) {
+  .rk-shop-main {
+    gap: 40px;
+  }
+
   .rk-explore-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
+
+/* =====================================================
+   RESPONSIVE - 991px
+===================================================== */
+
 @media (max-width: 991px) {
+  .rk-shop-details {
+    padding: 50px 4%;
+  }
+
   .rk-shop-main {
     grid-template-columns: 1fr;
+
+    gap: 40px;
   }
 
   .rk-main-image-box {
@@ -942,17 +1495,66 @@
 
   .rk-shop-cta {
     flex-direction: column;
+
     align-items: flex-start;
   }
+
+  .rk-feature-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
+
+
+/* =====================================================
+   RESPONSIVE - 768px
+===================================================== */
 
 @media (max-width: 768px) {
   .rk-shop-details {
     padding: 30px 20px;
   }
 
+  .rk-shop-breadcrumb {
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-bottom: 22px;
+
+    font-size: 12px;
+  }
+
   .rk-main-image-box {
     height: 280px;
+
+    border-radius: 10px;
+  }
+
+  .rk-image-zoom-btn {
+    top: 12px;
+    right: 12px;
+
+    width: 34px;
+    height: 34px;
+  }
+
+  .rk-image-nav {
+    width: 36px;
+    height: 36px;
+  }
+
+  .rk-image-nav-prev {
+    left: 10px;
+  }
+
+  .rk-image-nav-next {
+    right: 10px;
+  }
+
+  .rk-thumbnail-wrapper {
+    gap: 10px;
+
+    margin-top: 15px;
   }
 
   .rk-thumbnail {
@@ -962,86 +1564,220 @@
 
   .rk-shop-right h1 {
     font-size: 26px;
+
+    line-height: 1.25;
+  }
+
+  .rk-product-category {
+    font-size: 11px;
+
+    padding: 7px 14px;
+
+    margin-bottom: 14px;
+  }
+
+  .rk-product-description {
+    font-size: 14px;
+
+    line-height: 1.8;
   }
 
   .rk-feature-grid {
     grid-template-columns: repeat(2, 1fr);
+
+    gap: 15px;
+
+    padding: 20px 0;
   }
 
+
+  /* =================================================
+     ENQUIRY BUTTON - TABLET / MOBILE
+  ================================================= */
+
   .rk-shop-actions {
-    flex-direction: column;
+    width: 100%;
+
+    margin-top: 22px;
+
+    margin-bottom: 18px;
   }
+
+  .rk-enquiry-btn {
+    width: 400px;
+
+    max-width: 100%;
+
+    min-height: 50px;
+
+    padding: 13px 18px;
+
+    font-size: 14px;
+
+    border-radius: 6px;
+
+    gap: 9px;
+  }
+
+
+  /* =================================================
+     PRODUCT TABS
+  ================================================= */
 
   .rk-product-tabs {
     flex-wrap: wrap;
+
+    gap: 8px;
   }
 
   .rk-tab {
     flex: 1;
+
     text-align: center;
-    padding: 13px 12px;
+
+    padding: 12px 10px;
+
+    font-size: 13px;
+
+    min-width: 100px;
   }
+
+
+  /* =================================================
+     TAB PANEL
+  ================================================= */
 
   .rk-tab-panel {
     padding: 25px;
+
+    border-radius: 10px;
   }
+
+  .rk-overview-panel {
+    gap: 30px;
+  }
+
+  .rk-overview-image {
+    height: 280px;
+  }
+
+
+  /* =================================================
+     PROCESS CARDS
+  ================================================= */
 
   .rk-process-cards {
     grid-template-columns: 1fr;
+
     padding: 30px 25px;
+
+    gap: 30px;
   }
+
+
+  /* =================================================
+     EXPLORE MORE
+  ================================================= */
 
   .rk-explore-grid {
     grid-template-columns: repeat(2, 1fr);
+
+    gap: 18px;
   }
 
-  .rk-enquiry-modal {
-    padding: 30px 22px 25px;
+  .rk-explore-header {
+    align-items: flex-start;
+
+    gap: 15px;
   }
 
-  .rk-enquiry-actions {
-    flex-direction: column;
+  .rk-explore-header h2 {
+    font-size: 22px;
   }
+
+  .rk-view-all {
+    font-size: 12px;
+  }
+
+
+  /* =================================================
+     BOTTOM CTA
+  ================================================= */
 
   .rk-shop-cta {
     padding: 30px;
+
+    border-radius: 10px;
   }
+
+  .rk-shop-cta-text h3 {
+    font-size: 21px;
+  }
+
+  .rk-shop-cta-text p {
+    font-size: 13px;
+  }
+
+
+  /* =================================================
+     CUSTOMIZATION
+  ================================================= */
+
   .rk-customization-grid {
     grid-template-columns: 1fr;
+
     row-gap: 24px;
   }
 
   .rk-customization-cta {
     flex-direction: column;
+
     align-items: flex-start;
+
     text-align: left;
+
+    padding: 25px;
   }
 
   .rk-customization-cta-btn {
     width: 100%;
+
     justify-content: center;
   }
 
   .rk-customization-cta-text {
     min-width: 0;
+
     width: 100%;
+
     box-sizing: border-box;
+
     padding-right: 8px;
   }
+
+
+  /* =================================================
+     SPECIFICATIONS
+  ================================================= */
 
   .rk-spec-table,
   .rk-spec-table tbody,
   .rk-spec-table tr {
     display: block;
+
     width: 100%;
   }
 
   .rk-spec-title,
   .rk-spec-value {
     display: block;
+
     width: 100%;
+
     box-sizing: border-box;
+
     padding: 6px 0;
+
     text-align: left;
   }
 
@@ -1051,13 +1787,302 @@
 
   .rk-spec-title {
     font-size: 13px;
-    color: #C89A2B;
+
+    color: #c89a2b;
+
     text-transform: uppercase;
+
     letter-spacing: 0.5px;
+
     padding-bottom: 2px;
   }
 
   .rk-spec-value {
     padding-top: 0;
+  }
+
+
+  /* =================================================
+     ENQUIRY MODAL
+  ================================================= */
+
+  .rk-enquiry-overlay {
+    padding: 15px;
+  }
+
+  .rk-enquiry-modal {
+    max-width: 100%;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    padding: 30px 22px 25px;
+
+    border-radius: 12px;
+  }
+
+  .rk-enquiry-modal h3 {
+    font-size: 20px;
+
+    margin-bottom: 24px;
+  }
+
+  .rk-enquiry-field {
+    margin-bottom: 18px;
+  }
+
+  .rk-enquiry-field input,
+  .rk-enquiry-field textarea {
+    font-size: 14px;
+
+    padding: 13px 14px;
+  }
+
+  .rk-enquiry-actions {
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+  .rk-enquiry-submit-btn,
+  .rk-enquiry-cancel-btn {
+    width: 100%;
+
+    flex: none;
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVE - 576px
+===================================================== */
+
+@media (max-width: 576px) {
+  .rk-shop-details {
+    padding: 25px 15px;
+  }
+
+  .rk-shop-breadcrumb {
+    font-size: 11px;
+
+    margin-bottom: 18px;
+  }
+
+  .rk-main-image-box {
+    height: 240px;
+
+    border-radius: 8px;
+  }
+
+  .rk-thumbnail {
+    width: 62px;
+    height: 62px;
+  }
+
+  .rk-shop-right h1 {
+    font-size: 23px;
+  }
+
+  .rk-product-description {
+    font-size: 13.5px;
+
+    margin-bottom: 22px;
+  }
+
+  .rk-feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 12px;
+  }
+
+  .rk-feature-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .rk-feature-item span {
+    font-size: 11.5px;
+  }
+
+
+  /* =================================================
+     ENQUIRY BUTTON - SMALL MOBILE
+  ================================================= */
+
+  .rk-enquiry-btn {
+    width: 100%;
+
+    max-width: 400px;
+
+    min-height: 48px;
+
+    padding: 13px 15px;
+
+    font-size: 13.5px;
+
+    border-radius: 6px;
+
+    gap: 8px;
+  }
+
+  .rk-enquiry-btn svg {
+    width: 17px;
+    height: 17px;
+  }
+
+
+  /* =================================================
+     TABS
+  ================================================= */
+
+  .rk-tab {
+    flex: 1 1 100%;
+
+    width: 100%;
+  }
+
+
+  /* =================================================
+     TAB PANEL
+  ================================================= */
+
+  .rk-tab-panel {
+    padding: 20px 16px;
+  }
+
+  .rk-overview-image {
+    height: 230px;
+  }
+
+
+  /* =================================================
+     EXPLORE
+  ================================================= */
+
+  .rk-explore-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .rk-explore-image {
+    aspect-ratio: 1 / 1;
+  }
+
+
+  /* =================================================
+     BOTTOM CTA
+  ================================================= */
+
+  .rk-shop-cta {
+    padding: 25px 20px;
+
+    gap: 18px;
+  }
+
+  .rk-shop-cta-text h3 {
+    font-size: 20px;
+  }
+
+  .rk-shop-cta-text p {
+    font-size: 13px;
+  }
+
+  .rk-shop-cta-btn {
+    width: 100%;
+
+    justify-content: center;
+
+    padding: 14px 20px;
+  }
+
+
+  /* =================================================
+     CUSTOMIZATION
+  ================================================= */
+
+  .rk-customization-cta {
+    padding: 22px 18px;
+  }
+
+  .rk-customization-cta-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .rk-customization-cta-text h3 {
+    font-size: 16px;
+  }
+
+  .rk-customization-cta-text p {
+    font-size: 13px;
+  }
+
+  .rk-customization-cta-btn {
+    padding: 14px 18px;
+
+    font-size: 13px;
+  }
+
+
+  /* =================================================
+     ENQUIRY MODAL
+  ================================================= */
+
+  .rk-enquiry-modal {
+    padding: 28px 18px 22px;
+  }
+
+  .rk-enquiry-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .rk-enquiry-modal h3 {
+    font-size: 19px;
+  }
+}
+
+
+/* =====================================================
+   VERY SMALL DEVICES
+===================================================== */
+
+@media (max-width: 380px) {
+  .rk-shop-details {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .rk-main-image-box {
+    height: 220px;
+  }
+
+  .rk-shop-right h1 {
+    font-size: 21px;
+  }
+
+  .rk-feature-grid {
+    gap: 8px;
+  }
+
+  .rk-feature-item span {
+    font-size: 10.5px;
+  }
+
+  .rk-enquiry-btn {
+    width: 100%;
+
+    max-width: 100%;
+
+    font-size: 13px;
+
+    gap: 7px;
+
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .rk-tab-panel {
+    padding: 18px 14px;
   }
 }
