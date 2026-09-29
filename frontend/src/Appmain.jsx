@@ -24,24 +24,17 @@ function Appmain() {
   return (
     <Routes>
 
-      {/* =================================================
-          WEBSITE
-      ================================================= */}
-
+      {/* WEBSITE */}
       <Route
         path="/*"
         element={<Appweb />}
       />
 
-      {/* =================================================
-          ADMIN
-      ================================================= */}
-
+      {/* ADMIN */}
       <Route
-        path="/admin/*"
+        path="/admin"
         element={<Appadmin />}
       >
-
         <Route
           index
           element={<HomePage />}
@@ -126,7 +119,6 @@ function Appmain() {
           path="seo"
           element={<Seo />}
         />
-
       </Route>
 
     </Routes>
