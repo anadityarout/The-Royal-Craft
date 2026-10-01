@@ -464,6 +464,8 @@
 
     flex-direction: column;
 
+    align-items: flex-start;
+
     line-height: 1.2;
 }
 
@@ -727,19 +729,20 @@
     /* Badges */
 
     .rk-client-badges {
-        width: 100%;
-
-        max-width: 500px;
-
-        margin-top: 40px;
-
-        padding: 20px 15px;
-
         display: grid;
 
         grid-template-columns: repeat(2, minmax(0, 1fr));
 
-        gap: 20px 10px;
+        justify-items: stretch;
+
+        gap: 22px 12px;
+
+        width: 100%;
+        max-width: 500px;
+
+        margin-top: 40px;
+
+        padding: 22px 16px;
 
         border-radius: 13px;
     }
@@ -747,20 +750,25 @@
     .rk-client-badge {
         width: 100%;
 
-        padding: 0 5px;
+        padding: 0 4px;
 
-        justify-content: center;
+        justify-content: flex-start;
 
-        gap: 9px;
+        gap: 10px;
+    }
+
+    /* 5th badge sits centered on its own row */
+    .rk-client-badge:last-child {
+        grid-column: 1 / -1;
+
+        justify-self: center;
+
+        width: auto;
     }
 
     .rk-client-badge-icon {
         width: 22px;
         height: 22px;
-    }
-
-    .rk-client-badge-text {
-        align-items: flex-start;
     }
 
     .rk-client-badge-text span:first-child {
@@ -835,33 +843,55 @@
         font-size: 9px;
     }
 
-    /* Badges */
+    /* Badges: one column, all icons aligned on the same line */
 
     .rk-client-badges {
-        grid-template-columns: 1fr;
+        display: flex;
 
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 0;
+
+        width: 100%;
         max-width: 330px;
 
-        gap: 17px;
-
-        padding: 20px 14px;
+        padding: 10px 20px;
     }
 
-    .rk-client-badge {
-        justify-content: center;
+    .rk-client-badge,
+    .rk-client-badge:last-child {
+        grid-column: auto;
+
+        width: 100%;
+        max-width: 250px;
+
+        padding: 15px 0;
+
+        justify-content: flex-start;
+
+        gap: 14px;
+    }
+
+    /* thin line between rows */
+    .rk-client-badge + .rk-client-badge {
+        border-top: 1px solid rgba(200, 154, 61, 0.18);
     }
 
     .rk-client-badge-icon {
-        width: 21px;
-        height: 21px;
+        width: 24px;
+        height: 24px;
     }
 
     .rk-client-badge-text span:first-child {
-        font-size: 11px;
+        font-size: 12px;
     }
 
     .rk-client-badge-text span:last-child {
-        font-size: 8px;
+        font-size: 9px;
     }
 }
 
@@ -892,5 +922,16 @@
 
     .rk-client-badges {
         max-width: 300px;
+
+        padding: 8px 16px;
+    }
+
+    .rk-client-badge,
+    .rk-client-badge:last-child {
+        max-width: 100%;
+    }
+
+    .rk-client-badge-text span:first-child {
+        font-size: 11px;
     }
 }

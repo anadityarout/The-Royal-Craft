@@ -4,6 +4,11 @@
    HOME SLIDER
 =================================== */
 
+.home-slider,
+.home-slider * {
+    box-sizing:border-box;
+}
+
 .home-slider{
     width:100%;
     height:100vh;
@@ -80,7 +85,7 @@
 
 .slide.active .slider-content{
     animation:contentFadeIn .8s ease forwards;
-    animation-delay:1s; /* content appears 2s after the slide becomes active */
+    animation-delay:1s; /* content appears 1s after the slide becomes active */
 }
 
 @keyframes contentFadeIn{
@@ -340,16 +345,40 @@
 
 }
 
+/* ===================================
+   MOBILE
+=================================== */
+
 @media (max-width:768px){
 
 .home-slider{
-    height:600px;
+    height:620px;           /* fallback */
+    height:88svh;
+    min-height:560px;
+    max-height:720px;
+}
+
+/* Slide gets the side spacing, so content can never overflow */
+.slide{
+    padding:60px 24px 90px;
+}
+
+/* Darker overlay so white text is readable on bright photos */
+.slider-overlay{
+    background:linear-gradient(
+        to top,
+        rgba(0,0,0,.70) 0%,
+        rgba(0,0,0,.45) 45%,
+        rgba(0,0,0,.30) 100%
+    );
 }
 
 .slider-content{
-    left:25px;
-    right:25px;
+    left:0;
+    right:auto;
+    width:100%;
     max-width:100%;
+    padding-top:0;
 }
 
 .slider-kicker{
@@ -360,11 +389,21 @@
 
 .slider-content h1{
     font-size:30px;
+    line-height:1.2;
+    margin-bottom:12px;
 }
 
 .slider-content p{
     font-size:14px;
     line-height:1.6;
+    max-width:100%;
+    margin-bottom:22px;
+
+    /* keep long descriptions from pushing into the progress bar */
+    display:-webkit-box;
+    -webkit-line-clamp:4;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
 }
 
 .slider-cta{
@@ -374,9 +413,9 @@
 }
 
 .slider-progress-bar{
-    left:25px;
-    right:25px;
-    bottom:20px;
+    left:24px;
+    right:24px;
+    bottom:28px;
     width:auto;
     transform:none;
 }
@@ -391,15 +430,21 @@
 
 }
 
+/* ===================================
+   SMALL MOBILE
+=================================== */
+
 @media (max-width:480px){
 
 .home-slider{
-    height:500px;
+    height:600px;           /* fallback */
+    height:85svh;
+    min-height:540px;
+    max-height:680px;
 }
 
-.slider-content{
-    left:20px;
-    right:20px;
+.slide{
+    padding:50px 20px 85px;
 }
 
 .slider-content h1{
@@ -408,15 +453,23 @@
 
 .slider-content p{
     font-size:13px;
+    -webkit-line-clamp:4;
 }
 
 .slider-cta{
     width:100%;
+    font-size:13px;
 }
 
 .slider-progress-bar{
     left:20px;
     right:20px;
+    bottom:24px;
+    gap:10px;
+}
+
+.progress-counter{
+    font-size:12px;
 }
 
 }
