@@ -1,10 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  Heart,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { Heart, ChevronLeft, ChevronRight } from "lucide-react";
 import "./ShopHome.css";
 
 // =====================================================
@@ -14,8 +10,7 @@ import "./ShopHome.css";
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/shop-product";
 
-const FALLBACK_IMAGE =
-  "https://via.placeholder.com/400x400?text=No+Image";
+const FALLBACK_IMAGE = "https://via.placeholder.com/400x400?text=No+Image";
 
 // =====================================================
 // CREATE PRODUCT SLUG
@@ -37,6 +32,8 @@ const ShopHome = () => {
   const [products, setProducts] = useState([]);
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
 
   const trackRef = useRef(null);
 
@@ -60,10 +57,7 @@ const ShopHome = () => {
 
       const data = await response.json();
 
-      // =================================================
-      // HANDLE DIFFERENT API RESPONSE FORMATS
-      // =================================================
-
+      // Handle different API response formats
       let productList = [];
 
       if (Array.isArray(data)) {
@@ -90,37 +84,39 @@ const ShopHome = () => {
   // =====================================================
 
   const toggleWishlist = (id) => {
-    setWishlist((prev) => {
-      if (prev.includes(id)) {
-        return prev.filter(
-          (wishlistId) => wishlistId !== id
-        );
-      }
-
-      return [...prev, id];
-    });
+    setWishlist((prev) =>
+      prev.includes(id)
+        ? prev.filter((wishlistId) => wishlistId !== id)
+        : [...prev, id]
+    );
   };
 
   // =====================================================
   // CAROUSEL
   // =====================================================
 
+  const updateArrows = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  useEffect(() => {
+    updateArrows();
+    window.addEventListener("resize", updateArrows);
+    return () => window.removeEventListener("resize", updateArrows);
+  }, [products, loading]);
+
   const scrollByCard = (direction) => {
-    const track = trackRef.current;
+    const el = trackRef.current;
+    if (!el || !el.firstElementChild) return;
 
-    if (!track) return;
+    const card = el.firstElementChild;
+    const gap = parseFloat(getComputedStyle(el).columnGap) || 0;
 
-    const card = track.querySelector(".shop-card");
-
-    const cardWidth = card
-      ? card.offsetWidth + 16
-      : 300;
-
-    track.scrollBy({
-      left:
-        direction === "left"
-          ? -cardWidth
-          : cardWidth,
+    el.scrollBy({
+      left: direction * (card.offsetWidth + gap),
       behavior: "smooth",
     });
   };
@@ -130,13 +126,12 @@ const ShopHome = () => {
   // =====================================================
 
   const handleImageError = (event) => {
-    if (
-      event.currentTarget.src !==
-      FALLBACK_IMAGE
-    ) {
+    if (event.currentTarget.src !== FALLBACK_IMAGE) {
       event.currentTarget.src = FALLBACK_IMAGE;
     }
   };
+
+  const hasProducts = !loading && products.length > 0;
 
   // =====================================================
   // RETURN
@@ -145,223 +140,133 @@ const ShopHome = () => {
   return (
     <section className="shop-home">
       <div className="shop-home-inner">
-
-        {/* =================================================
-            HEADER
-        ================================================= */}
+        {/* ===== Header (centered) ===== */}
 
         <div className="shop-home-header">
+          <span className="shop-subtitle">SHOP NOW</span>
 
-          <div className="shop-home-heading">
-
-            <span className="shop-subtitle">
-              SHOP NOW
-            </span>
-
-            <h2>
-              SHOP THE
-              <br />
-              ROYAL COLLECTION
-            </h2>
-
-          </div>
+          <h2 className="shop-home-title">
+            Shop The Royal{" "}
+            <span className="shop-home-title-gold">Collection</span>
+          </h2>
 
           <p className="shop-home-desc">
-            Handpicked décor accents and luxury
-            pieces available for purchase. Bring
-            home the elegance of The Royal Kraft.
+            Handpicked décor accents and luxury pieces available for purchase.
+            Bring home the elegance of The Royal Kraft.
           </p>
-
         </div>
 
-        {/* =================================================
-            CAROUSEL
-        ================================================= */}
+        {/* ===== Carousel ===== */}
 
         <div className="shop-home-carousel">
+          {loading && <div className="shop-state">Loading Products...</div>}
 
-          {/* =================================================
-              LEFT ARROW
-          ================================================= */}
+          {!loading && products.length === 0 && (
+            <div className="shop-state">No products available.</div>
+          )}
 
-          <button
-            type="button"
-            className="shop-arrow shop-arrow-left"
-            onClick={() => scrollByCard("left")}
-            aria-label="Scroll left"
-          >
-            <ChevronLeft size={20} />
-          </button>
+          {hasProducts && (
+            <>
+              <button
+                type="button"
+                className="shop-arrow shop-arrow-left"
+                onClick={() => scrollByCard(-1)}
+                disabled={!canPrev}
+                aria-label="Scroll left"
+              >
+                <ChevronLeft size={20} />
+              </button>
 
-          {/* =================================================
-              PRODUCTS
-          ================================================= */}
+              <div
+                className="shop-home-track"
+                ref={trackRef}
+                onScroll={updateArrows}
+              >
+                {products.map((item, index) => {
+                  const productId =
+                    item.id || item.productId || item._id || index;
 
-          <div
-            className="shop-home-right"
-            ref={trackRef}
-          >
+                  const isWished = wishlist.includes(productId);
+                  const productSlug = createProductSlug(item.name);
 
-            {/* =================================================
-                LOADING
-            ================================================= */}
+                  return (
+                    <Link
+                      to={`/product/${productSlug}`}
+                      state={{ product: item }}
+                      key={productId}
+                      className="shop-card"
+                    >
+                      {/* Image */}
 
-            {loading && (
-              <div className="loading">
-                Loading Products...
-              </div>
-            )}
-
-            {/* =================================================
-                EMPTY PRODUCTS
-            ================================================= */}
-
-            {!loading &&
-              products.length === 0 && (
-                <div className="loading">
-                  No products available.
-                </div>
-              )}
-
-            {/* =================================================
-                PRODUCT LIST
-            ================================================= */}
-
-            {!loading &&
-              products.length > 0 &&
-              products.map((item, index) => {
-
-                const productId =
-                  item.id ||
-                  item.productId ||
-                  item._id ||
-                  index;
-
-                const isWished =
-                  wishlist.includes(productId);
-
-                const productSlug =
-                  createProductSlug(item.name);
-
-                return (
-                  <Link
-                    to={`/product/${productSlug}`}
-                    state={{
-                      product: item,
-                    }}
-                    key={productId}
-                    className="shop-card"
-                  >
-
-                    {/* =================================================
-                        PRODUCT IMAGE
-                    ================================================= */}
-
-                    <div className="shop-image-wrap">
-
-                      <img
-                        src={
-                          item.primaryImage ||
-                          item.image ||
-                          item.imageUrl ||
-                          FALLBACK_IMAGE
-                        }
-                        alt={
-                          item.name ||
-                          "Royal Kraft Product"
-                        }
-                        className="shop-image"
-                        loading="lazy"
-                        onError={handleImageError}
-                      />
-
-                      {/* =================================================
-                          WISHLIST BUTTON
-                      ================================================= */}
-
-                      <button
-                        type="button"
-                        className={`wishlist-btn ${
-                          isWished ? "active" : ""
-                        }`}
-                        onClick={(event) => {
-                          event.preventDefault();
-                          event.stopPropagation();
-
-                          toggleWishlist(productId);
-                        }}
-                        aria-label={
-                          isWished
-                            ? "Remove from wishlist"
-                            : "Add to wishlist"
-                        }
-                      >
-                        <Heart
-                          size={16}
-                          fill={
-                            isWished
-                              ? "#c89b3c"
-                              : "none"
+                      <div className="shop-image-wrap">
+                        <img
+                          src={
+                            item.primaryImage ||
+                            item.image ||
+                            item.imageUrl ||
+                            FALLBACK_IMAGE
                           }
+                          alt={item.name || "Royal Kraft Product"}
+                          className="shop-image"
+                          loading="lazy"
+                          onError={handleImageError}
                         />
-                      </button>
 
-                    </div>
+                        <button
+                          type="button"
+                          className={`wishlist-btn ${isWished ? "active" : ""}`}
+                          onClick={(event) => {
+                            event.preventDefault();
+                            event.stopPropagation();
+                            toggleWishlist(productId);
+                          }}
+                          aria-label={
+                            isWished
+                              ? "Remove from wishlist"
+                              : "Add to wishlist"
+                          }
+                        >
+                          <Heart
+                            size={18}
+                            fill={isWished ? "currentColor" : "none"}
+                          />
+                        </button>
+                      </div>
 
-                    {/* =================================================
-                        PRODUCT INFORMATION
-                    ================================================= */}
+                      {/* Info */}
 
-                    <div className="shop-info">
+                      <div className="shop-info">
+                        <h4>{item.name || "Product Name"}</h4>
 
-                      <h4>
-                        {item.name || "Product Name"}
-                      </h4>
+                        {item.category && (
+                          <span className="shop-category">{item.category}</span>
+                        )}
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
 
-                      {item.category && (
-                        <span className="shop-category">
-                          {item.category}
-                        </span>
-                      )}
-
-                    </div>
-
-                  </Link>
-                );
-              })}
-
-          </div>
-
-          {/* =================================================
-              RIGHT ARROW
-          ================================================= */}
-
-          <button
-            type="button"
-            className="shop-arrow shop-arrow-right"
-            onClick={() => scrollByCard("right")}
-            aria-label="Scroll right"
-          >
-            <ChevronRight size={20} />
-          </button>
-
+              <button
+                type="button"
+                className="shop-arrow shop-arrow-right"
+                onClick={() => scrollByCard(1)}
+                disabled={!canNext}
+                aria-label="Scroll right"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </>
+          )}
         </div>
 
-        {/* =================================================
-            VIEW ALL PRODUCTS
-        ================================================= */}
+        {/* ===== Centered button ===== */}
 
         <div className="shop-home-footer">
-
-          <Link
-            to="/product"
-            className="all-btn"
-          >
-            VIEW ALL PRODUCTS
+          <Link to="/product" className="all-btn">
+            VIEW ALL PRODUCTS <span>→</span>
           </Link>
-
         </div>
-
       </div>
     </section>
   );

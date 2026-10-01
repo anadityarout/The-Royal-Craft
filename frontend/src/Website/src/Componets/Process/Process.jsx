@@ -1,4 +1,12 @@
 import React, { useEffect, useState } from "react";
+import {
+  Lightbulb,
+  Settings,
+  Layers,
+  Brush,
+  ShieldCheck,
+  Truck,
+} from "lucide-react";
 import "./Process.css";
 
 const API_URL =
@@ -13,6 +21,9 @@ const CATEGORY_ORDER = [
   "Quality Check",
   "Delivery & Installation",
 ];
+
+// Icons in the same order as CATEGORY_ORDER
+const CATEGORY_ICONS = [Lightbulb, Settings, Layers, Brush, ShieldCheck, Truck];
 
 const normalize = (str) => (str || "").trim().toLowerCase();
 
@@ -31,8 +42,14 @@ const sortByFixedOrder = (list) => {
   });
 };
 
-const Process = () => {
+const getIcon = (category, index) => {
+  const found = CATEGORY_ORDER.map(normalize).indexOf(normalize(category));
+  return found !== -1
+    ? CATEGORY_ICONS[found]
+    : CATEGORY_ICONS[index % CATEGORY_ICONS.length];
+};
 
+const Process = () => {
   const [processes, setProcesses] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -41,9 +58,7 @@ const Process = () => {
   }, []);
 
   const loadProcesses = async () => {
-
     try {
-
       setLoading(true);
 
       const response = await fetch(API_URL);
@@ -53,152 +68,93 @@ const Process = () => {
       }
 
       const data = await response.json();
-
       const list = Array.isArray(data) ? data : [];
 
       setProcesses(sortByFixedOrder(list));
-
     } catch (error) {
-
       console.error("Error loading processes:", error);
-
       setProcesses([]);
-
     } finally {
-
       setLoading(false);
-
     }
-
   };
 
-  const getNumber = (index) => {
-    return String(index + 1).padStart(2, "0");
-  };
+  const getNumber = (index) => String(index + 1).padStart(2, "0");
 
   return (
-
     <section className="rk-process-section">
-
       <div className="rk-process-container">
+        {/* ================= Header (centered) ================= */}
 
-        {/* ================= Left Content ================= */}
-
-        <div className="rk-process-content">
-
-          <span className="rk-process-tag">
-            MANUFACTURED WITH PRECISION
-          </span>
+        <div className="rk-process-head">
+          <span className="rk-process-tag">MANUFACTURED WITH PRECISION</span>
 
           <h2 className="rk-process-title">
-            Precision Manufacturing,
-            <br />
-            Crafted to Perfection.
+            Precision Manufacturing,{" "}
+            <span className="rk-process-title-gold">
+              Crafted to Perfection.
+            </span>
           </h2>
 
           <p className="rk-process-desc">
-            Every masterpiece begins with a vision and is transformed through expert craftsmanship. At The Royal Kraft, our manufacturing process combines innovative technology with traditional artistry to create premium FRP architectural décor that exceeds expectations in durability, elegance, and detail.
+            Every masterpiece begins with a vision and is transformed through
+            expert craftsmanship. At The Royal Kraft, our manufacturing process
+            combines innovative technology with traditional artistry to create
+            premium FRP architectural décor that exceeds expectations in
+            durability, elegance, and detail.
           </p>
-
-          <button className="rk-process-btn">
-            EXPLORE MANUFACTURING
-          </button>
-
         </div>
 
-        {/* ================= Right Grid ================= */}
+        {/* ================= Steps ================= */}
 
-        <div className="rk-process-grid">
-                    {loading ? (
+        {loading ? (
+          <div className="rk-loading">Loading...</div>
+        ) : processes.length === 0 ? (
+          <div className="rk-loading">No Process Found</div>
+        ) : (
+          <div className="rk-process-grid">
+            {processes.map((process, index) => {
+              const Icon = getIcon(process.category, index);
 
-            <div className="rk-loading">
-              Loading...
-            </div>
+              return (
+                <div className="rk-process-card" key={process.id || index}>
+                  {/* Arch image + badge + icon */}
 
-          ) : processes.length === 0 ? (
+                  <div className="rk-process-media">
+                    <div className="rk-process-arch">
+                      <img
+                        src={process.image}
+                        alt={process.category}
+                        loading="lazy"
+                      />
+                    </div>
 
-            <div className="rk-loading">
-              No Process Found
-            </div>
+                    <span className="rk-process-no">{getNumber(index)}</span>
 
-          ) : (
-
-            processes.map((process, index) => (
-
-              <div
-                className="rk-process-card"
-                key={process.id || index}
-              >
-
-                {/* Image */}
-
-                <div className="rk-process-image">
-
-                  <img
-                    src={process.image}
-                    alt={process.category}
-                    loading="lazy"
-                  />
-
-                </div>
-
-                {/* Caption */}
-
-                <div className="rk-process-caption">
-
-                  <span className="rk-process-no">
-                    {getNumber(index)}
-                  </span>
-
-                  <div className="rk-process-info">
-
-                    {/* Category */}
-
-                    <h4 className="rk-process-category">
-                      {process.category}
-                    </h4>
-
-                    {/* Process Name */}
-
-                    {process.processName && (
-
-                      <p className="rk-process-name">
-                        {process.processName}
-                      </p>
-
-                    )}
-
-                    {/* Description */}
-
-                    {process.description && (
-
-                      <p className="rk-process-description">
-                        {process.description}
-                      </p>
-
-                    )}
-
+                    <span className="rk-process-icon">
+                      <Icon size={22} strokeWidth={1.6} />
+                    </span>
                   </div>
 
-                  <span className="rk-process-arrow">
-                    →
-                  </span>
+                  {/* Text */}
 
+                  <h4 className="rk-process-category">{process.category}</h4>
+
+                  <span className="rk-process-divider" />
+
+                  {process.description && (
+                    <p className="rk-process-description">
+                      {process.description}
+                    </p>
+                  )}
                 </div>
-
-              </div>
-
-            ))
-
-          )}
-                  </div>
-
+              );
+            })}
+          </div>
+        )}
       </div>
-
     </section>
-
   );
-
 };
 
 export default Process;

@@ -1,239 +1,571 @@
+
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* =====================================================
+   PROCESS SECTION
+===================================================== */
 
 .rk-process-section {
   width: 100%;
-  padding: 70px 5%;
+  padding: 90px 24px;
   background: #fdfaf5;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.rk-process-section *,
+.rk-process-section *::before,
+.rk-process-section *::after {
   box-sizing: border-box;
 }
 
-/* ==========================
-   CONTAINER (2-column layout)
-========================== */
+/* =====================================================
+   MAIN CONTAINER
+===================================================== */
 
 .rk-process-container {
-  max-width: 1700px;
+  width: 100%;
+  max-width: 1400px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 0.62fr 2.3fr;
-  gap: 40px;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* ==========================
-   LEFT: TEXT CONTENT
-========================== */
+/* =====================================================
+   HEADER
+===================================================== */
 
-.rk-process-content {
-  text-align: left;
-  padding-top: 30px;
+.rk-process-head {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto 75px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .rk-process-tag {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
   color: #c9a15d;
   font-family: "Inter", sans-serif;
   font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 2.5px;
+  font-weight: 600;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  margin-bottom: 14px;
+
+  margin-bottom: 16px;
+}
+
+.rk-process-tag::before,
+.rk-process-tag::after {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: #c9a15d;
+  flex-shrink: 0;
 }
 
 .rk-process-title {
+  width: 100%;
+  margin: 0 auto 18px;
+
   font-family: "Playfair Display", serif;
-  font-size: 28px;
+  font-size: clamp(30px, 4vw, 46px);
   font-weight: 700;
+  line-height: 1.2;
+
   color: #1a1a1a;
-  line-height: 1.3;
-  margin: 0 0 18px;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.rk-process-title-gold {
+  color: #c9a15d;
 }
 
 .rk-process-desc {
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+
   font-family: "Inter", sans-serif;
-  font-size: 14px;
-  color: #666;
-  line-height: 1.85;
-  max-width: 280px;
-  margin-bottom: 28px;
+  font-size: 15px;
+  line-height: 1.8;
+
+  color: #555;
+  text-align: center;
+  text-wrap: balance;
 }
 
-.rk-process-btn {
-  padding: 15px 30px;
-  border: none;
-  background: #c9a15d;
-  color: #fff;
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.rk-process-btn:hover {
-  background: #b6852e;
-}
-
-/* ==========================
-   RIGHT: PROCESS GRID
-========================== */
+/* =====================================================
+   PROCESS GRID
+===================================================== */
 
 .rk-process-grid {
+  --gap: 30px;
+
+  width: 100%;
+  max-width: 1320px;
+  margin: 0 auto;
+
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  margin-top: 40px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 45px var(--gap);
+
+  justify-content: center;
+  align-items: start;
 }
+
+/* =====================================================
+   PROCESS CARD
+===================================================== */
 
 .rk-process-card {
+  width: 100%;
+  min-width: 0;
+
   display: flex;
   flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+
+  padding-top: 26px;
 }
 
-.rk-process-image {
+/* =====================================================
+   IMAGE / ARCH
+===================================================== */
+
+.rk-process-media {
+  position: relative;
+
   width: 100%;
-  height: 170px;
+  max-width: 180px;
+
+  aspect-ratio: 0.72;
+
+  margin: 0 auto;
+}
+
+.rk-process-arch {
+  position: absolute;
+  inset: 0;
+
+  border: 1.5px solid #c9a15d;
+  border-radius: 999px;
+
+  padding: 5px;
+
+  background: #fdfaf5;
+
   overflow: hidden;
-  border-radius: 4px;
+}
+
+.rk-process-arch img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  border-radius: 999px;
+
   background: #f0ebe1;
+
+  transition: transform 0.5s ease;
+}
+
+.rk-process-card:hover .rk-process-arch img {
+  transform: scale(1.04);
+}
+
+/* =====================================================
+   CONNECTOR LINE
+===================================================== */
+
+.rk-process-media::after {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 100%;
+
+  width: var(--gap);
+  height: 1px;
+
+  background: #c9a15d;
+}
+
+.rk-process-media::before {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: calc(100% + var(--gap) / 2);
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #c9a15d;
+
+  transform: translate(-50%, -50%);
+
+  z-index: 1;
+}
+
+.rk-process-card:last-child .rk-process-media::after,
+.rk-process-card:last-child .rk-process-media::before {
+  display: none;
+}
+
+/* =====================================================
+   NUMBER BADGE
+===================================================== */
+
+.rk-process-no {
+  position: absolute;
+
+  top: -26px;
+  left: 50%;
+
+  transform: translateX(-50%);
+
+  width: 52px;
+  height: 52px;
+
+  border-radius: 50%;
+
+  background: #c9a15d;
+  color: #fff;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  font-family: "Playfair Display", serif;
+  font-size: 22px;
+  font-weight: 700;
+
+  box-shadow: 0 4px 12px rgba(201, 161, 93, 0.35);
+
+  z-index: 2;
 }
 
-.rk-process-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  transition: 0.4s;
-}
+/* =====================================================
+   ICON
+===================================================== */
 
-.rk-process-card:hover .rk-process-image img {
-  transform: scale(1.06);
-}
+.rk-process-icon {
+  position: absolute;
 
-/* ==========================
-   CAPTION
-========================== */
+  bottom: -22px;
+  left: 50%;
 
-.rk-process-caption {
+  transform: translateX(-50%);
+
+  width: 56px;
+  height: 56px;
+
+  border-radius: 50%;
+
+  background: #fff;
+  border: 1.5px solid #c9a15d;
+
+  color: #1a1a1a;
+
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-top: 14px;
+  justify-content: center;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  z-index: 2;
 }
 
-.rk-process-no {
+/* =====================================================
+   CATEGORY
+===================================================== */
+
+.rk-process-category {
+  width: 100%;
+
+  margin: 44px auto 0;
+
   font-family: "Playfair Display", serif;
-  font-size: 25px;
+  font-size: 17px;
   font-weight: 700;
-  color: #c9a15d;
-  flex-shrink: 0;
-}
 
-.rk-process-step-title {
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
+  line-height: 1.3;
+
+  text-align: center;
+  text-transform: uppercase;
+
   color: #1a1a1a;
-  white-space: nowrap;
 }
 
-.rk-process-arrow {
-  margin-left: auto;
-  color: #c9a15d;
-  font-size: 25px;
-  flex-shrink: 0;
+/* =====================================================
+   DIVIDER
+===================================================== */
+
+.rk-process-divider {
+  display: block;
+
+  width: 26px;
+  height: 1.5px;
+
+  margin: 12px auto;
+
+  background: #c9a15d;
 }
 
-/* ==========================
-   DYNAMIC PROCESS
-========================== */
+/* =====================================================
+   DESCRIPTION
+===================================================== */
+
+.rk-process-description {
+  width: 100%;
+  max-width: 210px;
+
+  margin: 0 auto;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: #555;
+
+  text-align: center;
+}
+
+/* =====================================================
+   LOADING
+===================================================== */
 
 .rk-loading {
   width: 100%;
-  text-align: center;
+
   padding: 40px;
+
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   font-weight: 600;
+
   color: #666;
+
+  text-align: center;
 }
 
-.rk-process-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-}
+/* =====================================================
+   LARGE DESKTOP
+===================================================== */
 
-.rk-process-category {
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: #1a1a1a;
-  margin: 0;
-}
-
-.rk-process-name {
-  margin-top: 4px;
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #666;
-}
-
-.rk-process-description {
-  margin-top: 4px;
-  font-family: "Inter", sans-serif;
-  font-size: 12px;
-  color: #888;
-  line-height: 1.5;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* ==========================
-   RESPONSIVE
-========================== */
-
-@media (max-width: 1100px) {
+@media (min-width: 1500px) {
   .rk-process-container {
-    grid-template-columns: 1fr;
-    gap: 35px;
-  }
-}
-
-@media (max-width: 768px) {
-  .rk-process-section {
-    padding: 50px 5%;
-  }
-
-  .rk-process-title {
-    font-size: 24px;
+    max-width: 1450px;
   }
 
   .rk-process-grid {
-    grid-template-columns: repeat(2, 1fr);
-    margin-top: 30px;
+    max-width: 1380px;
   }
 
-  .rk-process-image {
-    height: 140px;
+  .rk-process-media {
+    max-width: 190px;
+  }
+}
+
+/* =====================================================
+   TABLET / SMALL DESKTOP
+===================================================== */
+
+@media (max-width: 1100px) {
+  .rk-process-section {
+    padding: 75px 30px;
   }
 
-  .rk-process-caption {
-    flex-wrap: wrap;
+  .rk-process-container {
+    max-width: 900px;
   }
 
-  .rk-process-step-title {
-    white-space: normal;
+  .rk-process-head {
+    margin-bottom: 65px;
+  }
+
+  .rk-process-grid {
+    max-width: 780px;
+
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 55px 30px;
+  }
+
+  .rk-process-media {
+    max-width: 180px;
+  }
+
+  .rk-process-media::before,
+  .rk-process-media::after {
+    display: none;
+  }
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media (max-width: 640px) {
+  .rk-process-section {
+    padding: 60px 20px;
+  }
+
+  .rk-process-container {
+    width: 100%;
+    max-width: 500px;
+  }
+
+  .rk-process-head {
+    margin-bottom: 50px;
+  }
+
+  .rk-process-tag {
+    font-size: 11px;
+    letter-spacing: 2px;
+    gap: 8px;
+  }
+
+  .rk-process-tag::before,
+  .rk-process-tag::after {
+    width: 16px;
+  }
+
+  .rk-process-title {
+    font-size: clamp(26px, 8vw, 34px);
+    line-height: 1.25;
+  }
+
+  .rk-process-desc {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .rk-process-grid {
+    width: 100%;
+    max-width: 460px;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 48px 18px;
+
+    margin: 0 auto;
+  }
+
+  .rk-process-card {
+    width: 100%;
+    padding-top: 22px;
+  }
+
+  .rk-process-media {
+    width: 100%;
+    max-width: 145px;
+  }
+
+  .rk-process-no {
+    width: 42px;
+    height: 42px;
+
+    top: -22px;
+
+    font-size: 17px;
+  }
+
+  .rk-process-icon {
+    width: 46px;
+    height: 46px;
+
+    bottom: -18px;
+  }
+
+  .rk-process-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .rk-process-category {
+    margin-top: 34px;
+
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+
+  .rk-process-description {
+    max-width: 180px;
+
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+/* =====================================================
+   SMALL PHONES
+===================================================== */
+
+@media (max-width: 420px) {
+  .rk-process-section {
+    padding: 50px 16px;
+  }
+
+  .rk-process-grid {
+    max-width: 340px;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 44px 14px;
+  }
+
+  .rk-process-media {
+    max-width: 130px;
+  }
+
+  .rk-process-category {
+    font-size: 13px;
+  }
+
+  .rk-process-description {
+    max-width: 155px;
+    font-size: 12.5px;
+  }
+}
+
+/* =====================================================
+   VERY SMALL PHONES
+===================================================== */
+
+@media (max-width: 360px) {
+  .rk-process-grid {
+    max-width: 240px;
+
+    grid-template-columns: 1fr;
+
+    gap: 55px;
+  }
+
+  .rk-process-media {
+    max-width: 160px;
+  }
+
+  .rk-process-description {
+    max-width: 200px;
   }
 }

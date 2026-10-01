@@ -5,26 +5,69 @@ import {
   HardHat,
   ShieldCheck,
   Clock3,
+  Gem,
+  Truck,
+  Building2,
+  CloudSun,
+  BadgeDollarSign,
+  CheckCircle2,
 } from "lucide-react";
+
 import "./WhyChooseUs.css";
 
 const API_URL =
   "https://k3ura4d38k.execute-api.ap-south-1.amazonaws.com/choose";
 
-// ================= Why Choose List =================
+/* =========================================================
+   WHY CHOOSE FEATURES
+========================================================= */
 
 const whyChooseUs = [
-  "Premium Quality Materials",
-  "Custom Design Solutions",
-  "Skilled Master Craftsmen",
-  "Pan India Delivery & Installation",
-  "Modern Manufacturing Facility",
-  "Durable Weather-Resistant Products",
-  "Competitive Pricing",
-  "Timely Project Completion",
+  {
+    icon: Gem,
+    title: "Premium Quality",
+    description: "Materials",
+  },
+  {
+    icon: Palette,
+    title: "Custom Design",
+    description: "Solutions",
+  },
+  {
+    icon: HardHat,
+    title: "Skilled Master",
+    description: "Craftsmen",
+  },
+  {
+    icon: Truck,
+    title: "Pan India",
+    description: "Delivery & Installation",
+  },
+  {
+    icon: Factory,
+    title: "Modern Manufacturing",
+    description: "Facility",
+  },
+  {
+    icon: CloudSun,
+    title: "Durable Weather",
+    description: "Resistant Products",
+  },
+  {
+    icon: BadgeDollarSign,
+    title: "Competitive",
+    description: "Pricing",
+  },
+  {
+    icon: Clock3,
+    title: "Timely Project",
+    description: "Completion",
+  },
 ];
 
-// ================= Stats =================
+/* =========================================================
+   STATS
+========================================================= */
 
 const stats = [
   {
@@ -54,28 +97,41 @@ const stats = [
   },
 ];
 
+/* =========================================================
+   COMPONENT
+========================================================= */
+
 const WhyChooseUs = () => {
   const [mediaList, setMediaList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [playingVideo, setPlayingVideo] = useState(null);
 
-  // Store references to videos
   const videoRefs = useRef({});
 
-  // ================= Load Media =================
+  /* =======================================================
+     LOAD MEDIA
+  ======================================================= */
 
   const loadMedia = async () => {
     try {
       setLoading(true);
 
       const response = await fetch(API_URL);
+
+      if (!response.ok) {
+        throw new Error("Failed to load Why Choose Us media");
+      }
+
       const data = await response.json();
 
-      // Show only first 3 items
-      setMediaList(data.slice(0, 3));
-
+      /*
+        Only display first 3 media items.
+        Admin Dashboard can control these.
+      */
+      setMediaList(Array.isArray(data) ? data.slice(0, 3) : []);
     } catch (error) {
-      console.error("Load Error:", error);
+      console.error("Why Choose Us Load Error:", error);
+      setMediaList([]);
     } finally {
       setLoading(false);
     }
@@ -85,163 +141,277 @@ const WhyChooseUs = () => {
     loadMedia();
   }, []);
 
-  // ================= Play Video =================
+  /* =======================================================
+     PLAY VIDEO
+  ======================================================= */
 
   const playVideo = (id) => {
     const video = videoRefs.current[id];
 
-    if (video) {
-      video.play();
-      setPlayingVideo(id);
+    if (!video) return;
+
+    /*
+      Pause all other videos first
+    */
+    Object.entries(videoRefs.current).forEach(([videoId, videoElement]) => {
+      if (videoId !== String(id) && videoElement) {
+        videoElement.pause();
+      }
+    });
+
+    video
+      .play()
+      .then(() => {
+        setPlayingVideo(id);
+      })
+      .catch((error) => {
+        console.error("Video Play Error:", error);
+      });
+  };
+
+  /* =======================================================
+     STOP VIDEO
+  ======================================================= */
+
+  const handleVideoPause = (id) => {
+    if (playingVideo === id) {
+      setPlayingVideo(null);
     }
   };
-    return (
+
+  /* =======================================================
+     RENDER
+  ======================================================= */
+
+  return (
     <section className="rk-why-section">
       <div className="rk-why-container">
 
-        {/* ================= Left ================= */}
+        {/* =================================================
+            HEADER
+        ================================================= */}
 
-        <div className="rk-why-left">
+        <div className="rk-why-header">
 
-          <span className="rk-why-tag">
-            Why The Royal Kraft?
-          </span>
+          <div className="rk-why-eyebrow">
+            <span className="rk-why-line"></span>
+
+            <span>WHY THE ROYAL KRAFT?</span>
+
+            <span className="rk-why-line"></span>
+          </div>
 
           <h2 className="rk-why-title">
-            THE ROYAL KRAFT?
+            Crafted for Grandeur.
+            <br />
+            Built to <span>Last.</span>
           </h2>
 
-          <ul className="rk-why-list">
-            {whyChooseUs.map((item, index) => (
-              <li key={index}>
-                <span className="rk-why-check">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
+          <p className="rk-why-description">
+            From concept to creation, The Royal Kraft delivers exceptional
+            architectural decor with unmatched craftsmanship, modern
+            facilities, and pan India delivery.
+          </p>
 
         </div>
 
-        {/* ================= Right ================= */}
+        {/* =================================================
+            MEDIA SECTION
+        ================================================= */}
 
-        <div className="rk-why-right">
+        <div className="rk-why-media-section">
 
-          <div className="rk-why-images">
+          {loading ? (
 
-            {loading ? (
+            <div className="rk-why-loading">
+              Loading...
+            </div>
 
-              <div className="rk-why-loading">
-                Loading...
-              </div>
+          ) : mediaList.length === 0 ? (
 
-            ) : mediaList.length === 0 ? (
+            <div className="rk-why-loading">
+              No Media Found
+            </div>
 
-              <div className="rk-why-loading">
-                No Media Found
-              </div>
+          ) : (
 
-            ) : (
+            <div className="rk-why-media-grid">
 
-              mediaList.map((item) => (
+              {mediaList.map((item, index) => {
 
-                <div
-                  key={item.id}
-                  className={`rk-why-image ${
-                    item.type === "Video"
-                      ? "rk-why-video"
-                      : ""
-                  }`}
-                >
+                const isVideo =
+                  item.type?.toLowerCase() === "video";
 
-                  {item.type === "Image" ? (
+                return (
+                  <div
+                    key={item.id || index}
+                    className={`rk-why-media-card ${
+                      isVideo ? "rk-why-media-video" : ""
+                    }`}
+                  >
 
-                    <img
-                      src={item.url}
-                      alt="Why Choose Us"
-                    />
+                    {/* ================= IMAGE ================= */}
 
-                  ) : (
-
-                    <div className="rk-why-video-wrapper">
-
-                      <video
-                        ref={(el) => {
-                          if (el) {
-                            videoRefs.current[item.id] = el;
-                          }
-                        }}
-                        className="rk-why-video-player"
+                    {!isVideo && (
+                      <img
                         src={item.url}
-                        playsInline
-                        controls={playingVideo === item.id}
-                        onPlay={() => setPlayingVideo(item.id)}
-                        onPause={() => setPlayingVideo(null)}
+                        alt="The Royal Kraft craftsmanship"
+                        className="rk-why-media-image"
+                        loading="lazy"
                       />
+                    )}
 
-                      {playingVideo !== item.id && (
+                    {/* ================= VIDEO ================= */}
 
-                        <button
-                          className="rk-why-play-btn"
-                          onClick={() => playVideo(item.id)}
-                        >
-                          ▶
-                        </button>
+                    {isVideo && (
+                      <div className="rk-why-video-wrapper">
 
-                      )}
+                        <video
+                          ref={(el) => {
+                            if (el) {
+                              videoRefs.current[item.id] = el;
+                            }
+                          }}
+                          className="rk-why-video-player"
+                          src={item.url}
+                          playsInline
+                          preload="metadata"
+                          controls={playingVideo === item.id}
+                          onPlay={() =>
+                            setPlayingVideo(item.id)
+                          }
+                          onPause={() =>
+                            handleVideoPause(item.id)
+                          }
+                        />
 
-                    </div>
+                        {/* Video Overlay */}
 
-                  )}
+                        {playingVideo !== item.id && (
+                          <button
+                            type="button"
+                            className="rk-why-play-button"
+                            onClick={() =>
+                              playVideo(item.id)
+                            }
+                            aria-label="Play video"
+                          >
+                            <span className="rk-why-play-icon">
+                              ▶
+                            </span>
+                          </button>
+                        )}
 
-                </div>
+                        {/* Watch Our Story */}
 
-              ))
+                        {playingVideo !== item.id && (
+                          <div className="rk-why-watch-story">
+                            <span>WATCH OUR STORY</span>
+                            <i></i>
+                          </div>
+                        )}
 
-            )}
+                      </div>
+                    )}
 
-          </div>
+                  </div>
+                );
+              })}
 
-          {/* ================= Stats ================= */}
+            </div>
+          )}
 
-          <div className="rk-why-stats">
+        </div>
 
-            {stats.map((stat, index) => {
+        {/* =================================================
+            FEATURES
+        ================================================= */}
 
-              const Icon = stat.icon;
+        <div className="rk-why-features">
 
-              return (
+          {whyChooseUs.map((item, index) => {
 
-                <React.Fragment key={index}>
+            const Icon = item.icon;
 
-                  <div className="rk-why-stat">
+            return (
+              <React.Fragment key={index}>
 
+                <div className="rk-why-feature">
+
+                  <div className="rk-why-feature-icon">
                     <Icon
-                      className="rk-why-stat-icon"
-                      size={30}
+                      size={25}
                       strokeWidth={1.5}
                     />
+                  </div>
 
-                    <div>
+                  <div className="rk-why-feature-content">
 
-                      <strong>{stat.value}</strong>
+                    <strong>
+                      {item.title}
+                    </strong>
 
-                      <span>{stat.label}</span>
-
-                    </div>
+                    <span>
+                      {item.description}
+                    </span>
 
                   </div>
 
-                  {index < stats.length - 1 && (
-                    <div className="rk-why-stat-divider"></div>
-                  )}
+                </div>
 
-                </React.Fragment>
+                {index < whyChooseUs.length - 1 && (
+                  <div className="rk-why-feature-divider"></div>
+                )}
 
-              );
+              </React.Fragment>
+            );
+          })}
 
-            })}
+        </div>
 
-          </div>
+        {/* =================================================
+            STATISTICS
+        ================================================= */}
+
+        <div className="rk-why-stats">
+
+          {stats.map((stat, index) => {
+
+            const Icon = stat.icon;
+
+            return (
+              <React.Fragment key={index}>
+
+                <div className="rk-why-stat">
+
+                  <div className="rk-why-stat-icon">
+                    <Icon
+                      size={28}
+                      strokeWidth={1.5}
+                    />
+                  </div>
+
+                  <div className="rk-why-stat-content">
+
+                    <strong>
+                      {stat.value}
+                    </strong>
+
+                    <span>
+                      {stat.label}
+                    </span>
+
+                  </div>
+
+                </div>
+
+                {index < stats.length - 1 && (
+                  <div className="rk-why-stat-divider"></div>
+                )}
+
+              </React.Fragment>
+            );
+          })}
 
         </div>
 

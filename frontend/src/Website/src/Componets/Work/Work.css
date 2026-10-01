@@ -1,326 +1,828 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap");
 
-/* ==========================
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap");
+
+/* =========================================================
    WORK SECTION
-========================== */
+========================================================= */
 
-.work {
-  width: 100%;
-  padding: 80px 5%;
-  background: #fff;
+.rk-work,
+.rk-work *,
+.rk-work *::before,
+.rk-work *::after {
   box-sizing: border-box;
 }
 
-/* ==========================
-   CONTAINER
-========================== */
-
-.work-container {
-  max-width: 1700px;
-  margin: 0 auto;
-  display: grid;
-
-  /* Text and gallery closer together */
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 25px;
-
-  align-items: start;
-}
-
-/* ==========================
-   LEFT: TEXT CONTENT
-========================== */
-
-.work-content {
-  text-align: left;
-  padding-top: 0;
-}
-
-.work-content .work-tag {
-  display: inline-block;
-  color: #c9a15d;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 14px;
-}
-
-.work-content .work-line {
-  width: 50px;
-  height: 2px;
-  background: #c9a15d;
-  margin: 22px 0 28px;
-}
-
-.work-content .work-title {
-  font-family: "Playfair Display", serif;
-  font-size: 42px;
-  font-weight: 700;
-  color: #1a1a1a;
-  line-height: 1.25;
-  text-transform: uppercase;
-  margin: 0;
-}
-
-.work-content .work-description {
-  font-family: "Inter", sans-serif;
-  font-size: 15px;
-  color: #555;
-  line-height: 1.9;
-  margin: 0 0 32px;
-  max-width: 480px;
-}
-
-/* ==========================
-   VIEW PROJECT BUTTON
-========================== */
-
-.view-projects {
-  padding: 15px 36px;
-  border: none;
-  background: #c9a15d;
-  color: #fff;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  border-radius: 4px;
-  cursor: pointer;
-  transition:
-    background 0.3s ease,
-    transform 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-}
-
-.view-projects:hover {
-  background: #b6852e;
-  transform: translateY(-3px);
-}
-
-.view-projects span {
-  margin-left: 10px;
-}
-
-/* ==========================
-   RIGHT: IMAGE GALLERY
-========================== */
-
-.work-gallery {
+.rk-work {
   width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
+  padding: 90px 24px;
 
-/* ==========================
-   IMAGE CARD
-========================== */
+  background: #fcfaf6;
 
-.work-card {
-  width: 100%;
-  height: 220px;
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* =========================================================
+   MAIN CENTER CONTAINER
+========================================================= */
+
+.rk-work-inner {
+  width: 100%;
+  max-width: 1400px;
+
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.rk-work-head {
+  width: 100%;
+  max-width: 850px;
+
+  margin: 0 auto 60px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.rk-work-tag {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin: 0 0 16px;
+
+  color: #c9a15d;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  letter-spacing: 3px;
+
+  line-height: 1;
+
+  text-transform: uppercase;
+
+  text-align: center;
+}
+
+.rk-work-tag::before,
+.rk-work-tag::after {
+  content: "";
+
+  width: 28px;
+  height: 1px;
+
+  background: #c9a15d;
+
+  flex-shrink: 0;
+}
+
+.rk-work-title {
+  width: 100%;
+  max-width: 850px;
+
+  margin: 0 auto 18px;
+
+  font-family: "Playfair Display", serif;
+
+  font-size: clamp(30px, 4vw, 46px);
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  color: #1a1a1a;
+
+  text-align: center;
+
+  text-wrap: balance;
+}
+
+.rk-work-title-gold {
+  color: #c9a15d;
+}
+
+.rk-work-description {
+  width: 100%;
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 15px;
+
+  line-height: 1.8;
+
+  color: #555;
+
+  text-align: center;
+
+  text-wrap: balance;
+}
+
+/* =========================================================
+   CAROUSEL
+========================================================= */
+
+.rk-work-carousel {
+  --per-view: 4;
+  --gap: 24px;
+  --arrow: 46px;
+
+  width: 100%;
+  max-width: 1380px;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-columns:
+    var(--arrow)
+    minmax(0, 1fr)
+    var(--arrow);
+
+  align-items: center;
+
+  column-gap: 20px;
+}
+
+/* =========================================================
+   TRACK
+========================================================= */
+
+.rk-work-track {
+  grid-column: 2;
+  grid-row: 1;
+
+  width: 100%;
+  min-width: 0;
+
+  display: flex;
+
+  gap: var(--gap);
+
+  overflow-x: auto;
+
+  scroll-snap-type: x mandatory;
+
+  scroll-padding-left: 6px;
+
+  scroll-behavior: smooth;
+
+  -webkit-overflow-scrolling: touch;
+
+  overscroll-behavior-x: contain;
+
+  scrollbar-width: none;
+
+  padding: 10px 8px 35px;
+}
+
+.rk-work-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* =========================================================
+   WORK CARD
+========================================================= */
+
+.rk-work-card {
+  flex: 0 0
+    calc(
+      (100% - (var(--per-view) - 1) * var(--gap))
+      / var(--per-view)
+    );
+
+  min-width: 0;
+
+  scroll-snap-align: start;
+
+  background: #fff;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 10px 30px rgba(14, 23, 38, 0.10);
+
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
 }
 
-.work-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.18);
+.rk-work-card:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 16px 38px rgba(14, 23, 38, 0.16);
 }
 
-.work-card img {
+/* =========================================================
+   IMAGE
+========================================================= */
+
+.rk-work-img {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 16 / 10;
+
+  overflow: hidden;
+
+  background: #eee;
+}
+
+.rk-work-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+
   display: block;
-  transition: transform 0.4s ease;
+
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
 }
 
-.work-card:hover img {
-  transform: scale(1.06);
+.rk-work-card:hover .rk-work-img img {
+  transform: scale(1.05);
 }
 
-/* ==========================
-   LOADING
-========================== */
+/* =========================================================
+   HEART
+========================================================= */
 
-.work-loading {
-  grid-column: 1 / -1;
-  height: 220px;
+.rk-work-heart {
+  position: absolute;
+
+  top: 12px;
+  right: 12px;
+
+  width: 38px;
+  height: 38px;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
-  font-family: "Inter", sans-serif;
-  font-size: 16px;
-  color: #666;
-  border-radius: 12px;
-  background: #f6f6f6;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #fff;
+
+  color: #0e1726;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    color 0.2s ease;
 }
 
-/* ==========================
-   LARGE TABLET
-========================== */
+.rk-work-heart:hover {
+  transform: scale(1.08);
+}
+
+.rk-work-heart.is-liked {
+  color: #d6336c;
+}
+
+/* =========================================================
+   CARD INFORMATION
+========================================================= */
+
+.rk-work-info {
+  width: 100%;
+
+  padding: 20px 18px 22px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+}
+
+.rk-work-card-title {
+  width: 100%;
+
+  margin: 0 auto 7px;
+
+  font-family: "Playfair Display", serif;
+
+  font-size: 19px;
+
+  font-weight: 600;
+
+  line-height: 1.3;
+
+  text-transform: uppercase;
+
+  color: #0e1726;
+
+  text-align: center;
+
+  overflow: hidden;
+
+  display: -webkit-box;
+
+  -webkit-line-clamp: 2;
+
+  -webkit-box-orient: vertical;
+}
+
+.rk-work-card-cat {
+  display: block;
+
+  width: 100%;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 12px;
+
+  letter-spacing: 2px;
+
+  line-height: 1.5;
+
+  text-transform: uppercase;
+
+  color: #a5a5a5;
+
+  text-align: center;
+}
+
+/* =========================================================
+   ARROWS
+========================================================= */
+
+.rk-work-arrow {
+  grid-row: 1;
+
+  width: var(--arrow);
+  height: var(--arrow);
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 25px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background: #fff;
+
+  color: #0e1726;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.15);
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    opacity 0.25s ease,
+    transform 0.25s ease;
+}
+
+.rk-work-arrow-prev {
+  grid-column: 1;
+
+  justify-self: center;
+}
+
+.rk-work-arrow-next {
+  grid-column: 3;
+
+  justify-self: center;
+}
+
+.rk-work-arrow:hover:not(:disabled) {
+  background: #c89a2b;
+
+  color: #fff;
+
+  transform: scale(1.05);
+}
+
+.rk-work-arrow:disabled {
+  opacity: 0.35;
+
+  cursor: default;
+}
+
+/* =========================================================
+   LOADING / ERROR
+========================================================= */
+
+.rk-work-state {
+  grid-column: 1 / -1;
+
+  width: 100%;
+
+  height: 240px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  text-align: center;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 16px;
+
+  color: #666;
+
+  border-radius: 14px;
+
+  background: #f3efe7;
+}
+
+/* =========================================================
+   CTA
+========================================================= */
+
+.rk-work-cta {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-top: 8px;
+
+  text-align: center;
+}
+
+.rk-work-btn {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 16px 42px;
+
+  border: 1.5px solid #c89a2b;
+
+  border-radius: 4px;
+
+  background: transparent;
+
+  color: #b8861f;
+
+  font-family: "Inter", sans-serif;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  letter-spacing: 1.5px;
+
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background 0.3s ease,
+    color 0.3s ease,
+    transform 0.3s ease;
+}
+
+.rk-work-btn span {
+  margin-left: 12px;
+}
+
+.rk-work-btn:hover {
+  background: #c89a2b;
+
+  color: #fff;
+
+  transform: translateY(-3px);
+}
+
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1400px) {
+  .rk-work {
+    padding: 100px 30px;
+  }
+
+  .rk-work-inner {
+    max-width: 1400px;
+  }
+
+  .rk-work-carousel {
+    max-width: 1380px;
+
+    --per-view: 4;
+    --gap: 26px;
+  }
+}
+
+/* =========================================================
+   LAPTOP / LARGE TABLET
+========================================================= */
 
 @media (max-width: 1200px) {
-  .work {
-    padding: 70px 4%;
+  .rk-work {
+    padding: 80px 30px;
   }
 
-  .work-container {
-    grid-template-columns: 0.9fr 1.1fr;
-    gap: 20px;
-  }
+  .rk-work-carousel {
+    --per-view: 3;
+    --gap: 20px;
+    --arrow: 42px;
 
-  .work-content .work-title {
-    font-size: 36px;
-  }
+    column-gap: 15px;
 
-  .work-content .work-description {
-    max-width: 420px;
-  }
-
-  .work-gallery {
-    gap: 16px;
-  }
-
-  .work-card {
-    height: 190px;
+    max-width: 1100px;
   }
 }
 
-/* ==========================
+/* =========================================================
    TABLET
-========================== */
+========================================================= */
 
 @media (max-width: 992px) {
-  .work {
-    padding: 60px 5%;
+  .rk-work {
+    padding: 70px 25px;
   }
 
-  .work-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
+  .rk-work-head {
+    margin-bottom: 50px;
   }
 
-  .work-content .work-title {
-    font-size: 34px;
+  .rk-work-carousel {
+    --per-view: 2;
+    --gap: 20px;
+    --arrow: 40px;
+
+    max-width: 850px;
+
+    column-gap: 14px;
   }
 
-  .work-content .work-description {
+  .rk-work-card-title {
+    font-size: 18px;
+  }
+}
+
+/* =========================================================
+   SMALL TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .rk-work {
+    padding: 65px 20px;
+  }
+
+  .rk-work-inner {
     max-width: 600px;
   }
 
-  .work-gallery {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
+  .rk-work-head {
+    margin-bottom: 42px;
   }
 
-  .work-card {
-    height: 180px;
-  }
-}
-
-/* ==========================
-   MOBILE
-========================== */
-
-@media (max-width: 768px) {
-  .work {
-    padding: 60px 5%;
+  .rk-work-title {
+    font-size: 34px;
   }
 
-  .work-container {
-    grid-template-columns: 1fr;
-    gap: 35px;
+  .rk-work-description {
+    font-size: 14px;
   }
 
-  .work-content .work-tag {
-    font-size: 12px;
-    letter-spacing: 2.5px;
-    margin-bottom: 12px;
+  .rk-work-carousel {
+    --per-view: 2;
+
+    max-width: 600px;
+
+    column-gap: 10px;
   }
 
-  .work-content .work-title {
-    font-size: 28px;
-    line-height: 1.3;
+  .rk-work-arrow {
+    display: none;
   }
 
-  .work-content .work-line {
-    width: 45px;
-    margin: 18px 0 22px;
+  .rk-work-carousel {
+    display: block;
   }
 
-  .work-content .work-description {
-    font-size: 13px;
-    line-height: 1.8;
-    max-width: 100%;
-    margin-bottom: 25px;
-  }
-
-  .work-gallery {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
-  }
-
-  .work-card {
-    height: 150px;
-    border-radius: 10px;
-  }
-
-  .view-projects {
+  .rk-work-track {
     width: 100%;
-    justify-content: center;
-    padding: 14px 25px;
+
+    padding:
+      10px
+      4%
+      32px;
+
+    gap: 16px;
+
+    scroll-padding-left: 4%;
+  }
+
+  .rk-work-card {
+    flex: 0 0 82%;
+
+    scroll-snap-align: center;
   }
 }
 
-/* ==========================
-   SMALL MOBILE
-========================== */
+/* =========================================================
+   MOBILE
+========================================================= */
 
-@media (max-width: 480px) {
-  .work {
-    padding: 50px 5%;
+@media (max-width: 640px) {
+  .rk-work {
+    padding: 55px 0;
   }
 
-  .work-container {
-    gap: 30px;
+  .rk-work-inner {
+    width: 100%;
+    max-width: 100%;
   }
 
-  .work-content .work-tag {
+  .rk-work-head {
+    width: 100%;
+
+    max-width: 500px;
+
+    margin: 0 auto 38px;
+
+    padding: 0 20px;
+  }
+
+  .rk-work-tag {
     font-size: 11px;
+
     letter-spacing: 2px;
+
+    gap: 8px;
   }
 
-  .work-content .work-title {
-    font-size: 25px;
+  .rk-work-tag::before,
+  .rk-work-tag::after {
+    width: 16px;
   }
 
-  .work-content .work-description {
+  .rk-work-title {
+    font-size: clamp(28px, 8vw, 34px);
+
+    line-height: 1.2;
+  }
+
+  .rk-work-description {
+    font-size: 14px;
+
+    line-height: 1.7;
+  }
+
+  .rk-work-carousel {
+    width: 100%;
+
+    display: block;
+  }
+
+  .rk-work-arrow {
+    display: none;
+  }
+
+  .rk-work-track {
+    width: 100%;
+
+    padding:
+      8px
+      8%
+      32px;
+
+    gap: 14px;
+
+    scroll-padding-left: 8%;
+  }
+
+  .rk-work-card {
+    flex: 0 0 84%;
+
+    scroll-snap-align: center;
+
+    border-radius: 13px;
+  }
+
+  .rk-work-info {
+    padding: 17px 16px 20px;
+
+    text-align: center;
+  }
+
+  .rk-work-card-title {
+    font-size: 17px;
+
+    text-align: center;
+  }
+
+  .rk-work-card-cat {
+    font-size: 11px;
+
+    letter-spacing: 1.7px;
+
+    text-align: center;
+  }
+
+  .rk-work-heart {
+    width: 34px;
+    height: 34px;
+
+    top: 10px;
+    right: 10px;
+  }
+
+  .rk-work-cta {
+    width: 100%;
+
+    padding: 0 20px;
+
+    margin-top: 5px;
+  }
+
+  .rk-work-btn {
+    width: 100%;
+
+    max-width: 340px;
+
+    padding: 15px 24px;
+
     font-size: 13px;
-    line-height: 1.75;
   }
 
-  .work-gallery {
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
+  .rk-work-state {
+    width: calc(100% - 40px);
 
-  .work-card {
     height: 200px;
-    border-radius: 10px;
+
+    margin: 0 auto;
+
+    font-size: 14px;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 380px) {
+  .rk-work {
+    padding: 50px 0;
   }
 
-  .view-projects {
-    font-size: 13px;
-    padding: 14px 20px;
+  .rk-work-head {
+    padding: 0 16px;
+  }
+
+  .rk-work-track {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .rk-work-card {
+    flex-basis: 88%;
+  }
+
+  .rk-work-card-title {
+    font-size: 16px;
+  }
+
+  .rk-work-card-cat {
+    font-size: 10px;
   }
 }

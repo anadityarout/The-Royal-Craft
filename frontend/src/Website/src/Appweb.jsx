@@ -30,7 +30,7 @@ import About from "./Componets/About/About";
 import Counter from "./Componets/Counting/Counter";
 import Work from "./Componets/Work/Work";
 import Process from "./Componets/Process/Process";
-
+import WhyFiber from "./Componets/Choose/WhyFiber";
 // =====================================================
 // PAGES
 // =====================================================
@@ -124,6 +124,8 @@ function Home() {
       <Project />
 
       <WhyChooseUs />
+
+        <WhyFiber />
 
       <Client />
 
