@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Navbar.css";
 
 import {
@@ -8,6 +8,7 @@ import {
   FaProjectDiagram,
   FaCogs,
   FaBoxOpen,
+  FaArrowRight,
 } from "react-icons/fa";
 
 import { Link, useLocation } from "react-router-dom";
@@ -15,312 +16,258 @@ import { Link, useLocation } from "react-router-dom";
 import logo from "../../assets/navbar.png";
 import ConsultationPopup from "../Popup/ConsultationPopup";
 
+// =====================================================
+// LINK DATA (outside the component so it isn't rebuilt
+// on every render)
+// =====================================================
+
+const desktopNavLinks = [
+  { name: "Home", path: "/" },
+  { name: "Projects", path: "/project" },
+  { name: "Product", path: "/product" },
+  { name: "Service", path: "/service" },
+  { name: "Blog", path: "/blog" },
+  { name: "Contact", path: "/contact" },
+];
+
+const mobileNavLinks = [
+  { name: "Home", path: "/" },
+  { name: "Projects", path: "/project" },
+  { name: "Product", path: "/product" },
+  { name: "Service", path: "/service" },
+  { name: "Blog", path: "/blog" },
+  { name: "Gallery", path: "/gallery" },
+  { name: "About", path: "/about" },
+  { name: "Contact", path: "/contact" },
+];
+
+const bottomNavLinks = [
+  { name: "Home", path: "/", icon: <FaHome /> },
+  { name: "Project", path: "/project", icon: <FaProjectDiagram /> },
+  { name: "Product", path: "/product", icon: <FaBoxOpen /> },
+  { name: "Service", path: "/service", icon: <FaCogs /> },
+];
+
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const location = useLocation();
 
   // =====================================================
-  // CLOSE MENU
+  // HELPERS
   // =====================================================
 
-  const closeMenu = () => {
-    setMenuOpen(false);
-  };
-
-  // =====================================================
-  // BOOK CONSULTATION
-  // =====================================================
+  const closeMenu = () => setMenuOpen(false);
 
   const handleBookClick = () => {
     closeMenu();
     setPopupOpen(true);
   };
 
-  // =====================================================
-  // DESKTOP NAVIGATION
-  // =====================================================
-
-  const desktopNavLinks = [
-    {
-      name: "Home",
-      path: "/",
-    },
-    {
-      name: "Projects",
-      path: "/project",
-    },
-    {
-      name: "Product",
-      path: "/product",
-    },
-    {
-      name: "Service",
-      path: "/service",
-    },
-    {
-      name: "Blog",
-      path: "/blog",
-    },
-    {
-      name: "Contact",
-      path: "/contact",
-    },
-  ];
+  // Active on exact match for "/", and on nested routes
+  // (e.g. /project/123) for everything else
+  const isActive = (path) =>
+    path === "/"
+      ? location.pathname === "/"
+      : location.pathname === path ||
+        location.pathname.startsWith(`${path}/`);
 
   // =====================================================
-  // MOBILE / TABLET MENU
+  // GLASS GETS A LITTLE DARKER AFTER SCROLLING
   // =====================================================
 
-  const mobileNavLinks = [
-    {
-      name: "Home",
-      path: "/",
-    },
-    {
-      name: "Projects",
-      path: "/project",
-    },
-    {
-      name: "Product",
-      path: "/product",
-    },
-    {
-      name: "Service",
-      path: "/service",
-    },
-    {
-      name: "Blog",
-      path: "/blog",
-    },
-    {
-      name: "Gallery",
-      path: "/gallery",
-    },
-    {
-      name: "About",
-      path: "/about",
-    },
-    {
-      name: "Contact",
-      path: "/contact",
-    },
-  ];
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // =====================================================
-  // MOBILE + TABLET BOTTOM NAVIGATION
+  // CLOSE MENU WHEN THE ROUTE CHANGES (back button, etc.)
   // =====================================================
 
-  const bottomNavLinks = [
-    {
-      name: "Home",
-      path: "/",
-      icon: <FaHome />,
-    },
-    {
-      name: "Product",
-      path: "/product",
-      icon: <FaBoxOpen />,
-    },
-    {
-      name: "Project",
-      path: "/project",
-      icon: <FaProjectDiagram />,
-    },
-    {
-      name: "Service",
-      path: "/service",
-      icon: <FaCogs />,
-    },
-  ];
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   // =====================================================
-  // ACTIVE BOTTOM LINK
+  // LOCK PAGE SCROLL WHILE MENU IS OPEN + ESCAPE TO CLOSE
   // =====================================================
 
-  const isBottomActive = (path) => {
-    if (path === "/") {
-      return location.pathname === "/";
-    }
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
 
-    return location.pathname === path;
-  };
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
+
+  // =====================================================
+  // CLOSE MENU IF WINDOW IS RESIZED TO DESKTOP WIDTH
+  // =====================================================
+
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 1100) setMenuOpen(false);
+    };
+
+    window.addEventListener("resize", onResize);
+
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
 
   return (
     <>
       {/* =====================================================
-          TOP NAVBAR
+          TOP NAVBAR (GLASS)
+          3 columns on desktop:  logo | links (centered) | CTA
       ===================================================== */}
 
-      <header className="navbar">
-
+      <header className={`navbar ${scrolled ? "scrolled" : ""}`}>
         <div className="navbar-container">
-
-          {/* =================================================
-              LOGO
-          ================================================= */}
+          {/* LEFT: LOGO */}
 
           <div className="logo">
-            <Link
-              to="/"
-              onClick={closeMenu}
-            >
-              <img
-                src={logo}
-                alt="The Royal Craft Logo"
-              />
+            <Link to="/" onClick={closeMenu}>
+              <img src={logo} alt="The Royal Craft Logo" />
             </Link>
           </div>
 
-          {/* =================================================
-              DESKTOP NAVIGATION
-          ================================================= */}
+          {/* CENTER: DESKTOP LINKS */}
 
-          <nav className="desktop-nav-menu">
-
+          <nav className="desktop-nav-menu" aria-label="Main navigation">
             {desktopNavLinks.map((item) => (
               <Link
                 key={item.path}
                 to={item.path}
                 onClick={closeMenu}
-                className={
-                  location.pathname === item.path
-                    ? "active-link"
-                    : ""
-                }
+                className={isActive(item.path) ? "active-link" : ""}
+                aria-current={isActive(item.path) ? "page" : undefined}
               >
                 {item.name}
               </Link>
             ))}
+          </nav>
 
-            {/* BOOK CONSULTATION */}
+          {/* RIGHT: DESKTOP CTA */}
 
+          <div className="desktop-cta">
             <button
               type="button"
               className="nav-cta-btn"
               onClick={handleBookClick}
             >
-              Book Consultation
+              <span className="cta-text">Book Consultation</span>
+              <span className="cta-arrow" aria-hidden="true">
+                <FaArrowRight />
+              </span>
             </button>
+          </div>
 
-          </nav>
-
-          {/* =================================================
-              MOBILE / TABLET HAMBURGER
-          ================================================= */}
+          {/* RIGHT: MOBILE / TABLET HAMBURGER */}
 
           <button
             type="button"
             className="menu-btn"
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label={
-              menuOpen
-                ? "Close Menu"
-                : "Open Menu"
-            }
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? "Close Menu" : "Open Menu"}
             aria-expanded={menuOpen}
+            aria-controls="mobile-side-menu"
           >
-            {menuOpen ? (
-              <FaTimes />
-            ) : (
-              <FaBars />
-            )}
+            {menuOpen ? <FaTimes /> : <FaBars />}
           </button>
-
         </div>
-
-        {/* =====================================================
-            MOBILE / TABLET SIDE MENU
-        ===================================================== */}
-
-        <nav
-          className={`mobile-side-menu ${
-            menuOpen ? "active" : ""
-          }`}
-        >
-
-          {mobileNavLinks.map((item) => (
-            <Link
-              key={item.path}
-              to={item.path}
-              onClick={closeMenu}
-              className={
-                location.pathname === item.path
-                  ? "active-link"
-                  : ""
-              }
-            >
-              {item.name}
-            </Link>
-          ))}
-
-          {/* BOOK CONSULTATION */}
-
-          <button
-            type="button"
-            className="nav-cta-btn"
-            onClick={handleBookClick}
-          >
-            Book Consultation
-          </button>
-
-        </nav>
-
-        {/* =====================================================
-            CONSULTATION POPUP
-        ===================================================== */}
-
-        <ConsultationPopup
-          isOpen={popupOpen}
-          onClose={() => setPopupOpen(false)}
-        />
-
       </header>
 
       {/* =====================================================
-          MOBILE + TABLET BOTTOM NAVIGATION
+          MOBILE OVERLAY
+          (outside the header, so the glass blur on the header
+          does not trap fixed-position children)
+      ===================================================== */}
+
+      <div
+        className={`mobile-overlay ${menuOpen ? "active" : ""}`}
+        onClick={closeMenu}
+        aria-hidden="true"
+      ></div>
+
+      {/* =====================================================
+          MOBILE / TABLET SIDE MENU (GLASS)
       ===================================================== */}
 
       <nav
-        className="mobile-bottom-nav"
-        aria-label="Mobile navigation"
+        id="mobile-side-menu"
+        className={`mobile-side-menu ${menuOpen ? "active" : ""}`}
+        aria-hidden={!menuOpen}
+        aria-label="Mobile menu"
       >
+        {mobileNavLinks.map((item) => (
+          <Link
+            key={item.path}
+            to={item.path}
+            onClick={closeMenu}
+            className={isActive(item.path) ? "active-link" : ""}
+            aria-current={isActive(item.path) ? "page" : undefined}
+          >
+            {item.name}
+          </Link>
+        ))}
 
+        <button
+          type="button"
+          className="nav-cta-btn"
+          onClick={handleBookClick}
+        >
+          Book Consultation
+        </button>
+      </nav>
+
+      {/* =====================================================
+          CONSULTATION POPUP
+      ===================================================== */}
+
+      <ConsultationPopup
+        isOpen={popupOpen}
+        onClose={() => setPopupOpen(false)}
+      />
+
+      {/* =====================================================
+          MOBILE + TABLET BOTTOM NAVIGATION (GLASS)
+      ===================================================== */}
+
+      <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
         <div className="mobile-bottom-nav-inner">
-
           {bottomNavLinks.map((item) => {
-
-            const active = isBottomActive(
-              item.path
-            );
+            const active = isActive(item.path);
 
             return (
               <Link
                 key={item.path}
                 to={item.path}
                 className={`mobile-bottom-item ${
-                  active
-                    ? "bottom-active"
-                    : ""
+                  active ? "bottom-active" : ""
                 }`}
                 aria-label={item.name}
+                aria-current={active ? "page" : undefined}
               >
-
-                <span className="mobile-bottom-icon">
-                  {item.icon}
-                </span>
-
-                <span className="mobile-bottom-label">
-                  {item.name}
-                </span>
-
+                <span className="mobile-bottom-icon">{item.icon}</span>
+                <span className="mobile-bottom-label">{item.name}</span>
               </Link>
             );
           })}
-
         </div>
-
       </nav>
     </>
   );
