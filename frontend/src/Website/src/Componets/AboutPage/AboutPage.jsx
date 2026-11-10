@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import "./AboutPage.css";
 import PageSeo from "../SeoPage/PageSeo";
 import { ArrowRight } from "lucide-react";
@@ -35,6 +40,12 @@ const API_URL =
 const AboutPage = () => {
 
   // =====================================================
+  // BANNER REF (used to pull the banner to the very top)
+  // =====================================================
+
+  const bannerRef = useRef(null);
+
+  // =====================================================
   // ABOUT DATA
   // =====================================================
 
@@ -54,6 +65,47 @@ const AboutPage = () => {
   const [projects, setProjects] = useState(0);
   const [clients, setClients] = useState(0);
   const [experts, setExperts] = useState(0);
+
+  // =====================================================
+  // PULL BANNER TO THE TOP OF THE PAGE
+  // Something above the banner (a wrapper's padding/margin
+  // in App or index CSS) leaves a white strip at the top.
+  // This measures that gap and cancels it, so the banner
+  // image starts at the very top behind the navbar.
+  //
+  // The banner only exists after the loading screen is gone,
+  // so this runs again when "loading" changes.
+  // "important" is used so a CSS "margin: 0 !important"
+  // can't block it.
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const pullBannerToTop = () => {
+      const el = bannerRef.current;
+
+      if (!el) return;
+
+      el.style.setProperty("margin-top", "0px", "important");
+
+      const gap = el.getBoundingClientRect().top + window.scrollY;
+
+      el.style.setProperty(
+        "margin-top",
+        gap > 0 ? `-${gap}px` : "0px",
+        "important"
+      );
+    };
+
+    pullBannerToTop();
+
+    window.addEventListener("resize", pullBannerToTop);
+    window.addEventListener("load", pullBannerToTop);
+
+    return () => {
+      window.removeEventListener("resize", pullBannerToTop);
+      window.removeEventListener("load", pullBannerToTop);
+    };
+  }, [loading]);
 
   // =====================================================
   // LOAD ABOUT DATA
@@ -266,7 +318,7 @@ const AboutPage = () => {
             ABOUT BANNER
         ================================================= */}
 
-        <section className="about-banner">
+        <section className="about-banner" ref={bannerRef}>
 
           {/* =================================================
               BANNER IMAGE

@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+} from "react";
 import BlogDetails from "./BlogDetails";
 import "./BlogPage.css";
 import blogBanner from "../../assets/Blog.jpg";
@@ -9,6 +14,9 @@ const BlogPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [selectedBlog, setSelectedBlog] = useState(null);
   const [activeCategory, setActiveCategory] = useState("All");
+
+  // Used to pull the banner to the very top of the page
+  const bannerRef = useRef(null);
 
   const categories = [
     "All",
@@ -24,16 +32,59 @@ const BlogPage = () => {
     // setBlogs(response.data);
   }, []);
 
+  // =====================================================
+  // PULL BANNER TO THE TOP OF THE PAGE
+  // Something above the banner (a wrapper's padding/margin
+  // in App or index CSS) leaves a white strip at the top.
+  // This measures that gap and cancels it, so the banner
+  // image starts at the very top behind the navbar.
+  //
+  // It runs again when you come back from a blog article
+  // (selectedBlog changes), because the banner is rebuilt.
+  // "important" is used so a CSS "margin: 0 !important"
+  // can't block it.
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const pullBannerToTop = () => {
+      const el = bannerRef.current;
+
+      if (!el) return;
+
+      el.style.setProperty("margin-top", "0px", "important");
+
+      const gap = el.getBoundingClientRect().top + window.scrollY;
+
+      el.style.setProperty(
+        "margin-top",
+        gap > 0 ? `-${gap}px` : "0px",
+        "important"
+      );
+    };
+
+    pullBannerToTop();
+
+    window.addEventListener("resize", pullBannerToTop);
+    window.addEventListener("load", pullBannerToTop);
+
+    return () => {
+      window.removeEventListener("resize", pullBannerToTop);
+      window.removeEventListener("load", pullBannerToTop);
+    };
+  }, [selectedBlog]);
+
   // Featured blog - will come from API, fallback for now
   const featuredBlog = {
-  image: mandapImage,
-  tag: "FIBER MANDAP",
-  title: "The Grand Maharaja Mandap: Where Heritage Meets Modern Craftsmanship",
-  excerpt:
-    "Our latest fiber mandap creation brings together centuries of Indian architectural tradition with precision fiber-glass fabrication — built to last generations, yet radiant enough to crown your most sacred moment.",
-  date: "July 28, 2026",
-  readTime: "8 min read",
-};
+    image: mandapImage,
+    tag: "FIBER MANDAP",
+    title:
+      "The Grand Maharaja Mandap: Where Heritage Meets Modern Craftsmanship",
+    excerpt:
+      "Our latest fiber mandap creation brings together centuries of Indian architectural tradition with precision fiber-glass fabrication — built to last generations, yet radiant enough to crown your most sacred moment.",
+    date: "July 28, 2026",
+    readTime: "8 min read",
+  };
+
   if (selectedBlog) {
     return (
       <BlogDetails
@@ -50,9 +101,10 @@ const BlogPage = () => {
 
         {/* Banner */}
         <section
-  className="blog-banner"
-  style={{ backgroundImage: `url(${blogBanner})` }}
-></section>
+          className="blog-banner"
+          ref={bannerRef}
+          style={{ backgroundImage: `url(${blogBanner})` }}
+        ></section>
 
         {/* Featured Blog */}
         <section className="rk-featured-blog-wrapper">

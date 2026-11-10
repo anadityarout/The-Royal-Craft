@@ -1,4 +1,10 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import "./ServicePage.css";
 import PageSeo from "../SeoPage/PageSeo";
 import { Building2, ArrowRight } from "lucide-react";
@@ -17,6 +23,12 @@ const categories = [
 ];
 
 const ServicePage = () => {
+  /* =======================================================
+     BANNER REF (used to pull the banner to the very top)
+  ======================================================= */
+
+  const bannerRef = useRef(null);
+
   /* =======================================================
      CATEGORY
   ======================================================= */
@@ -43,6 +55,45 @@ const ServicePage = () => {
 
   const [banner, setBanner] = useState(null);
   const [bannerLoading, setBannerLoading] = useState(true);
+
+  /* =======================================================
+     PULL BANNER TO THE TOP OF THE PAGE
+     Something above the banner (a wrapper's padding/margin
+     in App or index CSS) leaves a white strip at the top.
+     This measures that gap and cancels it, so the banner
+     image starts at the very top behind the navbar.
+
+     setProperty(..., "important") is needed because the
+     mobile CSS uses "margin: 0 !important" on the banner.
+  ======================================================= */
+
+  useLayoutEffect(() => {
+    const pullBannerToTop = () => {
+      const el = bannerRef.current;
+
+      if (!el) return;
+
+      el.style.setProperty("margin-top", "0px", "important");
+
+      const gap = el.getBoundingClientRect().top + window.scrollY;
+
+      el.style.setProperty(
+        "margin-top",
+        gap > 0 ? `-${gap}px` : "0px",
+        "important"
+      );
+    };
+
+    pullBannerToTop();
+
+    window.addEventListener("resize", pullBannerToTop);
+    window.addEventListener("load", pullBannerToTop);
+
+    return () => {
+      window.removeEventListener("resize", pullBannerToTop);
+      window.removeEventListener("load", pullBannerToTop);
+    };
+  }, []);
 
   /* =======================================================
      LOAD ALL DATA
@@ -191,7 +242,7 @@ const ServicePage = () => {
           Image controls the height automatically.
       ================================================= */}
 
-      <section className="service-page-banner">
+      <section className="service-page-banner" ref={bannerRef}>
 
         {bannerLoading ? (
 

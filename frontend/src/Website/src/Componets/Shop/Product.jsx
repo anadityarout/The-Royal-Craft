@@ -1,6 +1,5 @@
 // Product.jsx
-
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Shop.css";
 import PageSeo from "../SeoPage/PageSeo";
@@ -39,6 +38,12 @@ const createProductSlug = (name) => {
 
 const Product = () => {
   const navigate = useNavigate();
+
+  // =====================================================
+  // BANNER REF (used to pull the banner to the very top)
+  // =====================================================
+
+  const bannerRef = useRef(null);
 
   // =====================================================
   // CATEGORIES
@@ -110,6 +115,39 @@ const Product = () => {
   // =====================================================
 
   const [loading, setLoading] = useState(true);
+
+  // =====================================================
+  // PULL BANNER TO THE TOP OF THE PAGE
+  // Something above the banner (a wrapper's padding/margin
+  // in App or index CSS) leaves a white strip at the top.
+  // This measures that gap and cancels it, so the banner
+  // image starts at the very top behind the glass navbar.
+  // =====================================================
+
+  useLayoutEffect(() => {
+    const pullBannerToTop = () => {
+      const banner = bannerRef.current;
+
+      if (!banner) return;
+
+      banner.style.marginTop = "0px";
+
+      const gap =
+        banner.getBoundingClientRect().top + window.scrollY;
+
+      banner.style.marginTop = gap > 0 ? `-${gap}px` : "0px";
+    };
+
+    pullBannerToTop();
+
+    window.addEventListener("resize", pullBannerToTop);
+    window.addEventListener("load", pullBannerToTop);
+
+    return () => {
+      window.removeEventListener("resize", pullBannerToTop);
+      window.removeEventListener("load", pullBannerToTop);
+    };
+  }, []);
 
   // =====================================================
   // LOAD DATA
@@ -388,7 +426,7 @@ const Product = () => {
             PRODUCT BANNER
         ================================================= */}
 
-        <section className="shop-banner">
+        <section className="shop-banner" ref={bannerRef}>
 
           {/* =================================================
               BANNER IMAGE
